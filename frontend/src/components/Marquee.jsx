@@ -6,17 +6,17 @@ export default function Marquee() {
   return (
     <div
       data-testid="editorial-marquee"
-      className="bg-gradient-to-r from-avani-goldsoft via-avani-gold to-avani-goldsoft border-y border-avani-amber/40 py-5 overflow-hidden"
+      className="bg-avani-forest border-y border-avani-gold/20 py-5 overflow-hidden"
     >
       <div className="animate-marquee flex w-max items-center">
         {[0, 1].map((half) => (
           <div key={half} className="flex items-center shrink-0">
             {items.map((word, i) => (
               <span key={`${half}-${i}`} className="flex items-center">
-                <span className="font-serif italic text-xl sm:text-2xl text-avani-deep tracking-wide px-6">
+                <span className="font-serif italic text-xl sm:text-2xl text-avani-goldsoft/90 tracking-wide px-6">
                   {word}
                 </span>
-                <Sparkle className="w-3.5 h-3.5 text-avani-deep/50 shrink-0" />
+                <Sparkle className="w-3.5 h-3.5 text-avani-gold/70 shrink-0" />
               </span>
             ))}
           </div>

@@ -65,6 +65,9 @@ Single-page website for AVANI Foundation ("Advancing Vision, Ambition and New In
 ## Iteration 11 (2026-07-11)
 - Programmes section background now golden gradient (from-goldsoft via-gold to-amber) per user ("vo crazy tha"): white stage/cards pop on gold, dark green Pilot-first badge, deep-green text. Note: earlier "undo" had restored Programmes to its pre-sand dark version; golden replaces it directly
 
+## Iteration 12 (2026-07-11)
+- Footer redesigned: gold top border, "Ready to be part of the change?" CTA band (Partner + Donate buttons), 4-column layout (brand + socials, Quick Links, Explore, Reach Us), giant ghost AVANI watermark, bottom bar. Works on both Home and /donate
+
 ## Known Issues
 - Email delivery to data@avanifoundation.org FAILS: provider reports the mailbox is undeliverable (domain email not configured). Enquiries ARE stored in MongoDB regardless. Fix: user sets up email hosting for avanifoundation.org (MX records) OR provides an alternative inbox to put in ENQUIRY_RECIPIENT_EMAIL in /app/backend/.env
 - Instagram / LinkedIn shown as "Coming soon" placeholders

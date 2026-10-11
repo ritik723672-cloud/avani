@@ -21,12 +21,12 @@ export default function Approach() {
           </p>
         </Reveal>
 
-        <div className="mt-14 grid md:grid-cols-3 gap-px bg-avani-forest/10 border border-avani-forest/10">
+        <div className="mt-14 grid md:grid-cols-3 gap-px bg-avani-forest/10 border border-avani-forest/10 rounded-3xl overflow-hidden shadow-lg shadow-avani-forest/5">
           {APPROACH.map((stage, i) => (
             <Reveal key={stage.step} delay={i * 0.12} className="h-full">
               <div
                 data-testid={`approach-stage-${stage.step}`}
-                className="group relative h-full bg-avani-ivory hover:bg-avani-cream transition-colors duration-500 p-8 sm:p-10"
+                className="group relative h-full bg-white hover:bg-avani-cream transition-colors duration-500 p-8 sm:p-10"
               >
                 <span className="font-serif text-5xl text-avani-gold/60 group-hover:text-avani-gold transition-colors duration-500">
                   {stage.step}

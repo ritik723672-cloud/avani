@@ -36,16 +36,6 @@ export default function Founder() {
               />
             </div>
           </Reveal>
-          <Reveal delay={0.25}>
-            <div className="absolute -bottom-8 -right-2 sm:right-2 w-40 sm:w-52 overflow-hidden rounded-2xl border-4 border-avani-ivory shadow-xl shadow-avani-forest/25 rotate-2 hover:rotate-0 transition-transform duration-500">
-              <img
-                src={IMAGES.founderEvent}
-                alt="Mani Pandey distributing learning material to children at a community event"
-                data-testid="founder-event-image"
-                className="w-full h-32 sm:h-40 object-cover"
-              />
-            </div>
-          </Reveal>
         </div>
 
         <div className="lg:col-span-7 lg:pl-6">

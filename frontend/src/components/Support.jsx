@@ -28,11 +28,17 @@ export default function Support() {
             <Reveal key={group} delay={i * 0.07} className="h-full">
               <div
                 data-testid={`support-group-${i + 1}`}
-                className="group h-full bg-avani-ivory border border-avani-forest/10 rounded-2xl p-7 hover:border-avani-gold/50 hover:-translate-y-1 hover:shadow-lg hover:shadow-avani-forest/10 transition-all duration-500"
+                className="group relative h-full bg-white border border-avani-forest/10 rounded-3xl p-7 pt-8 overflow-hidden hover:border-avani-gold/60 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-avani-forest/10 transition-all duration-500"
               >
-                <span className="flex items-center justify-center w-9 h-9 rounded-full bg-avani-forest/5 border border-avani-gold/30 group-hover:bg-avani-forest group-hover:text-avani-goldsoft text-avani-forest transition-all duration-500">
-                  <Check className="w-4 h-4" />
-                </span>
+                <span className="absolute top-0 left-0 h-1 w-10 bg-avani-gold/70 group-hover:w-full transition-all duration-700" />
+                <div className="flex items-center justify-between">
+                  <span className="font-serif text-2xl text-avani-gold/60 group-hover:text-avani-amber transition-colors duration-500">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="flex items-center justify-center w-9 h-9 rounded-full bg-avani-cream border border-avani-gold/30 group-hover:bg-avani-forest group-hover:text-avani-goldsoft text-avani-forest transition-all duration-500">
+                    <Check className="w-4 h-4" />
+                  </span>
+                </div>
                 <p className="mt-5 text-sm leading-relaxed text-avani-slate">
                   {group}
                 </p>

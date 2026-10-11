@@ -122,8 +122,8 @@ export default function Hero() {
           >
             <div className="overflow-hidden rounded-t-[999px] rounded-b-[2rem] border border-avani-gold/35 shadow-2xl shadow-avani-forest/20">
               <motion.img
-                src={IMAGES.hero}
-                alt="Young girls gathered around a laptop, learning digital skills"
+                src={IMAGES.girlTablet}
+                alt="Young schoolgirl smiling with a tablet, learning digital skills"
                 data-testid="hero-image"
                 style={{ y: imgY }}
                 className="w-full h-[26rem] sm:h-[30rem] lg:h-[34rem] object-cover scale-110"

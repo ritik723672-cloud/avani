@@ -1,5 +1,5 @@
 import { Handshake, HeartHandshake, ArrowRight } from "lucide-react";
-import { PARTNER_GROUPS, INVOLVE_WAYS } from "../data/site";
+import { IMAGES, PARTNER_GROUPS, INVOLVE_WAYS } from "../data/site";
 import { Reveal } from "./Reveal";
 import { scrollToId } from "../lib/scroll";
 
@@ -86,6 +86,14 @@ export default function Partner() {
                   </li>
                 ))}
               </ul>
+              <div className="mt-8 overflow-hidden rounded-2xl border border-avani-forest/10 shadow-lg shadow-avani-forest/10">
+                <img
+                  src={IMAGES.founderEvent}
+                  alt="AVANI founder distributing learning material to children at a community event"
+                  data-testid="get-involved-image"
+                  className="w-full h-44 sm:h-52 object-cover hover:scale-105 transition-transform duration-[1.4s] ease-out"
+                />
+              </div>
               <button
                 data-testid="get-involved-cta-btn"
                 onClick={() => scrollToId("#contact")}

@@ -23,6 +23,12 @@ Single-page website for AVANI Foundation ("Advancing Vision, Ambition and New In
 - Favicon: original SVG leaf/star mark; page title + meta description
 - data-testid on all interactive elements
 
+## Iteration 2 (2026-07-11)
+- Headings switched to Playfair Display (reference-site look), body stays Inter
+- Hero image replaced with new girl-with-tablet photo; girls-at-laptop photo moved to Programmes section (mid-page)
+- Founder's second overlapping photo removed; pink-saree community photo moved to Get Involved panel
+- Cards redesigned: numbered with gold top-bar accent, white surfaces, lift-on-hover (Support, Programmes, Approach)
+
 ## Known Issues
 - Email delivery to data@avanifoundation.org FAILS: provider reports the mailbox is undeliverable (domain email not configured). Enquiries ARE stored in MongoDB regardless. Fix: user sets up email hosting for avanifoundation.org (MX records) OR provides an alternative inbox to put in ENQUIRY_RECIPIENT_EMAIL in /app/backend/.env
 - Instagram / LinkedIn shown as "Coming soon" placeholders

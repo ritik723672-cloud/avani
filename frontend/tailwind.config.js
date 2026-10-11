@@ -19,6 +19,7 @@ module.exports = {
           deep: '#0F1B16',
           moss: '#3E8B4F',
           leaf: '#C59B27',
+          sand: '#F4EBD8',
           ivory: '#F0F6F0',
           cream: '#E4EEE5',
           gold: '#D4AF37',

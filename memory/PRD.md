@@ -56,6 +56,9 @@ Single-page website for AVANI Foundation ("Advancing Vision, Ambition and New In
 - Hero headline reduced a size step (text-3xl/4xl/5xl)
 - Programmes redesigned: 01→02→03 stage flow cards with arrows, image gets gold "Pilot-first" badge, initiative cards now have per-item lucide icons + gold numbers
 
+## Iteration 9 (2026-07-11)
+- Programmes section background changed from dark green to warm sand (#F4EBD8, avani.sand): white stage-flow cards, white initiative cards with sand icon chips, dark green "Pilot-first" badge, soft gold/moss glow blobs
+
 ## Known Issues
 - Email delivery to data@avanifoundation.org FAILS: provider reports the mailbox is undeliverable (domain email not configured). Enquiries ARE stored in MongoDB regardless. Fix: user sets up email hosting for avanifoundation.org (MX records) OR provides an alternative inbox to put in ENQUIRY_RECIPIENT_EMAIL in /app/backend/.env
 - Instagram / LinkedIn shown as "Coming soon" placeholders

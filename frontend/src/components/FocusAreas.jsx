@@ -4,6 +4,16 @@ import { Plus } from "lucide-react";
 import { FOCUS_AREAS } from "../data/site";
 import { Reveal, SectionHeading } from "./Reveal";
 
+const SPANS = [
+  "lg:col-span-3",
+  "lg:col-span-3",
+  "lg:col-span-2",
+  "lg:col-span-2",
+  "lg:col-span-2",
+  "lg:col-span-3",
+  "lg:col-span-3",
+];
+
 export default function FocusAreas() {
   const [open, setOpen] = useState(0);
 
@@ -13,80 +23,112 @@ export default function FocusAreas() {
       data-testid="focus-areas-section"
       className="bg-avani-ivory py-20 lg:py-28"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-12 gap-12">
-        <div className="lg:col-span-4">
-          <div className="lg:sticky lg:top-28">
-            <SectionHeading
-              overline="Our Focus Areas"
-              title="Seven Paths to Independence"
-              testId="focus-areas-heading"
-            />
-            <Reveal delay={0.15}>
-              <p className="mt-6 text-avani-muted leading-relaxed text-sm">
-                From digital livelihoods to nutrition and climate innovation —
-                each focus area is designed to turn a woman's potential into
-                lasting opportunity.
-              </p>
-            </Reveal>
-          </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+          <SectionHeading
+            overline="Our Focus Areas"
+            title="Seven Paths to Independence"
+            testId="focus-areas-heading"
+          />
+          <Reveal delay={0.2}>
+            <p className="max-w-sm text-sm leading-relaxed text-avani-muted lg:text-right">
+              From digital livelihoods to nutrition and climate innovation —
+              tap a card to explore each path toward{" "}
+              <span className="font-serif italic text-avani-forest">
+                her economic independence.
+              </span>
+            </p>
+          </Reveal>
         </div>
 
-        <div className="lg:col-span-8">
-          <div className="border-t border-avani-forest/10">
-            {FOCUS_AREAS.map((area, i) => {
-              const Icon = area.icon;
-              const isOpen = open === i;
-              return (
-                <Reveal key={area.title} delay={i * 0.05}>
-                  <div className="border-b border-avani-forest/10">
-                    <button
-                      data-testid={`focus-area-toggle-${i + 1}`}
-                      onClick={() => setOpen(isOpen ? -1 : i)}
-                      className="w-full flex items-center gap-4 sm:gap-7 py-6 text-left group"
-                    >
-                      <span className="font-serif text-sm text-avani-amber w-7 shrink-0">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      <span className="flex-1 min-w-0">
-                        <span className="block font-serif uppercase text-lg sm:text-2xl tracking-wide text-avani-forest group-hover:text-avani-moss transition-colors duration-300 leading-snug">
-                          {area.title}
-                        </span>
-                        <span className="block font-serif italic text-sm text-avani-muted mt-1">
-                          {area.tagline}
-                        </span>
-                      </span>
-                      <Icon className="w-5 h-5 text-avani-gold shrink-0 hidden sm:block" />
+        <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-6 gap-5">
+          {FOCUS_AREAS.map((area, i) => {
+            const Icon = area.icon;
+            const isOpen = open === i;
+            return (
+              <Reveal key={area.title} delay={i * 0.06} className={SPANS[i]}>
+                <button
+                  data-testid={`focus-area-toggle-${i + 1}`}
+                  onClick={() => setOpen(isOpen ? -1 : i)}
+                  className={`group relative w-full h-full text-left rounded-[1.75rem] border p-7 sm:p-8 overflow-hidden transition-all duration-500 ${
+                    isOpen
+                      ? "bg-avani-forest border-avani-gold/40 shadow-2xl shadow-avani-forest/25 -translate-y-1"
+                      : "bg-white border-avani-forest/10 hover:border-avani-gold/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-avani-forest/10"
+                  }`}
+                >
+                  <span
+                    className={`absolute -top-4 -right-2 font-serif text-[6rem] leading-none select-none transition-colors duration-500 ${
+                      isOpen ? "text-avani-gold/15" : "text-avani-forest/5"
+                    }`}
+                  >
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+
+                  <span
+                    className={`relative flex items-center justify-center w-12 h-12 rounded-full border transition-all duration-500 ${
+                      isOpen
+                        ? "bg-avani-gold border-avani-gold"
+                        : "bg-avani-cream border-avani-gold/40 group-hover:bg-avani-forest group-hover:border-avani-forest"
+                    }`}
+                  >
+                    <Icon
+                      className={`w-5 h-5 transition-colors duration-500 ${
+                        isOpen
+                          ? "text-avani-deep"
+                          : "text-avani-amber group-hover:text-avani-goldsoft"
+                      }`}
+                    />
+                  </span>
+
+                  <span
+                    className={`relative block mt-6 font-serif uppercase text-lg sm:text-xl tracking-wide leading-snug transition-colors duration-500 ${
+                      isOpen ? "text-avani-ivory" : "text-avani-forest"
+                    }`}
+                  >
+                    {area.title}
+                  </span>
+                  <span
+                    className={`relative block mt-2 font-serif italic text-sm transition-colors duration-500 ${
+                      isOpen ? "text-avani-goldsoft/90" : "text-avani-muted"
+                    }`}
+                  >
+                    {area.tagline}
+                  </span>
+
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
                       <motion.span
-                        animate={{ rotate: isOpen ? 45 : 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="shrink-0 text-avani-forest"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                        className="relative block overflow-hidden"
                       >
-                        <Plus className="w-5 h-5" />
-                      </motion.span>
-                    </button>
-                    <AnimatePresence initial={false}>
-                      {isOpen && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                          className="overflow-hidden"
+                        <span
+                          data-testid={`focus-area-detail-${i + 1}`}
+                          className="block mt-5 pt-5 border-t border-avani-gold/25 text-sm leading-relaxed text-avani-ivory/80"
                         >
-                          <p
-                            data-testid={`focus-area-detail-${i + 1}`}
-                            className="pb-7 pl-11 sm:pl-14 pr-4 text-sm sm:text-base text-avani-muted leading-relaxed max-w-2xl"
-                          >
-                            {area.text}
-                          </p>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                </Reveal>
-              );
-            })}
-          </div>
+                          {area.text}
+                        </span>
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
+
+                  <motion.span
+                    animate={{ rotate: isOpen ? 45 : 0 }}
+                    transition={{ duration: 0.3 }}
+                    className={`absolute bottom-6 right-6 flex items-center justify-center w-8 h-8 rounded-full border transition-colors duration-500 ${
+                      isOpen
+                        ? "border-avani-gold text-avani-gold"
+                        : "border-avani-forest/20 text-avani-forest group-hover:border-avani-gold"
+                    }`}
+                  >
+                    <Plus className="w-4 h-4" />
+                  </motion.span>
+                </button>
+              </Reveal>
+            );
+          })}
         </div>
       </div>
     </section>

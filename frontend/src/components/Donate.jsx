@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import { Landmark, Smartphone, QrCode, Copy, ArrowLeft, Mail, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 import { IMAGES, CONTACT } from "../data/site";
@@ -61,30 +62,50 @@ export default function Donate() {
         </div>
       </header>
 
-      <section className="grain relative bg-avani-forest py-16 lg:py-24">
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Reveal>
-            <p className="text-xs uppercase tracking-[0.3em] font-semibold text-avani-gold">
-              Support AVANI
-            </p>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <h1
-              data-testid="donate-heading"
-              className="mt-4 font-serif uppercase text-3xl sm:text-4xl lg:text-5xl text-avani-ivory tracking-tight leading-[1.08] max-w-3xl"
+      <section className="grain relative bg-avani-forest py-16 lg:py-24 overflow-hidden">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <Reveal>
+              <p className="text-xs uppercase tracking-[0.3em] font-semibold text-avani-gold">
+                Support AVANI
+              </p>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <h1
+                data-testid="donate-heading"
+                className="mt-4 font-serif uppercase text-3xl sm:text-4xl lg:text-5xl text-avani-ivory tracking-tight leading-[1.08]"
+              >
+                Your Contribution{" "}
+                <span className="italic normal-case text-avani-goldsoft">
+                  Shapes Her Future.
+                </span>
+              </h1>
+            </Reveal>
+            <Reveal delay={0.2}>
+              <p className="mt-6 max-w-xl text-sm sm:text-base leading-relaxed text-avani-ivory/70">
+                Every contribution helps us bring digital skills, mentorship and
+                opportunity to women and girls who need them most. Donate via
+                bank transfer or UPI — whichever is easier for you.
+              </p>
+            </Reveal>
+          </div>
+
+          <Reveal delay={0.25}>
+            <motion.div
+              animate={{ y: [0, -14, 0] }}
+              transition={{ repeat: Infinity, duration: 5.5, ease: "easeInOut" }}
+              className="relative"
             >
-              Your Contribution{" "}
-              <span className="italic normal-case text-avani-goldsoft">
-                Shapes Her Future.
-              </span>
-            </h1>
-          </Reveal>
-          <Reveal delay={0.2}>
-            <p className="mt-6 max-w-2xl text-sm sm:text-base leading-relaxed text-avani-ivory/70">
-              Every contribution helps us bring digital skills, mentorship and
-              opportunity to women and girls who need them most. Donate via bank
-              transfer or UPI — whichever is easier for you.
-            </p>
+              <div className="absolute -inset-6 bg-avani-gold/15 blur-3xl rounded-full" />
+              <div className="relative overflow-hidden rounded-[2rem] border border-avani-gold/40 shadow-2xl shadow-black/40">
+                <img
+                  src="/assets/donate-coin.png"
+                  alt="A hand dropping a gold coin into a deep green AVANI donation box"
+                  data-testid="donate-hero-image"
+                  className="w-full h-auto object-cover"
+                />
+              </div>
+            </motion.div>
           </Reveal>
         </div>
       </section>
@@ -149,7 +170,7 @@ export default function Donate() {
                 UPI
               </h2>
               <p className="mt-2 text-sm text-avani-ivory/60">
-                GPay, PhonePe, Paytm — किसी भी UPI app से
+                Works with GPay, PhonePe, Paytm and any UPI app
               </p>
               <div className="mt-6 bg-avani-deep/60 border border-avani-gold/20 rounded-2xl px-5 py-4 flex items-center justify-between gap-3">
                 <span
@@ -185,7 +206,7 @@ export default function Donate() {
               <div className="mt-6 aspect-square rounded-2xl border-2 border-dashed border-avani-forest/20 bg-avani-cream/60 flex flex-col items-center justify-center gap-3">
                 <QrCode className="w-10 h-10 text-avani-forest/30" />
                 <p className="text-xs text-avani-muted text-center px-6">
-                  UPI QR code coming soon — तब तक UPI ID से donate करें
+                  UPI QR code coming soon — please donate via UPI ID until then
                 </p>
               </div>
             </div>
@@ -199,7 +220,7 @@ export default function Donate() {
                 <ShieldCheck className="w-5 h-5" />
               </span>
               <p className="text-sm leading-relaxed text-avani-slate">
-                Donate करने के बाद अपना transaction reference हमें{" "}
+                After donating, email your transaction reference to{" "}
                 <a
                   href={`mailto:${CONTACT.email}`}
                   data-testid="donate-receipt-email-link"
@@ -207,8 +228,8 @@ export default function Donate() {
                 >
                   {CONTACT.email}
                 </a>{" "}
-                पर भेज दें — हम आपको receipt भेज देंगे। Bank और UPI details
-                जल्द update हो रही हैं।
+                and we will send your receipt. Bank and UPI details are being
+                updated shortly.
               </p>
               <span className="sm:ml-auto flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-avani-muted shrink-0">
                 <Mail className="w-4 h-4 text-avani-amber" />

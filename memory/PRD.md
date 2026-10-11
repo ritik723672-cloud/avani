@@ -46,6 +46,11 @@ Single-page website for AVANI Foundation ("Advancing Vision, Ambition and New In
 - Focus Areas rebuilt as a 7-card bento grid: ghost serif numbers, icon chips, click-to-open card inverts to deep green with gold accents
 - Donate page: all Hindi text removed (fully English); hero now features an AI-generated 3D render (Gemini Nano Banana via EMERGENT_LLM_KEY) of a hand dropping a gold coin into a green donation box, floating animation, saved at /app/frontend/public/assets/donate-coin.png. Regeneration script: /app/scripts/gen_donate_image.py
 
+## Iteration 7 (2026-07-11)
+- Site palette shifted to reference-style: light mint bg (#F0F6F0), near-black green headings, bright accent; then per user the bright-green accents became dark yellow/gold (leaf=#C59B27) — hero italic, primary buttons, donate italic
+- Hero decluttered: second italic quote paragraph removed
+- Donate page hero image removed entirely (page is now text + 3 cards); donate-coin.png / donate-coin-cut.png assets remain on disk unused
+
 ## Known Issues
 - Email delivery to data@avanifoundation.org FAILS: provider reports the mailbox is undeliverable (domain email not configured). Enquiries ARE stored in MongoDB regardless. Fix: user sets up email hosting for avanifoundation.org (MX records) OR provides an alternative inbox to put in ENQUIRY_RECIPIENT_EMAIL in /app/backend/.env
 - Instagram / LinkedIn shown as "Coming soon" placeholders

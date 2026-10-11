@@ -50,7 +50,7 @@ export default function Hero() {
               <span key={line.text} className="block overflow-hidden pb-1">
                 <motion.span
                   className={`block ${
-                    line.accent ? "italic normal-case text-avani-amber" : ""
+                    line.accent ? "italic normal-case text-avani-leaf" : ""
                   }`}
                   initial={{ y: "115%" }}
                   animate={{ y: 0 }}
@@ -78,17 +78,6 @@ export default function Hero() {
             creation, entrepreneurship, mentorship and access to opportunities.
           </motion.p>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1 }}
-            className="mt-5 max-w-xl font-serif italic text-lg sm:text-xl text-avani-forest/85 leading-relaxed"
-          >
-            “Empowerment goes beyond learning a skill — it is about building
-            confidence, discovering possibilities and gaining the tools to
-            create a future of your own.”
-          </motion.p>
-
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -98,7 +87,7 @@ export default function Hero() {
             <button
               data-testid="hero-discover-mission-btn"
               onClick={() => scrollToId("#about")}
-              className="group flex items-center gap-2.5 rounded-full bg-avani-forest px-7 py-3.5 text-sm font-semibold text-avani-ivory transition-all duration-300 hover:bg-avani-moss hover:shadow-xl hover:shadow-avani-forest/20"
+              className="group flex items-center gap-2.5 rounded-full bg-avani-leaf px-7 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-[#B08A20] hover:shadow-xl hover:shadow-avani-leaf/25"
             >
               Discover Our Mission
               <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />

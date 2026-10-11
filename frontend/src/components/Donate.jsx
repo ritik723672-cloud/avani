@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
 import { Landmark, Smartphone, QrCode, Copy, ArrowLeft, Mail, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 import { IMAGES, CONTACT } from "../data/site";
@@ -62,50 +61,32 @@ export default function Donate() {
         </div>
       </header>
 
-      <section className="grain relative bg-avani-forest py-16 lg:py-24 overflow-hidden">
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <Reveal>
-              <p className="text-xs uppercase tracking-[0.3em] font-semibold text-avani-gold">
-                Support AVANI
-              </p>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <h1
-                data-testid="donate-heading"
-                className="mt-4 font-serif uppercase text-3xl sm:text-4xl lg:text-5xl text-avani-ivory tracking-tight leading-[1.08]"
-              >
-                Your Contribution{" "}
-                <span className="italic normal-case text-avani-goldsoft">
-                  Shapes Her Future.
-                </span>
-              </h1>
-            </Reveal>
-            <Reveal delay={0.2}>
-              <p className="mt-6 max-w-xl text-sm sm:text-base leading-relaxed text-avani-ivory/70">
-                Every contribution helps us bring digital skills, mentorship and
-                opportunity to women and girls who need them most. Donate via
-                bank transfer or UPI — whichever is easier for you.
-              </p>
-            </Reveal>
-          </div>
-
-          <Reveal delay={0.25}>
-            <motion.div
-              animate={{ y: [0, -14, 0] }}
-              transition={{ repeat: Infinity, duration: 5.5, ease: "easeInOut" }}
-              className="relative"
+      <section className="grain relative bg-avani-ivory py-16 lg:py-24 overflow-hidden">
+        <div className="absolute -top-24 -right-24 w-[32rem] h-[32rem] rounded-full bg-avani-leaf/10 blur-3xl" />
+        <div className="absolute bottom-0 -left-32 w-[26rem] h-[26rem] rounded-full bg-avani-gold/10 blur-3xl" />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Reveal>
+            <p className="text-xs uppercase tracking-[0.3em] font-semibold text-avani-moss">
+              Support AVANI
+            </p>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <h1
+              data-testid="donate-heading"
+              className="mt-4 font-serif uppercase text-3xl sm:text-4xl lg:text-5xl text-avani-forest tracking-tight leading-[1.08] max-w-3xl"
             >
-              <div className="absolute -inset-6 bg-avani-gold/15 blur-3xl rounded-full" />
-              <div className="relative overflow-hidden rounded-[2rem] border border-avani-gold/40 shadow-2xl shadow-black/40">
-                <img
-                  src="/assets/donate-coin.png"
-                  alt="A hand dropping a gold coin into a deep green AVANI donation box"
-                  data-testid="donate-hero-image"
-                  className="w-full h-auto object-cover"
-                />
-              </div>
-            </motion.div>
+              Your Contribution{" "}
+              <span className="italic normal-case text-avani-leaf">
+                Shapes Her Future.
+              </span>
+            </h1>
+          </Reveal>
+          <Reveal delay={0.2}>
+            <p className="mt-6 max-w-2xl text-sm sm:text-base leading-relaxed text-avani-muted">
+              Every contribution helps us bring digital skills, mentorship and
+              opportunity to women and girls who need them most. Donate via
+              bank transfer or UPI — whichever is easier for you.
+            </p>
           </Reveal>
         </div>
       </section>

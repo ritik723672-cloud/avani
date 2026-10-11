@@ -221,7 +221,7 @@ export default function Contact() {
                 data-testid="contact-submit-btn"
                 type="submit"
                 disabled={sending}
-                className="group mt-7 inline-flex items-center gap-2.5 rounded-full bg-avani-forest px-8 py-4 text-sm font-semibold text-avani-ivory transition-all duration-300 hover:bg-avani-moss hover:shadow-xl hover:shadow-avani-forest/20 disabled:opacity-60 disabled:cursor-not-allowed"
+                className="group mt-7 inline-flex items-center gap-2.5 rounded-full bg-avani-leaf px-8 py-4 text-sm font-semibold text-white transition-all duration-300 hover:bg-[#B08A20] hover:shadow-xl hover:shadow-avani-leaf/25 disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 {sending ? (
                   <>

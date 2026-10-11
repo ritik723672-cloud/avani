@@ -122,10 +122,10 @@ export default function Hero() {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.3 }}
-              className="absolute -bottom-6 -left-4 sm:-left-8 bg-avani-forest text-avani-ivory rounded-2xl px-6 py-5 shadow-xl shadow-avani-forest/30 border border-avani-gold/25"
+              className="absolute -bottom-6 -left-4 sm:-left-8 bg-gradient-to-br from-avani-goldsoft via-avani-gold to-avani-amber text-avani-deep rounded-2xl px-6 py-5 shadow-xl shadow-avani-amber/30 border border-avani-amber/50"
               data-testid="hero-approach-badge"
             >
-              <p className="text-[10px] uppercase tracking-[0.28em] text-avani-gold">
+              <p className="text-[10px] uppercase tracking-[0.28em] font-bold text-avani-deep/70">
                 Our Approach
               </p>
               <p className="mt-1.5 font-serif text-lg sm:text-xl tracking-wide">

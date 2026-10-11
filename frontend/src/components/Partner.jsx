@@ -13,19 +13,19 @@ export default function Partner() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-6">
           <Reveal className="h-full">
-            <div className="h-full bg-avani-forest rounded-[2rem] p-8 sm:p-12 border border-avani-gold/25 relative overflow-hidden">
-              <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-avani-gold/10 blur-3xl" />
-              <Handshake className="w-8 h-8 text-avani-gold relative" />
-              <p className="mt-6 text-xs uppercase tracking-[0.3em] font-semibold text-avani-gold relative">
+            <div className="h-full bg-gradient-to-br from-avani-goldsoft via-avani-gold to-avani-amber rounded-[2rem] p-8 sm:p-12 border border-avani-amber/40 shadow-xl shadow-avani-amber/20 relative overflow-hidden">
+              <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-white/25 blur-3xl" />
+              <Handshake className="w-8 h-8 text-avani-deep relative" />
+              <p className="mt-6 text-xs uppercase tracking-[0.3em] font-semibold text-avani-deep/70 relative">
                 Partner With AVANI
               </p>
               <h2
                 data-testid="partner-heading"
-                className="mt-4 font-serif uppercase text-3xl sm:text-4xl text-avani-ivory tracking-tight leading-[1.1] relative"
+                className="mt-4 font-serif uppercase text-3xl sm:text-4xl text-avani-deep tracking-tight leading-[1.1] relative"
               >
                 Be Part of the Change
               </h2>
-              <p className="mt-5 text-sm leading-relaxed text-avani-ivory/70 relative">
+              <p className="mt-5 text-sm leading-relaxed text-avani-deep/75 relative">
                 Creating meaningful opportunities for women requires
                 collaboration. We welcome conversations with organisations and
                 individuals who share our commitment to women's empowerment and
@@ -36,9 +36,9 @@ export default function Partner() {
                   <li
                     key={item}
                     data-testid={`partner-group-${i + 1}`}
-                    className="flex items-start gap-3 text-sm text-avani-ivory/85"
+                    className="flex items-start gap-3 text-sm text-avani-deep/85"
                   >
-                    <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-avani-gold shrink-0" />
+                    <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-avani-deep shrink-0" />
                     {item}
                   </li>
                 ))}
@@ -46,7 +46,7 @@ export default function Partner() {
               <button
                 data-testid="partner-cta-btn"
                 onClick={() => scrollToId("#contact")}
-                className="group mt-9 inline-flex items-center gap-2.5 rounded-full bg-avani-gold px-7 py-3.5 text-sm font-semibold text-avani-deep transition-all duration-300 hover:bg-avani-goldsoft relative"
+                className="group mt-9 inline-flex items-center gap-2.5 rounded-full bg-avani-deep px-7 py-3.5 text-sm font-semibold text-avani-goldsoft transition-all duration-300 hover:bg-black relative"
               >
                 Partner With Us
                 <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -57,7 +57,7 @@ export default function Partner() {
           <Reveal delay={0.15} className="h-full">
             <div
               id="get-involved"
-              className="h-full bg-avani-ivory rounded-[2rem] p-8 sm:p-12 border border-avani-forest/12 relative overflow-hidden"
+              className="h-full bg-white rounded-[2rem] p-8 sm:p-12 border border-avani-forest/12 relative overflow-hidden"
             >
               <HeartHandshake className="w-8 h-8 text-avani-amber" />
               <p className="mt-6 text-xs uppercase tracking-[0.3em] font-semibold text-avani-moss">
@@ -97,7 +97,7 @@ export default function Partner() {
               <button
                 data-testid="get-involved-cta-btn"
                 onClick={() => scrollToId("#contact")}
-                className="group mt-9 inline-flex items-center gap-2.5 rounded-full border border-avani-forest/30 px-7 py-3.5 text-sm font-semibold text-avani-forest transition-all duration-300 hover:bg-avani-forest hover:text-avani-goldsoft"
+                className="group mt-9 inline-flex items-center gap-2.5 rounded-full border border-avani-forest/30 px-7 py-3.5 text-sm font-semibold text-avani-forest transition-all duration-300 hover:bg-avani-deep hover:text-avani-goldsoft"
               >
                 Get in Touch
                 <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />

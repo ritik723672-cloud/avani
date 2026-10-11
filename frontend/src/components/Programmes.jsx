@@ -62,8 +62,8 @@ export default function Programmes() {
                     className="w-full h-64 sm:h-80 object-cover hover:scale-105 transition-transform duration-[1.4s] ease-out"
                   />
                 </div>
-                <div className="absolute -bottom-5 left-6 bg-avani-forest text-avani-goldsoft rounded-xl px-5 py-3 shadow-lg shadow-avani-forest/25">
-                  <p className="text-[10px] uppercase tracking-[0.25em] font-bold text-avani-gold">
+                <div className="absolute -bottom-5 left-6 bg-avani-gold text-avani-deep rounded-xl px-5 py-3 shadow-lg shadow-avani-amber/30">
+                  <p className="text-[10px] uppercase tracking-[0.25em] font-bold text-avani-deep/70">
                     Pilot-first
                   </p>
                   <p className="font-serif italic text-sm">

@@ -65,13 +65,13 @@ export default function About() {
               <Reveal delay={0.1} className="h-full">
                 <div
                   data-testid="about-vision-card"
-                  className="h-full bg-avani-forest rounded-2xl p-7 border border-avani-gold/25"
+                  className="h-full bg-gradient-to-br from-avani-goldsoft via-avani-gold to-avani-amber rounded-2xl p-7 border border-avani-amber/40 shadow-lg shadow-avani-amber/20"
                 >
-                  <Eye className="w-6 h-6 text-avani-gold" />
-                  <h3 className="mt-4 font-serif uppercase text-xl tracking-wide text-avani-ivory">
+                  <Eye className="w-6 h-6 text-avani-deep" />
+                  <h3 className="mt-4 font-serif uppercase text-xl tracking-wide text-avani-deep">
                     Our Vision
                   </h3>
-                  <p className="mt-3 font-serif italic text-lg leading-relaxed text-avani-goldsoft/90">
+                  <p className="mt-3 font-serif italic text-lg leading-relaxed text-avani-deep/85">
                     A world where every woman has the confidence to define her
                     own future.
                   </p>
@@ -80,7 +80,7 @@ export default function About() {
               <Reveal delay={0.2} className="h-full">
                 <div
                   data-testid="about-mission-card"
-                  className="h-full bg-avani-ivory rounded-2xl p-7 border border-avani-forest/12"
+                  className="h-full bg-white rounded-2xl p-7 border border-avani-forest/12"
                 >
                   <Compass className="w-6 h-6 text-avani-amber" />
                   <h3 className="mt-4 font-serif uppercase text-xl tracking-wide text-avani-forest">

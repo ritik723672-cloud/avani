@@ -52,13 +52,13 @@ export default function FocusAreas() {
                   onClick={() => setOpen(isOpen ? -1 : i)}
                   className={`group relative w-full h-full text-left rounded-[1.75rem] border p-7 sm:p-8 overflow-hidden transition-all duration-500 ${
                     isOpen
-                      ? "bg-avani-forest border-avani-gold/40 shadow-2xl shadow-avani-forest/25 -translate-y-1"
+                      ? "bg-gradient-to-br from-avani-goldsoft via-avani-gold to-avani-amber border-avani-amber/50 shadow-2xl shadow-avani-amber/30 -translate-y-1"
                       : "bg-white border-avani-forest/10 hover:border-avani-gold/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-avani-forest/10"
                   }`}
                 >
                   <span
                     className={`absolute -top-4 -right-2 font-serif text-[6rem] leading-none select-none transition-colors duration-500 ${
-                      isOpen ? "text-avani-gold/15" : "text-avani-forest/5"
+                      isOpen ? "text-avani-deep/10" : "text-avani-forest/5"
                     }`}
                   >
                     {String(i + 1).padStart(2, "0")}
@@ -67,14 +67,14 @@ export default function FocusAreas() {
                   <span
                     className={`relative flex items-center justify-center w-12 h-12 rounded-full border transition-all duration-500 ${
                       isOpen
-                        ? "bg-avani-gold border-avani-gold"
-                        : "bg-avani-cream border-avani-gold/40 group-hover:bg-avani-forest group-hover:border-avani-forest"
+                        ? "bg-avani-deep border-avani-deep"
+                        : "bg-avani-cream border-avani-gold/40 group-hover:bg-avani-deep group-hover:border-avani-deep"
                     }`}
                   >
                     <Icon
                       className={`w-5 h-5 transition-colors duration-500 ${
                         isOpen
-                          ? "text-avani-deep"
+                          ? "text-avani-goldsoft"
                           : "text-avani-amber group-hover:text-avani-goldsoft"
                       }`}
                     />
@@ -82,14 +82,14 @@ export default function FocusAreas() {
 
                   <span
                     className={`relative block mt-6 font-serif uppercase text-lg sm:text-xl tracking-wide leading-snug transition-colors duration-500 ${
-                      isOpen ? "text-avani-ivory" : "text-avani-forest"
+                      isOpen ? "text-avani-deep" : "text-avani-forest"
                     }`}
                   >
                     {area.title}
                   </span>
                   <span
                     className={`relative block mt-2 font-serif italic text-sm transition-colors duration-500 ${
-                      isOpen ? "text-avani-goldsoft/90" : "text-avani-muted"
+                      isOpen ? "text-avani-deep/70" : "text-avani-muted"
                     }`}
                   >
                     {area.tagline}
@@ -106,7 +106,7 @@ export default function FocusAreas() {
                       >
                         <span
                           data-testid={`focus-area-detail-${i + 1}`}
-                          className="block mt-5 pt-5 border-t border-avani-gold/25 text-sm leading-relaxed text-avani-ivory/80"
+                          className="block mt-5 pt-5 border-t border-avani-deep/25 text-sm leading-relaxed text-avani-deep/80"
                         >
                           {area.text}
                         </span>
@@ -119,7 +119,7 @@ export default function FocusAreas() {
                     transition={{ duration: 0.3 }}
                     className={`absolute bottom-6 right-6 flex items-center justify-center w-8 h-8 rounded-full border transition-colors duration-500 ${
                       isOpen
-                        ? "border-avani-gold text-avani-gold"
+                        ? "border-avani-deep/60 text-avani-deep"
                         : "border-avani-forest/20 text-avani-forest group-hover:border-avani-gold"
                     }`}
                   >

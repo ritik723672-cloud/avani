@@ -31,7 +31,7 @@ export default function Donate() {
 
   return (
     <div data-testid="donate-page" className="bg-avani-ivory min-h-screen">
-      <header className="bg-avani-deep border-b border-avani-gold/15">
+      <header className="bg-gradient-to-r from-avani-goldsoft via-avani-gold to-avani-goldsoft border-b border-avani-amber/40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <span className="bg-avani-ivory rounded-xl p-1 inline-flex">
@@ -42,10 +42,10 @@ export default function Donate() {
               />
             </span>
             <span className="leading-none">
-              <span className="block font-serif text-xl tracking-[0.18em] text-avani-ivory">
+              <span className="block font-serif text-xl tracking-[0.18em] text-avani-deep">
                 AVANI
               </span>
-              <span className="block text-[8px] tracking-[0.42em] text-avani-gold mt-0.5">
+              <span className="block text-[8px] tracking-[0.42em] text-avani-deep/70 mt-0.5">
                 FOUNDATION
               </span>
             </span>
@@ -53,7 +53,7 @@ export default function Donate() {
           <button
             data-testid="donate-back-home-btn"
             onClick={() => navigate("/")}
-            className="group flex items-center gap-2 rounded-full border border-avani-ivory/25 px-5 py-2.5 text-[13px] font-semibold text-avani-ivory transition-all duration-300 hover:bg-avani-ivory hover:text-avani-forest"
+            className="group flex items-center gap-2 rounded-full border border-avani-deep/30 px-5 py-2.5 text-[13px] font-semibold text-avani-deep transition-all duration-300 hover:bg-avani-deep hover:text-avani-goldsoft"
           >
             <ArrowLeft className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-0.5" />
             Back to Home
@@ -99,7 +99,7 @@ export default function Donate() {
               className="group relative h-full bg-white border border-avani-forest/10 rounded-3xl p-8 overflow-hidden hover:border-avani-gold/60 hover:shadow-xl hover:shadow-avani-forest/10 transition-all duration-500"
             >
               <span className="absolute top-0 left-0 h-1 w-10 bg-avani-gold/70 group-hover:w-full transition-all duration-700" />
-              <span className="flex items-center justify-center w-11 h-11 rounded-full bg-avani-forest text-avani-goldsoft">
+              <span className="flex items-center justify-center w-11 h-11 rounded-full bg-avani-deep text-avani-goldsoft">
                 <Landmark className="w-5 h-5" />
               </span>
               <h2 className="mt-5 font-serif uppercase text-xl tracking-wide text-avani-forest">
@@ -141,29 +141,29 @@ export default function Donate() {
           <Reveal delay={0.12} className="h-full">
             <div
               data-testid="donate-upi-card"
-              className="group relative h-full bg-avani-forest border border-avani-gold/25 rounded-3xl p-8 overflow-hidden hover:shadow-xl hover:shadow-avani-forest/25 transition-all duration-500"
+              className="group relative h-full bg-gradient-to-br from-avani-goldsoft via-avani-gold to-avani-amber border border-avani-amber/50 rounded-3xl p-8 overflow-hidden hover:shadow-xl hover:shadow-avani-amber/30 transition-all duration-500"
             >
-              <span className="absolute top-0 left-0 h-1 w-10 bg-avani-gold group-hover:w-full transition-all duration-700" />
-              <span className="flex items-center justify-center w-11 h-11 rounded-full bg-avani-gold text-avani-deep">
+              <span className="absolute top-0 left-0 h-1 w-10 bg-avani-deep group-hover:w-full transition-all duration-700" />
+              <span className="flex items-center justify-center w-11 h-11 rounded-full bg-avani-deep text-avani-goldsoft">
                 <Smartphone className="w-5 h-5" />
               </span>
-              <h2 className="mt-5 font-serif uppercase text-xl tracking-wide text-avani-ivory">
+              <h2 className="mt-5 font-serif uppercase text-xl tracking-wide text-avani-deep">
                 UPI
               </h2>
-              <p className="mt-2 text-sm text-avani-ivory/60">
+              <p className="mt-2 text-sm text-avani-deep/65">
                 Works with GPay, PhonePe, Paytm and any UPI app
               </p>
-              <div className="mt-6 bg-avani-deep/60 border border-avani-gold/20 rounded-2xl px-5 py-4 flex items-center justify-between gap-3">
+              <div className="mt-6 bg-white/60 border border-avani-deep/15 rounded-2xl px-5 py-4 flex items-center justify-between gap-3">
                 <span
                   data-testid="donate-upi-id"
-                  className="font-mono text-sm text-avani-goldsoft truncate"
+                  className="font-mono text-sm text-avani-deep truncate"
                 >
                   {UPI_ID}
                 </span>
                 <button
                   data-testid="donate-upi-copy-btn"
                   onClick={() => copy(UPI_ID, "UPI ID")}
-                  className="shrink-0 flex items-center gap-1.5 rounded-full bg-avani-gold px-4 py-2 text-xs font-semibold text-avani-deep transition-colors duration-300 hover:bg-avani-goldsoft"
+                  className="shrink-0 flex items-center gap-1.5 rounded-full bg-avani-deep px-4 py-2 text-xs font-semibold text-avani-goldsoft transition-colors duration-300 hover:bg-black"
                 >
                   <Copy className="w-3.5 h-3.5" />
                   Copy
@@ -178,7 +178,7 @@ export default function Donate() {
               className="group relative h-full bg-white border border-avani-forest/10 rounded-3xl p-8 overflow-hidden hover:border-avani-gold/60 hover:shadow-xl hover:shadow-avani-forest/10 transition-all duration-500"
             >
               <span className="absolute top-0 left-0 h-1 w-10 bg-avani-gold/70 group-hover:w-full transition-all duration-700" />
-              <span className="flex items-center justify-center w-11 h-11 rounded-full bg-avani-forest text-avani-goldsoft">
+              <span className="flex items-center justify-center w-11 h-11 rounded-full bg-avani-deep text-avani-goldsoft">
                 <QrCode className="w-5 h-5" />
               </span>
               <h2 className="mt-5 font-serif uppercase text-xl tracking-wide text-avani-forest">
@@ -197,7 +197,7 @@ export default function Donate() {
         <Reveal delay={0.2}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
             <div className="bg-avani-cream border border-avani-gold/30 rounded-3xl p-7 sm:p-9 flex flex-col sm:flex-row items-start sm:items-center gap-5">
-              <span className="flex items-center justify-center w-11 h-11 rounded-full bg-avani-forest text-avani-goldsoft shrink-0">
+              <span className="flex items-center justify-center w-11 h-11 rounded-full bg-avani-deep text-avani-goldsoft shrink-0">
                 <ShieldCheck className="w-5 h-5" />
               </span>
               <p className="text-sm leading-relaxed text-avani-slate">

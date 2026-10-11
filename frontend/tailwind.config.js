@@ -15,9 +15,9 @@ module.exports = {
       },
       colors: {
         avani: {
-          forest: '#1F5B44',
-          deep: '#16402F',
-          moss: '#2F7D5E',
+          forest: '#0F2E23',
+          deep: '#0B241B',
+          moss: '#1B4738',
           ivory: '#FDFBF7',
           cream: '#F7F4EB',
           gold: '#D4AF37',

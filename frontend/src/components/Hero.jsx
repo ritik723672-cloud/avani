@@ -44,7 +44,7 @@ export default function Hero() {
 
           <h1
             data-testid="hero-headline"
-            className="mt-6 font-serif uppercase text-avani-forest text-4xl sm:text-5xl lg:text-6xl leading-[1.04] tracking-tight"
+            className="mt-6 font-serif uppercase text-avani-forest text-3xl sm:text-4xl lg:text-5xl leading-[1.08] tracking-tight"
           >
             {LINES.map((line, i) => (
               <span key={line.text} className="block overflow-hidden pb-1">

@@ -1,4 +1,4 @@
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { INITIATIVES, APPROACH, IMAGES } from "../data/site";
 import { Reveal, SectionHeading } from "./Reveal";
 
@@ -7,7 +7,7 @@ export default function Programmes() {
     <section
       id="programmes"
       data-testid="programmes-section"
-      className="grain relative bg-avani-forest py-20 lg:py-28"
+      className="grain relative bg-avani-forest py-20 lg:py-28 overflow-hidden"
     >
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-12 gap-12 items-center">
@@ -25,16 +25,25 @@ export default function Programmes() {
               </p>
             </Reveal>
 
-            <div className="mt-8 flex flex-wrap gap-3">
-              {APPROACH.map((s) => (
-                <Reveal key={s.step} delay={0.1}>
-                  <span
-                    data-testid={`programme-stage-chip-${s.step}`}
-                    className="inline-flex items-center gap-2 rounded-full border border-avani-gold/30 bg-avani-deep/60 px-5 py-2 text-xs uppercase tracking-[0.18em] text-avani-goldsoft"
-                  >
-                    <span className="text-avani-gold font-serif">{s.step}</span>
-                    {s.title}
-                  </span>
+            <div className="mt-10 flex flex-col sm:flex-row sm:items-center gap-4">
+              {APPROACH.map((s, i) => (
+                <Reveal key={s.step} delay={0.1 + i * 0.1}>
+                  <div className="flex items-center gap-4">
+                    <div
+                      data-testid={`programme-stage-chip-${s.step}`}
+                      className="group rounded-2xl border border-avani-gold/30 bg-avani-deep/60 px-6 py-4 hover:border-avani-gold/70 hover:bg-avani-deep transition-all duration-500"
+                    >
+                      <span className="font-serif text-2xl text-avani-gold">
+                        {s.step}
+                      </span>
+                      <p className="mt-1 font-serif uppercase tracking-wide text-avani-ivory">
+                        {s.title}
+                      </p>
+                    </div>
+                    {i < APPROACH.length - 1 && (
+                      <ArrowRight className="w-5 h-5 text-avani-gold/70 hidden sm:block shrink-0" />
+                    )}
+                  </div>
                 </Reveal>
               ))}
             </div>
@@ -42,44 +51,59 @@ export default function Programmes() {
 
           <div className="lg:col-span-5">
             <Reveal delay={0.2}>
-              <div className="overflow-hidden rounded-[2rem] rounded-tl-[6rem] border border-avani-gold/30 shadow-2xl shadow-black/30">
-                <img
-                  src={IMAGES.programmes}
-                  alt="Rural Indian girls in a classroom, learning with digital devices"
-                  data-testid="programmes-image"
-                  className="w-full h-64 sm:h-80 object-cover hover:scale-105 transition-transform duration-[1.4s] ease-out"
-                />
+              <div className="relative mb-6">
+                <div className="overflow-hidden rounded-[2rem] rounded-tl-[6rem] border border-avani-gold/30 shadow-2xl shadow-black/30">
+                  <img
+                    src={IMAGES.programmes}
+                    alt="Indian women learning together at a community programme"
+                    data-testid="programmes-image"
+                    className="w-full h-64 sm:h-80 object-cover hover:scale-105 transition-transform duration-[1.4s] ease-out"
+                  />
+                </div>
+                <div className="absolute -bottom-5 left-6 bg-avani-gold text-avani-deep rounded-xl px-5 py-3 shadow-lg shadow-black/25">
+                  <p className="text-[10px] uppercase tracking-[0.25em] font-bold">
+                    Pilot-first
+                  </p>
+                  <p className="font-serif italic text-sm">
+                    Learn from communities → expand
+                  </p>
+                </div>
               </div>
             </Reveal>
           </div>
         </div>
 
         <Reveal delay={0.2}>
-          <p className="mt-16 font-serif italic text-xl text-avani-goldsoft/90">
+          <p className="mt-14 font-serif italic text-xl text-avani-goldsoft/90">
             Our future initiatives may include:
           </p>
         </Reveal>
 
         <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {INITIATIVES.map((item, i) => (
-            <Reveal key={item} delay={i * 0.07} className="h-full">
-              <div
-                data-testid={`programme-initiative-${i + 1}`}
-                className="group relative h-full rounded-2xl border border-avani-gold/15 bg-avani-deep/50 p-7 pt-8 overflow-hidden hover:bg-avani-moss/60 hover:border-avani-gold/40 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-black/30 transition-all duration-500"
-              >
-                <span className="absolute top-0 left-0 h-1 w-10 bg-avani-gold/70 group-hover:w-full transition-all duration-700" />
-                <div className="flex items-center justify-between">
-                  <span className="font-serif text-2xl text-avani-gold/50 group-hover:text-avani-gold transition-colors duration-500">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <ArrowUpRight className="w-5 h-5 text-avani-gold/50 group-hover:text-avani-gold group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-500" />
+          {INITIATIVES.map((item, i) => {
+            const Icon = item.icon;
+            return (
+              <Reveal key={item.text} delay={i * 0.07} className="h-full">
+                <div
+                  data-testid={`programme-initiative-${i + 1}`}
+                  className="group relative h-full rounded-2xl border border-avani-gold/15 bg-avani-deep/50 p-7 overflow-hidden hover:bg-avani-moss/40 hover:border-avani-gold/50 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-black/30 transition-all duration-500"
+                >
+                  <span className="absolute top-0 left-0 h-1 w-10 bg-avani-gold/70 group-hover:w-full transition-all duration-700" />
+                  <div className="flex items-center justify-between">
+                    <span className="flex items-center justify-center w-11 h-11 rounded-full border border-avani-gold/40 bg-avani-forest group-hover:bg-avani-gold transition-all duration-500">
+                      <Icon className="w-5 h-5 text-avani-gold group-hover:text-avani-deep transition-colors duration-500" />
+                    </span>
+                    <span className="font-serif text-2xl text-avani-gold/40 group-hover:text-avani-gold transition-colors duration-500">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                  </div>
+                  <p className="mt-5 text-sm leading-relaxed text-avani-ivory/85">
+                    {item.text}
+                  </p>
                 </div>
-                <p className="mt-5 text-sm leading-relaxed text-avani-ivory/85">
-                  {item}
-                </p>
-              </div>
-            </Reveal>
-          ))}
+              </Reveal>
+            );
+          })}
         </div>
 
         <Reveal delay={0.2}>

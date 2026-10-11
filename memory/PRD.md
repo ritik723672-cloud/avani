@@ -51,6 +51,11 @@ Single-page website for AVANI Foundation ("Advancing Vision, Ambition and New In
 - Hero decluttered: second italic quote paragraph removed
 - Donate page hero image removed entirely (page is now text + 3 cards); donate-coin.png / donate-coin-cut.png assets remain on disk unused
 
+## Iteration 8 (2026-07-11)
+- Removed redundant "Partner With Us" button from navbar (desktop + mobile); Partner nav link remains
+- Hero headline reduced a size step (text-3xl/4xl/5xl)
+- Programmes redesigned: 01→02→03 stage flow cards with arrows, image gets gold "Pilot-first" badge, initiative cards now have per-item lucide icons + gold numbers
+
 ## Known Issues
 - Email delivery to data@avanifoundation.org FAILS: provider reports the mailbox is undeliverable (domain email not configured). Enquiries ARE stored in MongoDB regardless. Fix: user sets up email hosting for avanifoundation.org (MX records) OR provides an alternative inbox to put in ENQUIRY_RECIPIENT_EMAIL in /app/backend/.env
 - Instagram / LinkedIn shown as "Coming soon" placeholders

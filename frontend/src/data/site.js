@@ -6,6 +6,7 @@ import {
   Megaphone,
   Leaf,
   Salad,
+  Compass,
 } from "lucide-react";
 
 const ASSET_BASE =
@@ -117,12 +118,12 @@ export const SUPPORT_GROUPS = [
 ];
 
 export const INITIATIVES = [
-  "Digital and AI skills workshops.",
-  "Content creation and digital livelihood training.",
-  "Career discovery, mentorship and counselling.",
-  "Entrepreneurship and financial literacy sessions.",
-  "Awareness and guidance on relevant government schemes.",
-  "Leadership and community learning programmes.",
+  { icon: Cpu, text: "Digital and AI skills workshops." },
+  { icon: PenTool, text: "Content creation and digital livelihood training." },
+  { icon: Compass, text: "Career discovery, mentorship and counselling." },
+  { icon: Store, text: "Entrepreneurship and financial literacy sessions." },
+  { icon: Landmark, text: "Awareness and guidance on relevant government schemes." },
+  { icon: Megaphone, text: "Leadership and community learning programmes." },
 ];
 
 export const PARTNER_GROUPS = [

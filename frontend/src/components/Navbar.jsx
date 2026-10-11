@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ArrowUpRight, Heart } from "lucide-react";
+import { Menu, X, Heart } from "lucide-react";
 import { IMAGES, NAV_LINKS } from "../data/site";
 import { scrollToId } from "../lib/scroll";
 
@@ -68,14 +68,6 @@ export default function Navbar() {
             </button>
           ))}
           <button
-            data-testid="nav-partner-cta"
-            onClick={() => go("#partner")}
-            className="group flex items-center gap-2 rounded-full border border-avani-forest/25 px-5 py-2.5 text-[13px] font-semibold text-avani-forest transition-all duration-300 hover:bg-avani-forest hover:text-avani-goldsoft hover:border-avani-forest"
-          >
-            Partner With Us
-            <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </button>
-          <button
             data-testid="nav-donate-btn"
             onClick={donate}
             className="flex items-center gap-2 rounded-full bg-emerald-600 px-6 py-2.5 text-[13px] font-semibold text-white shadow-md shadow-emerald-600/25 transition-all duration-300 hover:bg-emerald-500 hover:shadow-lg hover:shadow-emerald-600/30 hover:-translate-y-0.5"
@@ -115,13 +107,6 @@ export default function Navbar() {
                   {link.label}
                 </button>
               ))}
-              <button
-                data-testid="nav-mobile-partner-cta"
-                onClick={() => go("#partner")}
-                className="mt-2 w-fit rounded-full bg-avani-forest text-avani-goldsoft px-6 py-3 text-sm font-semibold"
-              >
-                Partner With Us
-              </button>
               <button
                 data-testid="nav-mobile-donate-btn"
                 onClick={donate}

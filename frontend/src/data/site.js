@@ -15,6 +15,8 @@ export const IMAGES = {
   hero: `${ASSET_BASE}/3e3fbfc49ae505a8_educating-children-167543203216x9.jpg`,
   girlTablet:
     "https://customer-assets-v7afamib.emergentagent.net/job_avani-women/artifacts/ed87e743f9cf4f9e_istockphoto-2215025036-170667a.jpg",
+  programmes:
+    "https://images.unsplash.com/flagged/photo-1568210386949-63a970860700?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzV8MHwxfHNlYXJjaHwzfHxydXJhbCUyMGluZGlhbiUyMGdpcmxzJTIwbGFwdG9wJTIwc2Nob29sJTIwbGVhcm5pbmd8ZW58MHx8fHwxNzkxNzIxMDA2fDA&ixlib=rb-4.1.0&q=85",
   logo: `${ASSET_BASE}/a9a5dae07014dc9f_ee1df416-7c66-43e8-a343-b18a21c95849.jpg`,
   founderPortrait: `${ASSET_BASE}/cad697ccfedf95aa_703d2a96-783f-4a39-9b59-d803ca1c873d.png`,
   founderEvent: `${ASSET_BASE}/e7ebec8fa16f0c47_d6b6cf5c-9bcf-424b-bf1f-2056ad6dcdb2.png`,
@@ -139,6 +141,7 @@ export const INVOLVE_WAYS = [
 ];
 
 export const INTERESTS = [
+  "Donation / Support",
   "Partnership / CSR",
   "Mentorship",
   "Volunteering",

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ArrowUpRight } from "lucide-react";
+import { Menu, X, ArrowUpRight, Heart } from "lucide-react";
 import { IMAGES, NAV_LINKS } from "../data/site";
 import { scrollToId } from "../lib/scroll";
 
@@ -17,6 +17,12 @@ export default function Navbar() {
   const go = (href) => {
     setOpen(false);
     scrollToId(href);
+  };
+
+  const donate = () => {
+    setOpen(false);
+    window.dispatchEvent(new CustomEvent("avani:donate"));
+    scrollToId("#contact");
   };
 
   return (
@@ -68,6 +74,14 @@ export default function Navbar() {
             Partner With Us
             <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </button>
+          <button
+            data-testid="nav-donate-btn"
+            onClick={donate}
+            className="flex items-center gap-2 rounded-full bg-emerald-600 px-6 py-2.5 text-[13px] font-semibold text-white shadow-md shadow-emerald-600/25 transition-all duration-300 hover:bg-emerald-500 hover:shadow-lg hover:shadow-emerald-600/30 hover:-translate-y-0.5"
+          >
+            <Heart className="w-4 h-4 fill-current" />
+            Donate Now
+          </button>
         </nav>
 
         <button
@@ -106,6 +120,14 @@ export default function Navbar() {
                 className="mt-2 w-fit rounded-full bg-avani-forest text-avani-goldsoft px-6 py-3 text-sm font-semibold"
               >
                 Partner With Us
+              </button>
+              <button
+                data-testid="nav-mobile-donate-btn"
+                onClick={donate}
+                className="mt-2 w-fit flex items-center gap-2 rounded-full bg-emerald-600 text-white px-6 py-3 text-sm font-semibold"
+              >
+                <Heart className="w-4 h-4 fill-current" />
+                Donate Now
               </button>
             </div>
           </motion.nav>

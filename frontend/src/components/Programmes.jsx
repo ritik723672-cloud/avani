@@ -44,8 +44,8 @@ export default function Programmes() {
             <Reveal delay={0.2}>
               <div className="overflow-hidden rounded-[2rem] rounded-tl-[6rem] border border-avani-gold/30 shadow-2xl shadow-black/30">
                 <img
-                  src={IMAGES.hero}
-                  alt="Young girls gathered around a laptop at their school, learning together"
+                  src={IMAGES.programmes}
+                  alt="Rural Indian girls in a classroom, learning with digital devices"
                   data-testid="programmes-image"
                   className="w-full h-64 sm:h-80 object-cover hover:scale-105 transition-transform duration-[1.4s] ease-out"
                 />

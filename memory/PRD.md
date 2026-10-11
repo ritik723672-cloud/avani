@@ -29,6 +29,10 @@ Single-page website for AVANI Foundation ("Advancing Vision, Ambition and New In
 - Founder's second overlapping photo removed; pink-saree community photo moved to Get Involved panel
 - Cards redesigned: numbered with gold top-bar accent, white surfaces, lift-on-hover (Support, Programmes, Approach)
 
+## Iteration 3 (2026-07-11)
+- Programmes section image changed to curated classroom photo (design_guidelines rural_girls_learning)
+- Green "Donate Now" button added to navbar (desktop + mobile): scrolls to contact form and pre-fills interest "Donation / Support" + donation message. No payment gateway — donation enquiries go through the enquiry form
+
 ## Known Issues
 - Email delivery to data@avanifoundation.org FAILS: provider reports the mailbox is undeliverable (domain email not configured). Enquiries ARE stored in MongoDB regardless. Fix: user sets up email hosting for avanifoundation.org (MX records) OR provides an alternative inbox to put in ENQUIRY_RECIPIENT_EMAIL in /app/backend/.env
 - Instagram / LinkedIn shown as "Coming soon" placeholders

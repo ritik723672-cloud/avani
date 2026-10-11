@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Mail, MapPin, Instagram, Linkedin, Send, LoaderCircle } from "lucide-react";
 import { toast } from "sonner";
 import { CONTACT, INTERESTS } from "../data/site";
@@ -17,19 +17,6 @@ const INITIAL = {
 export default function Contact() {
   const [form, setForm] = useState(INITIAL);
   const [sending, setSending] = useState(false);
-
-  useEffect(() => {
-    const onDonate = () =>
-      setForm((f) => ({
-        ...f,
-        interest: "Donation / Support",
-        message:
-          f.message ||
-          "I would like to support AVANI Foundation with a donation. Please share the details.",
-      }));
-    window.addEventListener("avani:donate", onDonate);
-    return () => window.removeEventListener("avani:donate", onDonate);
-  }, []);
 
   const set = (key) => (e) => setForm({ ...form, [key]: e.target.value });
 

@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import Lenis from "lenis";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "@/App.css";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
@@ -13,7 +14,29 @@ import Founder from "@/components/Founder";
 import Partner from "@/components/Partner";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import Donate from "@/components/Donate";
 import { Toaster } from "@/components/ui/sonner";
+
+function Home() {
+  return (
+    <>
+      <Navbar />
+      <main>
+        <Hero />
+        <Marquee />
+        <Approach />
+        <About />
+        <FocusAreas />
+        <Support />
+        <Programmes />
+        <Founder />
+        <Partner />
+        <Contact />
+      </main>
+      <Footer />
+    </>
+  );
+}
 
 function App() {
   useEffect(() => {
@@ -33,23 +56,15 @@ function App() {
   }, []);
 
   return (
-    <div className="App bg-avani-ivory text-avani-slate font-sans antialiased">
-      <Navbar />
-      <main>
-        <Hero />
-        <Marquee />
-        <Approach />
-        <About />
-        <FocusAreas />
-        <Support />
-        <Programmes />
-        <Founder />
-        <Partner />
-        <Contact />
-      </main>
-      <Footer />
-      <Toaster position="bottom-right" richColors />
-    </div>
+    <BrowserRouter>
+      <div className="App bg-avani-ivory text-avani-slate font-sans antialiased">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/donate" element={<Donate />} />
+        </Routes>
+        <Toaster position="bottom-right" richColors />
+      </div>
+    </BrowserRouter>
   );
 }
 

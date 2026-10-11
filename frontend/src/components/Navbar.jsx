@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowUpRight, Heart } from "lucide-react";
 import { IMAGES, NAV_LINKS } from "../data/site";
@@ -7,6 +8,7 @@ import { scrollToId } from "../lib/scroll";
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -21,8 +23,7 @@ export default function Navbar() {
 
   const donate = () => {
     setOpen(false);
-    window.dispatchEvent(new CustomEvent("avani:donate"));
-    scrollToId("#contact");
+    navigate("/donate");
   };
 
   return (

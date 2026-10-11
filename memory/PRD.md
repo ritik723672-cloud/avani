@@ -33,6 +33,11 @@ Single-page website for AVANI Foundation ("Advancing Vision, Ambition and New In
 - Programmes section image changed to curated classroom photo (design_guidelines rural_girls_learning)
 - Green "Donate Now" button added to navbar (desktop + mobile): scrolls to contact form and pre-fills interest "Donation / Support" + donation message. No payment gateway — donation enquiries go through the enquiry form
 
+## Iteration 4 (2026-07-11)
+- Dedicated /donate page (react-router): Bank Transfer card, UPI card with copy button, Scan & Pay QR card, receipt note. Donate Now in navbar now navigates to /donate
+- Bank account number, IFSC, UPI ID (avanifoundation@upi) and QR are PLACEHOLDERS — waiting for real details from user
+- Programmes image changed to women community gathering (curated); G20 delegates photo added as wide banner in Founder section
+
 ## Known Issues
 - Email delivery to data@avanifoundation.org FAILS: provider reports the mailbox is undeliverable (domain email not configured). Enquiries ARE stored in MongoDB regardless. Fix: user sets up email hosting for avanifoundation.org (MX records) OR provides an alternative inbox to put in ENQUIRY_RECIPIENT_EMAIL in /app/backend/.env
 - Instagram / LinkedIn shown as "Coming soon" placeholders

@@ -105,6 +105,25 @@ export default function Founder() {
             </p>
           </Reveal>
         </div>
+
+        <div className="lg:col-span-12">
+          <Reveal delay={0.15}>
+            <div className="mt-4 relative overflow-hidden rounded-[2rem] border border-avani-gold/30 shadow-xl shadow-avani-forest/10">
+              <img
+                src={IMAGES.founderG20}
+                alt="Mani Pandey with international delegates at a G20 women's empowerment engagement"
+                data-testid="founder-g20-image"
+                className="w-full h-72 sm:h-96 object-cover object-center hover:scale-105 transition-transform duration-[1.4s] ease-out"
+              />
+              <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-avani-deep/85 to-transparent px-7 py-6">
+                <p className="font-serif italic text-lg text-avani-ivory">
+                  On the global stage — advancing women's empowerment through
+                  India's G20 Presidency
+                </p>
+              </div>
+            </div>
+          </Reveal>
+        </div>
       </div>
     </section>
   );

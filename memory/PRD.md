@@ -38,6 +38,11 @@ Single-page website for AVANI Foundation ("Advancing Vision, Ambition and New In
 - Bank account number, IFSC, UPI ID (avanifoundation@upi) and QR are PLACEHOLDERS — waiting for real details from user
 - Programmes image changed to women community gathering (curated); G20 delegates photo added as wide banner in Founder section
 
+## Iteration 5 (2026-07-11)
+- Palette lightened: forest #0F2E23→#1F5B44, deep→#16402F, moss→#2F7D5E (user: "dark green se light green")
+- Navbar wordmark AVANI FOUNDATION now black
+- Focus Areas redesigned: gold-ring icon chips, open row cream highlight, gold left-border detail text, "07 paths" side badge
+
 ## Known Issues
 - Email delivery to data@avanifoundation.org FAILS: provider reports the mailbox is undeliverable (domain email not configured). Enquiries ARE stored in MongoDB regardless. Fix: user sets up email hosting for avanifoundation.org (MX records) OR provides an alternative inbox to put in ENQUIRY_RECIPIENT_EMAIL in /app/backend/.env
 - Instagram / LinkedIn shown as "Coming soon" placeholders

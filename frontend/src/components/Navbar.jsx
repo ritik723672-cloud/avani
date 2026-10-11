@@ -47,10 +47,10 @@ export default function Navbar() {
             className="h-11 w-11 object-cover object-top rounded-full border border-avani-gold/40 bg-white"
           />
           <span className="leading-none text-left">
-            <span className="block font-serif text-xl tracking-[0.18em] text-avani-forest">
+            <span className="block font-serif text-xl tracking-[0.18em] text-black">
               AVANI
             </span>
-            <span className="block text-[9px] tracking-[0.42em] text-avani-muted mt-0.5">
+            <span className="block text-[9px] tracking-[0.42em] text-black/70 mt-0.5">
               FOUNDATION
             </span>
           </span>

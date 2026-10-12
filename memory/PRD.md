@@ -74,6 +74,9 @@ Single-page website for AVANI Foundation ("Advancing Vision, Ambition and New In
 ## Iteration 14 (2026-07-12)
 - Mobile optimization: hero image shorter with softer arch on phones (face centred via object-position), approach badge sits below image on mobile instead of overlapping, G20 banner caption smaller on mobile, About image height tuned for phones
 
+## Iteration 15 (2026-07-12)
+- Phone fixes: hero image now uses a clean rounded frame with 4:5 aspect on mobile (arch only on desktop), face-centred crop; Get Involved event photo taller with better crop on phones
+
 ## Known Issues
 - Email delivery to data@avanifoundation.org FAILS: provider reports the mailbox is undeliverable (domain email not configured). Enquiries ARE stored in MongoDB regardless. Fix: user sets up email hosting for avanifoundation.org (MX records) OR provides an alternative inbox to put in ENQUIRY_RECIPIENT_EMAIL in /app/backend/.env
 - Instagram / LinkedIn shown as "Coming soon" placeholders

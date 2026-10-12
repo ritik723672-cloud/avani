@@ -109,13 +109,13 @@ export default function Hero() {
             transition={{ duration: 1.1, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="relative"
           >
-            <div className="overflow-hidden rounded-t-[8rem] sm:rounded-t-[999px] rounded-b-[2rem] border border-avani-gold/35 shadow-2xl shadow-avani-forest/20">
+            <div className="overflow-hidden rounded-[2rem] sm:rounded-t-[999px] border border-avani-gold/35 shadow-2xl shadow-avani-forest/20">
               <motion.img
                 src={IMAGES.girlTablet}
                 alt="Young schoolgirl smiling with a tablet, learning digital skills"
                 data-testid="hero-image"
                 style={{ y: imgY }}
-                className="w-full h-72 sm:h-[30rem] lg:h-[34rem] object-cover object-[center_25%] scale-110"
+                className="w-full aspect-[4/5] sm:aspect-auto sm:h-[30rem] lg:h-[34rem] object-cover object-[center_20%] scale-110"
               />
             </div>
             <motion.div

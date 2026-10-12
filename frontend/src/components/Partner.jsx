@@ -91,7 +91,7 @@ export default function Partner() {
                   src={IMAGES.founderEvent}
                   alt="AVANI founder distributing learning material to children at a community event"
                   data-testid="get-involved-image"
-                  className="w-full h-44 sm:h-52 object-cover hover:scale-105 transition-transform duration-[1.4s] ease-out"
+                  className="w-full h-60 sm:h-52 object-cover object-[center_35%] hover:scale-105 transition-transform duration-[1.4s] ease-out"
                 />
               </div>
               <button

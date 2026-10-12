@@ -115,8 +115,8 @@ export default function Founder() {
                 data-testid="founder-g20-image"
                 className="w-full h-72 sm:h-96 object-cover object-center hover:scale-105 transition-transform duration-[1.4s] ease-out"
               />
-              <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-avani-deep/85 to-transparent px-7 py-6">
-                <p className="font-serif italic text-lg text-avani-ivory">
+              <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-avani-deep/85 to-transparent px-5 py-4 sm:px-7 sm:py-6">
+                <p className="font-serif italic text-sm sm:text-lg text-avani-ivory">
                   On the global stage — advancing women's empowerment through
                   India's G20 Presidency
                 </p>

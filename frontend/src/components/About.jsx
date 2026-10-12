@@ -18,7 +18,7 @@ export default function About() {
                   src={IMAGES.womenCircle}
                   alt="Women in vibrant saris gathered in a community circle"
                   data-testid="about-image"
-                  className="w-full h-[24rem] sm:h-[28rem] object-cover hover:scale-105 transition-transform duration-[1.4s] ease-out"
+                  className="w-full h-80 sm:h-[28rem] object-cover hover:scale-105 transition-transform duration-[1.4s] ease-out"
                 />
               </div>
             </Reveal>

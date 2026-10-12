@@ -71,6 +71,9 @@ Single-page website for AVANI Foundation ("Advancing Vision, Ambition and New In
 ## Iteration 13 (2026-07-11)
 - Footer made compact per user feedback: light cream single-strip (logo + tagline, inline quick links, email/location chips, thin bottom bar), matching the site's light mint + gold theme; big CTA band and watermark removed
 
+## Iteration 14 (2026-07-12)
+- Mobile optimization: hero image shorter with softer arch on phones (face centred via object-position), approach badge sits below image on mobile instead of overlapping, G20 banner caption smaller on mobile, About image height tuned for phones
+
 ## Known Issues
 - Email delivery to data@avanifoundation.org FAILS: provider reports the mailbox is undeliverable (domain email not configured). Enquiries ARE stored in MongoDB regardless. Fix: user sets up email hosting for avanifoundation.org (MX records) OR provides an alternative inbox to put in ENQUIRY_RECIPIENT_EMAIL in /app/backend/.env
 - Instagram / LinkedIn shown as "Coming soon" placeholders

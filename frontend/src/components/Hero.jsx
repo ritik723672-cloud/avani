@@ -109,20 +109,20 @@ export default function Hero() {
             transition={{ duration: 1.1, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="relative"
           >
-            <div className="overflow-hidden rounded-t-[999px] rounded-b-[2rem] border border-avani-gold/35 shadow-2xl shadow-avani-forest/20">
+            <div className="overflow-hidden rounded-t-[8rem] sm:rounded-t-[999px] rounded-b-[2rem] border border-avani-gold/35 shadow-2xl shadow-avani-forest/20">
               <motion.img
                 src={IMAGES.girlTablet}
                 alt="Young schoolgirl smiling with a tablet, learning digital skills"
                 data-testid="hero-image"
                 style={{ y: imgY }}
-                className="w-full h-[26rem] sm:h-[30rem] lg:h-[34rem] object-cover scale-110"
+                className="w-full h-72 sm:h-[30rem] lg:h-[34rem] object-cover object-[center_25%] scale-110"
               />
             </div>
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.3 }}
-              className="absolute -bottom-6 -left-4 sm:-left-8 bg-avani-forest text-avani-ivory rounded-2xl px-6 py-5 shadow-xl shadow-avani-forest/30 border border-avani-gold/25"
+              className="relative mt-5 sm:mt-0 sm:absolute sm:-bottom-6 sm:-left-4 lg:-left-8 bg-avani-forest text-avani-ivory rounded-2xl px-6 py-5 shadow-xl shadow-avani-forest/30 border border-avani-gold/25"
               data-testid="hero-approach-badge"
             >
               <p className="text-[10px] uppercase tracking-[0.28em] text-avani-gold">

@@ -99,19 +99,25 @@ export default function Contact() {
               </div>
             </Reveal>
             <Reveal delay={0.26}>
-              <div className="flex items-center gap-4">
-                <span className="flex items-center justify-center w-11 h-11 rounded-full bg-avani-forest text-avani-goldsoft">
+              <a
+                data-testid="contact-instagram-link"
+                href={CONTACT.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-4 group"
+              >
+                <span className="flex items-center justify-center w-11 h-11 rounded-full bg-avani-forest text-avani-goldsoft group-hover:bg-avani-moss transition-colors duration-300">
                   <Instagram className="w-5 h-5" />
                 </span>
                 <span>
                   <span className="block text-[10px] uppercase tracking-[0.25em] text-avani-muted">
                     Instagram
                   </span>
-                  <span className="block text-sm font-medium text-avani-muted" data-testid="contact-instagram">
-                    Coming soon
+                  <span className="block text-sm font-medium text-avani-forest group-hover:text-avani-amber transition-colors" data-testid="contact-instagram">
+                    {CONTACT.instagramHandle}
                   </span>
                 </span>
-              </div>
+              </a>
             </Reveal>
             <Reveal delay={0.34}>
               <div className="flex items-center gap-4">

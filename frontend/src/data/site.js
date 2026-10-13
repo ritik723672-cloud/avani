@@ -155,4 +155,6 @@ export const INTERESTS = [
 export const CONTACT = {
   email: "hello@avanifoundation.org",
   location: "Uttar Pradesh, India",
+  instagram: "https://www.instagram.com/avani_impact",
+  instagramHandle: "@avani_impact",
 };

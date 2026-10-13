@@ -77,13 +77,17 @@ Single-page website for AVANI Foundation ("Advancing Vision, Ambition and New In
 ## Iteration 15 (2026-07-12)
 - Phone fixes: hero image now uses a clean rounded frame with 4:5 aspect on mobile (arch only on desktop), face-centred crop; Get Involved event photo taller with better crop on phones
 
+## Iteration 16 (2026-07-13)
+- Enquiry emails ACTIVATED: data@avanifoundation.org mailbox now accepts mail — verified end-to-end via POST /api/enquiries (email_sent: true)
+- Instagram linked: @avani_impact → https://www.instagram.com/avani_impact in Contact section; LinkedIn remains "Coming soon"
+
 ## Known Issues
 - Email delivery to data@avanifoundation.org FAILS: provider reports the mailbox is undeliverable (domain email not configured). Enquiries ARE stored in MongoDB regardless. Fix: user sets up email hosting for avanifoundation.org (MX records) OR provides an alternative inbox to put in ENQUIRY_RECIPIENT_EMAIL in /app/backend/.env
 - Instagram / LinkedIn shown as "Coming soon" placeholders
 
 ## Backlog
-- P0: Working recipient mailbox for enquiry emails (needs user's mail hosting or alternate address)
-- P1: Real Instagram/LinkedIn URLs
+- P0: Real bank account details + UPI ID + QR for the Donate page (currently placeholders)
+- P1: LinkedIn URL when available
 - P1: Admin view for stored enquiries (user declined for now)
 - P2: SEO/Open Graph/sitemap (farm-seo-setup skill), donate button, volunteer stories/impact counters, Hindi language toggle
 

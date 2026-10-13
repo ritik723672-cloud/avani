@@ -35,6 +35,10 @@ EMAIL_FROM = os.environ.get("EMAIL_FROM", "")
 EMAIL_FROM_NAME = os.environ.get("EMAIL_FROM_NAME", "AVANI Foundation")
 EMAIL_REPLY_TO = os.environ.get("EMAIL_REPLY_TO")
 
+# Auto-reply (thank-you email to the visitor)
+AUTOREPLY_FROM = os.environ.get("AUTOREPLY_FROM", "")
+AUTOREPLY_REPLY_TO = os.environ.get("AUTOREPLY_REPLY_TO", "")
+
 SMTP_HOST = os.environ.get("SMTP_HOST")
 SMTP_PORT = int(os.environ.get("SMTP_PORT", "465"))
 SMTP_TLS = os.environ.get("SMTP_TLS", "ssl").strip().lower()  # ssl (465) | starttls (587)
@@ -124,17 +128,19 @@ def _assert_safe_email(subject: str, html: str) -> None:
                 raise ValueError(f"Anchor text {m.group(1)!r} != real link host {real!r}")
 
 
-async def _send_smtp(to: str, subject: str, html: str) -> None:
+async def _send_smtp(to: str, subject: str, html: str,
+                     from_addr: str | None = None, reply_to: str | None = None) -> None:
     if not SMTP_HOST:
         raise HTTPException(status_code=500, detail="SMTP is not configured (SMTP_HOST missing)")
-    from_addr = EMAIL_FROM or SMTP_USER
+    sender = from_addr or EMAIL_FROM or SMTP_USER
     msg = EmailMessage()
-    msg["From"] = f"{EMAIL_FROM_NAME} <{from_addr}>"
+    msg["From"] = f"{EMAIL_FROM_NAME} <{sender}>"
     msg["To"] = to
     msg["Subject"] = subject
-    if EMAIL_REPLY_TO:
-        msg["Reply-To"] = EMAIL_REPLY_TO
-    msg.set_content("You received a new enquiry from the AVANI Foundation website. Please view this message in an HTML-capable email client.")
+    effective_reply_to = reply_to or EMAIL_REPLY_TO
+    if effective_reply_to:
+        msg["Reply-To"] = effective_reply_to
+    msg.set_content("You received a new message from the AVANI Foundation website. Please view this message in an HTML-capable email client.")
     msg.add_alternative(html, subtype="html")
     try:
         if SMTP_TLS == "starttls":
@@ -146,21 +152,24 @@ async def _send_smtp(to: str, subject: str, html: str) -> None:
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"SMTP send failed: {str(e)}")
+        logger.error(f"SMTP send failed (from={sender}): {str(e)}")
         raise HTTPException(status_code=502, detail="Failed to send email")
 
 
-async def _send_resend(to: str, subject: str, html: str) -> str | None:
-    if not RESEND_API_KEY or not EMAIL_FROM:
+async def _send_resend(to: str, subject: str, html: str,
+                       from_addr: str | None = None, reply_to: str | None = None) -> str | None:
+    sender = from_addr or EMAIL_FROM
+    if not RESEND_API_KEY or not sender:
         raise HTTPException(status_code=500, detail="Resend is not configured (RESEND_API_KEY / EMAIL_FROM missing)")
     payload = {
-        "from": f"{EMAIL_FROM_NAME} <{EMAIL_FROM}>",
+        "from": f"{EMAIL_FROM_NAME} <{sender}>",
         "to": [to],
         "subject": subject,
         "html": html,
     }
-    if EMAIL_REPLY_TO:
-        payload["reply_to"] = EMAIL_REPLY_TO
+    effective_reply_to = reply_to or EMAIL_REPLY_TO
+    if effective_reply_to:
+        payload["reply_to"] = effective_reply_to
     try:
         async with httpx.AsyncClient(timeout=30) as client_http:
             resp = await client_http.post(
@@ -195,13 +204,14 @@ async def _send_emergent(to: str, subject: str, html: str) -> str | None:
         raise HTTPException(status_code=502, detail="Failed to send email")
 
 
-async def send_email(*, to: str, subject: str, html: str) -> str | None:
+async def send_email(*, to: str, subject: str, html: str,
+                     from_email: str | None = None, reply_to: str | None = None) -> str | None:
     _assert_safe_email(subject, html)
     if EMAIL_BACKEND == "smtp":
-        await _send_smtp(to, subject, html)
+        await _send_smtp(to, subject, html, from_addr=from_email, reply_to=reply_to)
         return None
     if EMAIL_BACKEND == "resend":
-        return await _send_resend(to, subject, html)
+        return await _send_resend(to, subject, html, from_addr=from_email, reply_to=reply_to)
     if EMAIL_BACKEND == "emergent":
         return await _send_emergent(to, subject, html)
     raise HTTPException(status_code=500, detail=f"Unknown EMAIL_BACKEND: {EMAIL_BACKEND}")
@@ -243,6 +253,32 @@ def _enquiry_html(p: EnquiryCreate) -> str:
     )
 
 
+def _confirmation_html(name: str) -> str:
+    n = escape(name)
+    return (
+        '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F7F4EB;padding:32px 0;font-family:Arial,sans-serif">'
+        '<tr><td align="center"><table role="presentation" width="560" cellpadding="0" cellspacing="0" style="background:#ffffff;border:1px solid #e5dfd0">'
+        '<tr><td style="background:#0F2E23;padding:24px 32px">'
+        '<span style="color:#D4AF37;font-size:17px;letter-spacing:0.24em">AVANI FOUNDATION</span><br>'
+        '<span style="color:#FDFBF7;font-size:12px">Advancing Vision, Ambition and New Independence</span></td></tr>'
+        '<tr><td style="padding:28px 32px">'
+        f'<p style="font-size:15px;color:#1C2826;margin:0 0 14px">Dear {n},</p>'
+        '<p style="font-size:14px;line-height:1.7;color:#1C2826;margin:0 0 14px">'
+        'Thank you for reaching out to AVANI Foundation. We have successfully received your enquiry '
+        'and appreciate your interest in supporting women\'s empowerment and inclusive development.</p>'
+        '<p style="font-size:14px;line-height:1.7;color:#1C2826;margin:0 0 14px">'
+        'Our team will review your message and get back to you if a response is required.</p>'
+        '<p style="font-size:14px;line-height:1.7;color:#1C2826;margin:0">'
+        'Thank you for being part of our journey towards creating meaningful opportunities and lasting impact.</p>'
+        '</td></tr>'
+        '<tr><td style="padding:20px 32px;border-top:1px solid #eee7d6">'
+        '<p style="font-size:14px;color:#1C2826;margin:0">Warm regards,<br>'
+        '<strong>AVANI Foundation</strong><br>'
+        '<span style="color:#52635E">Uttar Pradesh, India<br>hello@avanifoundation.org</span></p>'
+        '</td></tr></table></td></tr></table>'
+    )
+
+
 @api_router.get("/")
 async def root():
     return {"message": "AVANI Foundation API"}
@@ -259,8 +295,11 @@ async def create_enquiry(payload: EnquiryCreate):
         "interest": payload.interest,
         "message": payload.message,
         "created_at": datetime.now(timezone.utc).isoformat(),
+        "confirmation_sent": False,
     }
     await db.enquiries.insert_one(doc)
+
+    # 1) Notify the foundation inbox
     email_sent = True
     try:
         await send_email(
@@ -270,8 +309,56 @@ async def create_enquiry(payload: EnquiryCreate):
         )
     except HTTPException as e:
         email_sent = False
-        logger.error(f"Enquiry {enquiry_id} stored but email failed: {e.detail}")
-    return {"status": "success", "id": enquiry_id, "email_sent": email_sent}
+        logger.error(f"Enquiry {enquiry_id} stored but owner email failed: {e.detail}")
+
+    # 2) Auto-reply to the visitor (exactly once per enquiry)
+    confirmation_sent = False
+    confirmation_from = None
+    preferred_from = AUTOREPLY_FROM or EMAIL_FROM or SMTP_USER
+    reply_to = AUTOREPLY_REPLY_TO or EMAIL_REPLY_TO
+    try:
+        confirmation_from = preferred_from
+        await send_email(
+            to=payload.email,
+            subject="Thank You for Contacting AVANI Foundation",
+            html=_confirmation_html(payload.name),
+            from_email=preferred_from,
+            reply_to=reply_to,
+        )
+        confirmation_sent = True
+    except HTTPException as e:
+        logger.warning(
+            f"Auto-reply as {preferred_from} failed ({e.detail}); "
+            f"retrying with the authenticated mailbox"
+        )
+        fallback_from = EMAIL_FROM or SMTP_USER
+        if fallback_from and fallback_from != preferred_from:
+            try:
+                confirmation_from = fallback_from
+                await send_email(
+                    to=payload.email,
+                    subject="Thank You for Contacting AVANI Foundation",
+                    html=_confirmation_html(payload.name),
+                    from_email=fallback_from,
+                    reply_to=reply_to,
+                )
+                confirmation_sent = True
+            except HTTPException as e2:
+                logger.error(f"Auto-reply for enquiry {enquiry_id} failed: {e2.detail}")
+
+    if confirmation_sent:
+        await db.enquiries.update_one(
+            {"id": enquiry_id},
+            {"$set": {"confirmation_sent": True, "confirmation_from": confirmation_from}},
+        )
+
+    return {
+        "status": "success",
+        "id": enquiry_id,
+        "email_sent": email_sent,
+        "confirmation_sent": confirmation_sent,
+        "confirmation_from": confirmation_from,
+    }
 
 
 app.include_router(api_router)

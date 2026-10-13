@@ -143,6 +143,7 @@ All variables are documented with placeholders in `backend/.env.example` and `fr
 | `EMAIL_FROM` / `EMAIL_FROM_NAME` / `EMAIL_REPLY_TO` | Sender identity, e.g. `data@avanifoundation.org` / `AVANI Foundation` / reply-to `hello@avanifoundation.org` |
 | `SMTP_HOST` `SMTP_PORT` `SMTP_TLS` `SMTP_USER` `SMTP_PASSWORD` | Your mail provider's SMTP settings (`SMTP_TLS=ssl` for port 465, `starttls` for 587) |
 | `RESEND_API_KEY` | Only if `EMAIL_BACKEND=resend` |
+| `AUTOREPLY_FROM` / `AUTOREPLY_REPLY_TO` | Sender / reply-to of the automatic thank-you email to visitors. With SMTP the provider must authorize `AUTOREPLY_FROM` (otherwise the backend falls back to `EMAIL_FROM` automatically) |
 
 **frontend/.env** — only `REACT_APP_BACKEND_URL`.
 

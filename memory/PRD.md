@@ -115,6 +115,12 @@ Single-page website for AVANI Foundation ("Advancing Vision, Ambition and New In
 - Live test: POST /api/enquiries → email_sent:true, no SMTP errors, zero Emergent-proxy calls. Sender: AVANI Foundation <data@avanifoundation.org> via smtp.hostinger.com:465 SSL → hello@avanifoundation.org
 - Contact form emails are now 100% Emergent-independent
 
+## Iteration 23 (2026-07-13) — visitor auto-reply live
+- Automatic thank-you confirmation email to form visitors: Subject "Thank You for Contacting AVANI Foundation", branded HTML with user's exact copy, sent only after DB save, exactly once per enquiry (confirmation_sent flag in Mongo), graceful failure handling
+- From: AVANI Foundation <hello@avanifoundation.org>, Reply-To: data@avanifoundation.org — VERIFIED: Hostinger authorized sending as hello@ (accepted on first attempt, no fallback needed)
+- New env vars: AUTOREPLY_FROM, AUTOREPLY_REPLY_TO (documented in .env.example + DEPLOYMENT.md). Fallback to EMAIL_FROM built in if a future provider rejects AUTOREPLY_FROM
+- Live test: email_sent:true, confirmation_sent:true, confirmation_from:hello@avanifoundation.org, zero errors
+
 ## Known Issues
 - Email delivery to data@avanifoundation.org FAILS: provider reports the mailbox is undeliverable (domain email not configured). Enquiries ARE stored in MongoDB regardless. Fix: user sets up email hosting for avanifoundation.org (MX records) OR provides an alternative inbox to put in ENQUIRY_RECIPIENT_EMAIL in /app/backend/.env
 - Instagram / LinkedIn shown as "Coming soon" placeholders

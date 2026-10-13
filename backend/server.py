@@ -1,14 +1,16 @@
-from fastapi import FastAPI, APIRouter, HTTPException
+from fastapi import FastAPI, APIRouter, HTTPException, Request
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import re
+import time
 import ipaddress
 import logging
 import uuid
 import httpx
 import aiosmtplib
+from collections import defaultdict, deque
 from email.message import EmailMessage
 from pathlib import Path
 from pydantic import BaseModel, Field, EmailStr
@@ -51,6 +53,11 @@ RESEND_API_URL = "https://api.resend.com/emails"
 # Legacy: only works when hosted on Emergent. Not needed for self-hosting.
 EMERGENT_EMAIL_KEY = os.environ.get("EMERGENT_EMAIL_KEY")
 EMERGENT_EMAIL_BASE_URL = "https://integrations.emergentagent.com"
+
+# ---- Spam protection ----
+RATE_LIMIT = int(os.environ.get("ENQUIRY_RATE_LIMIT", "5"))        # max submissions
+RATE_WINDOW = int(os.environ.get("ENQUIRY_RATE_WINDOW", "3600"))   # per seconds, per IP
+_attempts = defaultdict(deque)
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -223,6 +230,7 @@ class EnquiryCreate(BaseModel):
     organisation: Optional[str] = Field(default="", max_length=160)
     interest: str = Field(default="General enquiry", max_length=80)
     message: str = Field(min_length=10, max_length=3000)
+    website: Optional[str] = Field(default="", max_length=200)  # honeypot — must stay empty
 
 
 def _enquiry_html(p: EnquiryCreate) -> str:
@@ -279,13 +287,39 @@ def _confirmation_html(name: str) -> str:
     )
 
 
+def _client_ip(request: Request) -> str:
+    forwarded = request.headers.get("x-forwarded-for")
+    if forwarded:
+        return forwarded.split(",")[0].strip()
+    return request.client.host if request.client else "unknown"
+
+
+def _rate_limited(ip: str) -> bool:
+    now = time.time()
+    dq = _attempts[ip]
+    while dq and now - dq[0] > RATE_WINDOW:
+        dq.popleft()
+    dq.append(now)
+    return len(dq) > RATE_LIMIT
+
+
 @api_router.get("/")
 async def root():
     return {"message": "AVANI Foundation API"}
 
 
 @api_router.post("/enquiries")
-async def create_enquiry(payload: EnquiryCreate):
+async def create_enquiry(payload: EnquiryCreate, request: Request):
+    ip = _client_ip(request)
+    if _rate_limited(ip):
+        logger.warning(f"Rate limit exceeded for {ip}")
+        raise HTTPException(status_code=429, detail="Too many requests. Please try again later.")
+
+    # Honeypot: silently drop bot submissions without storing or emailing
+    if payload.website:
+        logger.info(f"Honeypot triggered from {ip}; dropping submission silently")
+        return {"status": "success", "id": None, "email_sent": False, "confirmation_sent": False}
+
     enquiry_id = str(uuid.uuid4())
     doc = {
         "id": enquiry_id,

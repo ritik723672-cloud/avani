@@ -1,40 +1,48 @@
 # AVANI Foundation — VPS Deployment Guide
 
-Complete guide to self-host the AVANI Foundation website (React frontend + FastAPI backend + MongoDB) on your own VPS, independent of Emergent.
+Complete, tested guide to self-host the AVANI Foundation website (React frontend + FastAPI backend + MongoDB) on your own VPS, fully independent of Emergent.
+
+Companion docs: **CONFIGURATION.md** (which file holds which setting) · **CHECKLIST.md** (final testing checklist) · **README.md** (quick start)
 
 ---
 
 ## 1. Architecture
 
-| Layer | Tech | Port |
+| Layer | Tech | Where it runs |
 |---|---|---|
-| Frontend | React (CRA + craco), Tailwind, framer-motion, lenis | Static build served by Nginx |
-| Backend | FastAPI (uvicorn) | 127.0.0.1:8001 |
-| Database | MongoDB | 127.0.0.1:27017 |
-| Email | SMTP **or** Resend (your own domain) | — |
+| Frontend | React (CRA + craco), Tailwind, framer-motion, Lenis | Static build in `frontend/build`, served by Nginx |
+| Backend | FastAPI + uvicorn, aiosmtplib (SMTP), httpx (Resend) | `127.0.0.1:8001`, systemd service `avani-backend`, user `avani` |
+| Database | MongoDB | `127.0.0.1:27017` (localhost only) |
+| Email | Hostinger SMTP (or Resend) via env vars | — |
 
-All backend routes are prefixed with `/api`. Nginx serves the built frontend and proxies `/api` to the backend — one domain, no CORS pain.
+All backend routes are prefixed with `/api`. Nginx serves the frontend and proxies `/api` to the backend — one domain, no CORS issues.
 
-## 2. Emergent dependencies — what changed
+## 2. Emergent dependencies — status
 
 | Emergent service | Status |
 |---|---|
-| Emergent managed email proxy | **Removed.** Email now uses your own SMTP or Resend account (`EMAIL_BACKEND=smtp\|resend`). An `emergent` mode remains in code but is optional and only works on Emergent — leave it unused on your VPS. |
-| Emergent-hosted images (customer-assets CDN) | **Removed.** All photos are bundled locally in `frontend/public/assets/`. |
-| `@emergentbase/overlay`, `@emergentbase/visual-edits` dev packages | **Removed** from `package.json`. They were dev-preview-only; `craco.config.js` already skips them when absent. |
-| `EMERGENT_LLM_KEY` | Only used by `/app/scripts/gen_donate_image.py` (one-off art generation). Not needed at runtime. Delete that script if you want zero references. |
-| MongoDB | Standard local/self-hosted MongoDB — no Emergent dependency. |
+| Emergent managed email proxy | **Removed from the live path.** Email sends via your Hostinger SMTP (`EMAIL_BACKEND=smtp`). A legacy `emergent` mode still exists in `server.py` but is never used on your VPS — to delete it entirely, remove the `_send_emergent` function and the `EMERGENT_EMAIL_*` constants |
+| Emergent-hosted images | **Removed.** All images are local in `frontend/public/assets/` (verified: zero external image URLs) |
+| `@emergentbase/*` dev packages | **Removed** from `package.json`; `yarn build` verified without them |
+| `EMERGENT_LLM_KEY` | Only used by `scripts/gen_donate_image.py` (a one-off art generator). Not needed at runtime — delete the script and the key if you want zero references |
+| MongoDB | Plain self-hosted MongoDB — no Emergent dependency |
 
-Secrets: no API keys or passwords are hardcoded in source. Real values live only in `.env` files, which are git-ignored (see `/app/.gitignore`). If you exported the project with an existing `backend/.env`, it may contain an Emergent-managed key — delete that file on your VPS and create a fresh one from `.env.example`.
+Secrets: nothing is hardcoded. Real values live only in `.env` files (git-ignored). If your exported copy contains an existing `backend/.env`, review it on the VPS and keep it private — or recreate it from `backend/.env.example`.
 
 ## 3. Prerequisites
 
-- Ubuntu 22.04/24.04 VPS (1 GB RAM minimum, 2 GB recommended)
-- A domain, e.g. `avanifoundation.org`, with DNS A records pointing to your VPS IP:
+- Ubuntu 22.04 or 24.04 VPS (1 GB RAM min, 2 GB recommended)
+- Domain DNS A records pointing to your VPS IP:
   - `avanifoundation.org → <VPS-IP>`
   - `www.avanifoundation.org → <VPS-IP>`
 
-## 4. Server setup (one time)
+## 4. Getting the code out of Emergent
+
+- **Paid plan (recommended):** Chat input bar → **Save** → **Save to GitHub** → pick your repo/branch → then on the VPS: `git clone <repo-url> /opt/avani`
+- **Any plan:** Top toolbar **Code** button → open the browser VS Code → copy the project files manually
+- The code contains no Emergent lock-in: it is a standard React + FastAPI + MongoDB project
+
+## 5. Server setup (one time)
 
 ```bash
 sudo apt update && sudo apt upgrade -y
@@ -44,10 +52,10 @@ curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
 sudo apt install -y nodejs
 sudo npm install -g yarn
 
-# Python 3.11+
+# Python 3
 sudo apt install -y python3 python3-venv python3-pip
 
-# MongoDB 7 (Ubuntu 24.04; for 22.04 use the jammy repo)
+# MongoDB 7
 curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc | sudo gpg --dearmor -o /usr/share/keyrings/mongodb-server-7.0.gpg
 echo "deb [ signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
 sudo apt update && sudo apt install -y mongodb-org
@@ -57,247 +65,181 @@ sudo systemctl enable --now mongod
 sudo apt install -y nginx certbot python3-certbot-nginx
 ```
 
-## 5. Deploy the code
-
-Upload the exported project to your VPS (e.g. `scp`, `git clone`, or rsync) to `/opt/avani`:
+### Dedicated non-root application user
 
 ```bash
+sudo useradd -r -s /usr/sbin/nologin -d /opt/avani avani
 sudo mkdir -p /opt/avani
-sudo chown $USER:$USER /opt/avani
-# copy the project here so you have /opt/avani/backend and /opt/avani/frontend
 ```
 
-### Backend
+Copy the project into `/opt/avani` (so you have `/opt/avani/backend`, `/opt/avani/frontend`, etc.), then:
 
 ```bash
-cd /opt/avani/backend
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-
-cp .env.example .env
-nano .env   # fill in real values (see section 7)
+sudo chown -R avani:avani /opt/avani
+sudo chmod -R o-rwx /opt/avani/backend   # backend code+env readable only by avani
+sudo chmod 755 /opt /opt/avani /opt/avani/frontend  # let Nginx reach the frontend build
 ```
 
-Test-run once:
+## 6. Backend setup
 
 ```bash
-source venv/bin/activate
-uvicorn server:app --host 127.0.0.1 --port 8001
-# in another terminal: curl http://127.0.0.1:8001/api/
-# expected: {"message":"AVANI Foundation API"}
+sudo -u avani bash -c '
+  cd /opt/avani/backend
+  python3 -m venv venv
+  venv/bin/pip install -r requirements.txt
+  cp .env.example .env
+'
+sudo -u avani nano /opt/avani/backend/.env   # fill real values (section 8)
+sudo -u avani chmod 600 /opt/avani/backend/.env
 ```
 
-### Frontend
+Quick smoke test:
 
 ```bash
-cd /opt/avani/frontend
-cp .env.example .env
-nano .env   # set REACT_APP_BACKEND_URL=https://avanifoundation.org
-
-yarn install
-yarn build
-# output goes to /opt/avani/frontend/build
+sudo -u avani /opt/avani/backend/venv/bin/uvicorn server:app --host 127.0.0.1 --port 8001 --app-dir /opt/avani/backend &
+curl http://127.0.0.1:8001/api/
+# expected: {"message":"AVANI Foundation API"}  — then Ctrl/C / kill the process
 ```
 
-> `REACT_APP_BACKEND_URL` is baked in at build time. If you change it, run `yarn build` again.
-
-## 6. Run the backend with systemd
+## 7. Frontend build
 
 ```bash
-sudo tee /etc/systemd/system/avani-backend.service > /dev/null <<'EOF'
-[Unit]
-Description=AVANI Foundation API
-After=network.target mongod.service
+sudo -u avani bash -c '
+  cd /opt/avani/frontend
+  cp .env.example .env
+'
+sudo -u avani nano /opt/avani/frontend/.env   # REACT_APP_BACKEND_URL=https://avanifoundation.org
 
-[Service]
-Type=simple
-User=root
-WorkingDirectory=/opt/avani/backend
-ExecStart=/opt/avani/backend/venv/bin/uvicorn server:app --host 127.0.0.1 --port 8001
-Restart=always
-RestartSec=3
+sudo -u avani bash -c 'cd /opt/avani/frontend && yarn install && yarn build'
+# output: /opt/avani/frontend/build
+```
 
-[Install]
-WantedBy=multi-user.target
-EOF
+> `REACT_APP_BACKEND_URL` is baked in at build time. Change it → run `yarn build` again.
 
+## 8. Environment variables
+
+All placeholders are in `backend/.env.example` and `frontend/.env.example`. See **CONFIGURATION.md** for the full reference. Key values for your Hostinger setup:
+
+```env
+EMAIL_BACKEND="smtp"
+SMTP_HOST="smtp.hostinger.com"
+SMTP_PORT="465"
+SMTP_TLS="ssl"
+SMTP_USER="data@avanifoundation.org"
+SMTP_PASSWORD="<your Hostinger mailbox password>"
+EMAIL_FROM="data@avanifoundation.org"
+EMAIL_FROM_NAME="AVANI Foundation"
+EMAIL_REPLY_TO="hello@avanifoundation.org"
+ENQUIRY_RECIPIENT_EMAIL="hello@avanifoundation.org"
+AUTOREPLY_FROM="hello@avanifoundation.org"
+AUTOREPLY_REPLY_TO="data@avanifoundation.org"
+```
+
+**Sender authorization note:** the visitor thank-you email uses `AUTOREPLY_FROM` (`hello@`) as sender. This was tested and Hostinger accepted it (both mailboxes on the same account). If your provider ever rejects it, the backend automatically falls back to sending from `EMAIL_FROM` (`data@`) and logs a warning — no mail is lost. To make `hello@` a permanent authorized sender, ensure the mailbox exists in Hostinger (hPanel → Emails) or is an alias of the `data@` account.
+
+Apply changes with: `sudo systemctl restart avani-backend`
+
+## 9. systemd service
+
+```bash
+sudo cp /opt/avani/deploy/avani-backend.service /etc/systemd/system/
 sudo systemctl daemon-reload
 sudo systemctl enable --now avani-backend
 sudo systemctl status avani-backend
 ```
 
-## 7. Environment variables
-
-All variables are documented with placeholders in `backend/.env.example` and `frontend/.env.example`.
-
-**backend/.env**
-
-| Variable | Purpose |
-|---|---|
-| `MONGO_URL` | MongoDB connection string, default `mongodb://localhost:27017` |
-| `DB_NAME` | Database name, e.g. `avani_foundation` |
-| `CORS_ORIGINS` | Allowed origins, e.g. `https://avanifoundation.org` |
-| `ENQUIRY_RECIPIENT_EMAIL` | Inbox that receives enquiries, e.g. `hello@avanifoundation.org` |
-| `EMAIL_BACKEND` | `smtp` or `resend` |
-| `EMAIL_FROM` / `EMAIL_FROM_NAME` / `EMAIL_REPLY_TO` | Sender identity, e.g. `data@avanifoundation.org` / `AVANI Foundation` / reply-to `hello@avanifoundation.org` |
-| `SMTP_HOST` `SMTP_PORT` `SMTP_TLS` `SMTP_USER` `SMTP_PASSWORD` | Your mail provider's SMTP settings (`SMTP_TLS=ssl` for port 465, `starttls` for 587) |
-| `RESEND_API_KEY` | Only if `EMAIL_BACKEND=resend` |
-| `AUTOREPLY_FROM` / `AUTOREPLY_REPLY_TO` | Sender / reply-to of the automatic thank-you email to visitors. With SMTP the provider must authorize `AUTOREPLY_FROM` (otherwise the backend falls back to `EMAIL_FROM` automatically) |
-
-**frontend/.env** — only `REACT_APP_BACKEND_URL`.
-
-Lock down permissions:
+## 10. Nginx
 
 ```bash
-chmod 600 /opt/avani/backend/.env /opt/avani/frontend/.env
-```
-
-## 8. Email setup — two options
-
-### Option A: SMTP (any provider for avanifoundation.org)
-
-Use your domain's mail hosting (Zoho Mail, Google Workspace, your VPS panel's mail, Brevo, Amazon SES…). Example for a typical provider on port 465:
-
-```env
-EMAIL_BACKEND="smtp"
-SMTP_HOST="smtp.zoho.com"
-SMTP_PORT="465"
-SMTP_TLS="ssl"
-SMTP_USER="hello@avanifoundation.org"
-SMTP_PASSWORD="<mailbox-password-or-app-password>"
-EMAIL_FROM="hello@avanifoundation.org"
-```
-
-Restart after changes: `sudo systemctl restart avani-backend`.
-
-### Option B: Resend with your own domain
-
-1. Sign up at https://resend.com → Domains → Add `avanifoundation.org`
-2. Add the DNS records Resend shows (SPF/DKIM) at your DNS provider, wait for "Verified"
-3. Create an API key, then:
-
-```env
-EMAIL_BACKEND="resend"
-RESEND_API_KEY="re_xxxxxxxx"
-EMAIL_FROM="hello@avanifoundation.org"
-```
-
-## 9. Nginx configuration
-
-```bash
-sudo nano /etc/nginx/sites-available/avani
-```
-
-```nginx
-server {
-    listen 80;
-    server_name avanifoundation.org www.avanifoundation.org;
-
-    root /opt/avani/frontend/build;
-    index index.html;
-
-    # Frontend (SPA): always fall back to index.html
-    location / {
-        try_files $uri $uri/ /index.html;
-    }
-
-    # Backend API
-    location /api/ {
-        proxy_pass http://127.0.0.1:8001;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-
-    # Long cache for static assets
-    location /assets/ {
-        expires 30d;
-        add_header Cache-Control "public";
-    }
-}
-```
-
-Enable and start:
-
-```bash
+sudo cp /opt/avani/deploy/nginx-avani.conf /etc/nginx/sites-available/avani
 sudo ln -s /etc/nginx/sites-available/avani /etc/nginx/sites-enabled/
 sudo nginx -t
 sudo systemctl reload nginx
 ```
 
-## 10. HTTPS (free, Let's Encrypt)
+## 11. HTTPS (free, Let's Encrypt)
 
 ```bash
 sudo certbot --nginx -d avanifoundation.org -d www.avanifoundation.org
-# follow the prompts; certbot edits the Nginx config and sets up auto-renewal
-sudo certbot renew --dry-run   # verify auto-renewal works
+sudo certbot renew --dry-run
 ```
 
-## 11. Database schema & migrations
+## 12. Database — schema, backup, restore
 
-MongoDB is schemaless — **no migrations are needed**. The database and collections are created automatically on first write.
+MongoDB is schemaless — **no migrations needed**; the DB and collection are created on first write.
 
-Collection: `enquiries`
+Collection `enquiries`: `id` (uuid), `name`, `email`, `organisation`, `interest`, `message`, `created_at` (ISO UTC), `confirmation_sent`, `confirmation_from`.
 
-| Field | Type | Notes |
-|---|---|---|
-| `id` | string (UUID) | app-generated primary identifier |
-| `name` | string | 2–120 chars |
-| `email` | string | validated email |
-| `organisation` | string | optional |
-| `interest` | string | e.g. "Partnership / CSR" |
-| `message` | string | 10–3000 chars |
-| `created_at` | string | ISO-8601 UTC timestamp |
-
-Useful queries:
+Every enquiry is stored **before** any email is attempted, so nothing is lost if email fails.
 
 ```bash
-mongosh avani_foundation
-> db.enquiries.find().sort({created_at:-1}).limit(10)
-> db.enquiries.countDocuments()
+# Inspect
+mongosh avani_foundation --eval 'db.enquiries.find().sort({created_at:-1}).limit(10)'
+
+# Backup (keeps last 14 archives in /opt/avani/backups)
+chmod +x /opt/avani/scripts/backup_db.sh /opt/avani/scripts/restore_db.sh
+/opt/avani/scripts/backup_db.sh
+
+# Daily 3 AM backup via cron
+sudo crontab -e
+# add:  0 3 * * * /opt/avani/scripts/backup_db.sh >> /var/log/avani-backup.log 2>&1
+
+# Export to move data to another server
+/opt/avani/scripts/backup_db.sh && scp /opt/avani/backups/avani-*.tar.gz user@other-server:/opt/avani/backups/
+
+# Restore (WARNING: replaces existing collections)
+/opt/avani/scripts/restore_db.sh /opt/avani/backups/avani-avani_foundation-<timestamp>.tar.gz
 ```
 
-Every enquiry is stored in MongoDB even if email delivery fails, so nothing is ever lost.
-
-## 12. Testing after deployment
-
-1. **Backend health**
-   ```bash
-   curl https://avanifoundation.org/api/
-   # {"message":"AVANI Foundation API"}
-   ```
-2. **Contact form end-to-end** (also sends a real email):
-   ```bash
-   curl -X POST https://avanifoundation.org/api/enquiries \
-     -H "Content-Type: application/json" \
-     -d '{"name":"Deploy Test","email":"you@example.com","organisation":"Test","interest":"General enquiry","message":"Testing the deployed contact form email."}'
-   # expected: {"status":"success","id":"...","email_sent":true}
-   ```
-3. Check the recipient inbox (`ENQUIRY_RECIPIENT_EMAIL`) — the enquiry email should arrive within seconds. Also confirm it landed in MongoDB with the `mongosh` query above.
-4. If `email_sent` is `false`, read the backend log:
-   ```bash
-   journalctl -u avani-backend -n 100 --no-pager
-   ```
-   Common causes: wrong SMTP password/port, `SMTP_TLS` mismatch (ssl vs starttls), unverified Resend domain.
-5. Open the website, submit the real contact form, and confirm the success toast + inbox delivery.
-
-## 13. Updating & restarting
+## 13. Testing after deployment
 
 ```bash
-# Backend changes
+# 1. Backend health
+curl https://avanifoundation.org/api/
+# {"message":"AVANI Foundation API"}
+
+# 2. Contact form end-to-end (sends both emails)
+curl -X POST https://avanifoundation.org/api/enquiries \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Deploy Test","email":"you@example.com","organisation":"Test","interest":"General enquiry","message":"Testing the deployed contact form."}'
+# expected: {"status":"success",...,"email_sent":true,"confirmation_sent":true}
+
+# 3. Check both inboxes: hello@ gets the enquiry, you@example.com gets the thank-you
+
+# 4. Confirm it was stored
+mongosh avani_foundation --eval 'db.enquiries.find().sort({created_at:-1}).limit(1)'
+
+# 5. Logs if email_sent or confirmation_sent is false
+journalctl -u avani-backend -n 100 --no-pager
+```
+
+Common causes: wrong `SMTP_PASSWORD`, `SMTP_TLS` mismatch (`ssl` for 465 / `starttls` for 587), or provider blocking the sender address.
+
+## 14. Updating & restarting
+
+```bash
+# Backend code/config changes
 sudo systemctl restart avani-backend
-journalctl -u avani-backend -f      # live logs
+journalctl -u avani-backend -f        # live logs
 
 # Frontend changes
-cd /opt/avani/frontend && yarn build && sudo systemctl reload nginx
+sudo -u avani bash -c 'cd /opt/avani/frontend && yarn build'
+sudo systemctl reload nginx
+
+# Troubleshooting
+sudo systemctl status avani-backend   # service state
+sudo nginx -t                         # nginx config check
+sudo tail -f /var/log/nginx/error.log # nginx errors
+mongod --version && sudo systemctl status mongod
 ```
 
-## 14. Security checklist
+## 15. Production security checklist
 
-- [ ] `.env` files are `chmod 600` and never committed (`.gitignore` already covers them)
-- [ ] `CORS_ORIGINS` set to your real domain(s), not `*`
-- [ ] UFW firewall: `sudo ufw allow OpenSSH && sudo ufw allow 'Nginx Full' && sudo ufw enable`
-- [ ] MongoDB is bound to localhost only (default) — do not expose port 27017
-- [ ] SMTP password is an app-password where supported (Gmail/Zoho)
+- [ ] Backend runs as non-root user `avani` (systemd unit provided)
+- [ ] `backend/.env` and `frontend/.env` are `chmod 600`, owned by `avani`, never committed (`.gitignore` covers them)
+- [ ] `CORS_ORIGINS` set to `https://avanifoundation.org,https://www.avanifoundation.org` (not `*`)
+- [ ] UFW: `sudo ufw allow OpenSSH && sudo ufw allow 'Nginx Full' && sudo ufw enable`
+- [ ] MongoDB bound to localhost only (default) — port 27017 never exposed
+- [ ] HTTPS via certbot, auto-renewal verified
+- [ ] Spam protection active (built in): honeypot field + 5 submissions/hour/IP rate limit (tunable via `ENQUIRY_RATE_LIMIT` / `ENQUIRY_RATE_WINDOW`)
+- [ ] Daily DB backup cron enabled

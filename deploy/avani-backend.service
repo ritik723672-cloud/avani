@@ -1,0 +1,21 @@
+# AVANI Foundation — systemd service
+# Copy to /etc/systemd/system/avani-backend.service, then:
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now avani-backend
+
+[Unit]
+Description=AVANI Foundation API
+After=network.target mongod.service
+
+[Service]
+Type=simple
+User=avani
+Group=avani
+WorkingDirectory=/opt/avani/backend
+ExecStart=/opt/avani/backend/venv/bin/uvicorn server:app --host 127.0.0.1 --port 8001
+Restart=always
+RestartSec=3
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

@@ -121,6 +121,12 @@ Single-page website for AVANI Foundation ("Advancing Vision, Ambition and New In
 - New env vars: AUTOREPLY_FROM, AUTOREPLY_REPLY_TO (documented in .env.example + DEPLOYMENT.md). Fallback to EMAIL_FROM built in if a future provider rejects AUTOREPLY_FROM
 - Live test: email_sent:true, confirmation_sent:true, confirmation_from:hello@avanifoundation.org, zero errors
 
+## Iteration 24 (2026-07-13) — FINAL VPS deployment preparation
+- Spam protection added: hidden honeypot field (silent drop) + per-IP rate limit (5/hour → 429, tunable via ENQUIRY_RATE_LIMIT/WINDOW). Verified: 4 honeypot drops + 1 rate-limit block in logs; honeypot field visually hidden; design unchanged
+- New files: deploy/nginx-avani.conf, deploy/avani-backend.service (non-root user `avani`), scripts/backup_db.sh + restore_db.sh (mongodump/mongorestore, keeps 14), CONFIGURATION.md (which file holds which setting), CHECKLIST.md (final testing checklist), DEPLOYMENT.md rewritten (non-root user, permissions, backup cron, troubleshooting, export steps)
+- Final verification (all in preview): yarn build clean (11 assets), backend health OK, valid enquiry → email_sent:true + confirmation_sent:true via Hostinger SMTP, secret scan clean (password only in backend/.env)
+- Export note: user is on trial plan — GitHub push is paid; VS Code editor reportedly doesn't open for them. They may need Emergent support for code export, or upgrade for Save-to-GitHub
+
 ## Known Issues
 - Email delivery to data@avanifoundation.org FAILS: provider reports the mailbox is undeliverable (domain email not configured). Enquiries ARE stored in MongoDB regardless. Fix: user sets up email hosting for avanifoundation.org (MX records) OR provides an alternative inbox to put in ENQUIRY_RECIPIENT_EMAIL in /app/backend/.env
 - Instagram / LinkedIn shown as "Coming soon" placeholders

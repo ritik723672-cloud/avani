@@ -12,6 +12,7 @@ const INITIAL = {
   organisation: "",
   interest: INTERESTS[0],
   message: "",
+  website: "",
 };
 
 export default function Contact() {
@@ -223,6 +224,17 @@ export default function Contact() {
                   className={`${inputCls} resize-none`}
                 />
               </div>
+              <input
+                type="text"
+                name="website"
+                data-testid="contact-honeypot-input"
+                value={form.website}
+                onChange={set("website")}
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                className="hidden"
+              />
               <button
                 data-testid="contact-submit-btn"
                 type="submit"

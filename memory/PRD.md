@@ -110,6 +110,11 @@ Single-page website for AVANI Foundation ("Advancing Vision, Ambition and New In
 - Contact form email switched from Emergent proxy to real SMTP: EMAIL_BACKEND=smtp, SMTP_HOST=smtp.hostinger.com, port 465 SSL, SMTP_USER=data@avanifoundation.org. Verified in logs: backend now authenticates directly with Hostinger (535 auth error because SMTP_PASSWORD is EMPTY — waiting on user's Hostinger mailbox password). Emergent proxy no longer used; EMERGENT_EMAIL_KEY removed from backend/.env
 - Until SMTP_PASSWORD is set, enquiries are still stored in MongoDB but NOT emailed (email_sent:false)
 
+## Iteration 22 (2026-07-13) — SMTP live
+- User provided Hostinger mailbox password; set in backend/.env SMTP_PASSWORD (env only, never in code/git)
+- Live test: POST /api/enquiries → email_sent:true, no SMTP errors, zero Emergent-proxy calls. Sender: AVANI Foundation <data@avanifoundation.org> via smtp.hostinger.com:465 SSL → hello@avanifoundation.org
+- Contact form emails are now 100% Emergent-independent
+
 ## Known Issues
 - Email delivery to data@avanifoundation.org FAILS: provider reports the mailbox is undeliverable (domain email not configured). Enquiries ARE stored in MongoDB regardless. Fix: user sets up email hosting for avanifoundation.org (MX records) OR provides an alternative inbox to put in ENQUIRY_RECIPIENT_EMAIL in /app/backend/.env
 - Instagram / LinkedIn shown as "Coming soon" placeholders

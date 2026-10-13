@@ -12,8 +12,7 @@ import {
 export const IMAGES = {
   hero: "/assets/classroom.jpg",
   girlTablet: "/assets/hero-girl.jpg",
-  programmes:
-    "https://images.unsplash.com/photo-1680759291020-79a92d38cdfd?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNTl8MHwxfHNlYXJjaHw0fHxpbmRpYW4lMjB3b21lbiUyMGVtcG93ZXJtZW50JTIwZWR1Y2F0aW9uJTIwY29tbXVuaXR5fGVufDB8fHx8MTc5MTcyMTAwNnww&ixlib=rb-4.1.0&q=85",
+  programmes: "/assets/programmes.jpg",
   founderG20: "/assets/founder-g20.png",
   logo: "/assets/logo.jpg",
   founderPortrait: "/assets/founder-portrait.png",

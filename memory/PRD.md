@@ -89,6 +89,10 @@ Single-page website for AVANI Foundation ("Advancing Vision, Ambition and New In
 - .gitignore now covers all .env files; no keys hardcoded in source
 - Preview still works with EMAIL_BACKEND=emergent (email_sent verified true)
 
+## Iteration 18 (2026-07-13)
+- Programmes Unsplash image downloaded + optimized (1600px, 276KB) to /assets/programmes.jpg — 100% of images now served locally (verified: zero external image URLs)
+- Note: after removing @emergentbase packages the dev server needed one restart (stale injected module) — preview clean now
+
 ## Known Issues
 - Email delivery to data@avanifoundation.org FAILS: provider reports the mailbox is undeliverable (domain email not configured). Enquiries ARE stored in MongoDB regardless. Fix: user sets up email hosting for avanifoundation.org (MX records) OR provides an alternative inbox to put in ENQUIRY_RECIPIENT_EMAIL in /app/backend/.env
 - Instagram / LinkedIn shown as "Coming soon" placeholders

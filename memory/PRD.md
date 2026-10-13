@@ -100,6 +100,11 @@ Single-page website for AVANI Foundation ("Advancing Vision, Ambition and New In
 - Verified: JSON-LD parses, no scaffold leftovers, no placeholder/preview URLs, app renders fine
 - Pending: /donate shares homepage title/meta (single static head); Google Search Console submission after go-live
 
+## Iteration 20 (2026-07-13) — email config for self-hosting
+- Contact form email addresses now fully env-driven: EMAIL_FROM=data@avanifoundation.org (sender), ENQUIRY_RECIPIENT_EMAIL=hello@avanifoundation.org (recipient), EMAIL_REPLY_TO=hello@avanifoundation.org
+- hello@avanifoundation.org deliverability VERIFIED (provider accepted test mail) and real /api/enquiries flow returns email_sent:true to hello@
+- .env.example updated (Hostinger SMTP example + mailbox-warning note); DEPLOYMENT.md table updated; zero hardcoded addresses in server.py
+
 ## Known Issues
 - Email delivery to data@avanifoundation.org FAILS: provider reports the mailbox is undeliverable (domain email not configured). Enquiries ARE stored in MongoDB regardless. Fix: user sets up email hosting for avanifoundation.org (MX records) OR provides an alternative inbox to put in ENQUIRY_RECIPIENT_EMAIL in /app/backend/.env
 - Instagram / LinkedIn shown as "Coming soon" placeholders

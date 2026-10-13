@@ -3,6 +3,7 @@ import { Landmark, Smartphone, QrCode, Copy, ArrowLeft, Mail, ShieldCheck } from
 import { toast } from "sonner";
 import { IMAGES, CONTACT } from "../data/site";
 import { Reveal } from "./Reveal";
+import Seo from "./Seo";
 import Footer from "./Footer";
 
 const BANK = {
@@ -28,6 +29,11 @@ export default function Donate() {
 
   return (
     <div data-testid="donate-page" className="bg-avani-ivory min-h-screen">
+      <Seo
+        title="Donate to AVANI Foundation — Support Women's Empowerment"
+        description="Support AVANI Foundation with a donation via bank transfer or UPI. Your contribution brings digital skills, mentorship and opportunity to women and girls in India."
+        canonical="https://avanifoundation.org/donate"
+      />
       <header className="bg-avani-deep border-b border-avani-gold/15">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">

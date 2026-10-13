@@ -138,9 +138,9 @@ All variables are documented with placeholders in `backend/.env.example` and `fr
 | `MONGO_URL` | MongoDB connection string, default `mongodb://localhost:27017` |
 | `DB_NAME` | Database name, e.g. `avani_foundation` |
 | `CORS_ORIGINS` | Allowed origins, e.g. `https://avanifoundation.org` |
-| `ENQUIRY_RECIPIENT_EMAIL` | Inbox that receives enquiries, e.g. `data@avanifoundation.org` |
+| `ENQUIRY_RECIPIENT_EMAIL` | Inbox that receives enquiries, e.g. `hello@avanifoundation.org` |
 | `EMAIL_BACKEND` | `smtp` or `resend` |
-| `EMAIL_FROM` / `EMAIL_FROM_NAME` / `EMAIL_REPLY_TO` | Sender identity, e.g. `hello@avanifoundation.org` / `AVANI Foundation` |
+| `EMAIL_FROM` / `EMAIL_FROM_NAME` / `EMAIL_REPLY_TO` | Sender identity, e.g. `data@avanifoundation.org` / `AVANI Foundation` / reply-to `hello@avanifoundation.org` |
 | `SMTP_HOST` `SMTP_PORT` `SMTP_TLS` `SMTP_USER` `SMTP_PASSWORD` | Your mail provider's SMTP settings (`SMTP_TLS=ssl` for port 465, `starttls` for 587) |
 | `RESEND_API_KEY` | Only if `EMAIL_BACKEND=resend` |
 

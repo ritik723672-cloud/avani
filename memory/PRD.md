@@ -81,6 +81,14 @@ Single-page website for AVANI Foundation ("Advancing Vision, Ambition and New In
 - Enquiry emails ACTIVATED: data@avanifoundation.org mailbox now accepts mail — verified end-to-end via POST /api/enquiries (email_sent: true)
 - Instagram linked: @avani_impact → https://www.instagram.com/avani_impact in Contact section; LinkedIn remains "Coming soon"
 
+## Iteration 17 (2026-07-13) — VPS self-hosting preparation
+- Email system now pluggable: EMAIL_BACKEND=smtp|resend (own domain) in server.py; aiosmtplib added; legacy "emergent" mode kept for preview only
+- All photos moved to frontend/public/assets/ (local, no Emergent CDN); only one Unsplash hotlink remains (programmes image)
+- Removed @emergentbase/overlay + @emergentbase/visual-edits dev packages; production `yarn build` verified working without them
+- Created backend/.env.example + frontend/.env.example, /app/DEPLOYMENT.md (full VPS guide: install, build, env, Nginx, HTTPS/certbot, systemd, MongoDB schema, email testing), new README.md
+- .gitignore now covers all .env files; no keys hardcoded in source
+- Preview still works with EMAIL_BACKEND=emergent (email_sent verified true)
+
 ## Known Issues
 - Email delivery to data@avanifoundation.org FAILS: provider reports the mailbox is undeliverable (domain email not configured). Enquiries ARE stored in MongoDB regardless. Fix: user sets up email hosting for avanifoundation.org (MX records) OR provides an alternative inbox to put in ENQUIRY_RECIPIENT_EMAIL in /app/backend/.env
 - Instagram / LinkedIn shown as "Coming soon" placeholders

@@ -93,6 +93,13 @@ Single-page website for AVANI Foundation ("Advancing Vision, Ambition and New In
 - Programmes Unsplash image downloaded + optimized (1600px, 276KB) to /assets/programmes.jpg — 100% of images now served locally (verified: zero external image URLs)
 - Note: after removing @emergentbase packages the dev server needed one restart (stale injected module) — preview clean now
 
+## Iteration 19 (2026-07-13) — SEO setup (farm-seo-setup skill)
+- Static head: search title ("AVANI Foundation — Empowering Women Through Digital Skills"), 154-char description, canonical https://avanifoundation.org/, robots meta, full Open Graph + Twitter summary_large_image with real 1200×630 og-image.jpg (created from women-circle photo), apple-touch-icon 180×180, JSON-LD (NGO + founder Person Mani Pandey + sameAs Instagram), real noscript fallback
+- public/robots.txt (explicit AI-crawler group + Disallow /api/ + sitemap ref), sitemap.xml (/ and /donate), llms.txt — all verified serving as real files under both Accept types
+- Donate links converted to real <a href> (crawlable)
+- Verified: JSON-LD parses, no scaffold leftovers, no placeholder/preview URLs, app renders fine
+- Pending: /donate shares homepage title/meta (single static head); Google Search Console submission after go-live
+
 ## Known Issues
 - Email delivery to data@avanifoundation.org FAILS: provider reports the mailbox is undeliverable (domain email not configured). Enquiries ARE stored in MongoDB regardless. Fix: user sets up email hosting for avanifoundation.org (MX records) OR provides an alternative inbox to put in ENQUIRY_RECIPIENT_EMAIL in /app/backend/.env
 - Instagram / LinkedIn shown as "Coming soon" placeholders

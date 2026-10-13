@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { Landmark, Smartphone, QrCode, Copy, ArrowLeft, Mail, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 import { IMAGES, CONTACT } from "../data/site";
@@ -16,8 +15,6 @@ const BANK = {
 const UPI_ID = "avanifoundation@upi";
 
 export default function Donate() {
-  const navigate = useNavigate();
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -50,14 +47,14 @@ export default function Donate() {
               </span>
             </span>
           </div>
-          <button
+          <a
+            href="/"
             data-testid="donate-back-home-btn"
-            onClick={() => navigate("/")}
             className="group flex items-center gap-2 rounded-full border border-avani-ivory/25 px-5 py-2.5 text-[13px] font-semibold text-avani-ivory transition-all duration-300 hover:bg-avani-ivory hover:text-avani-forest"
           >
             <ArrowLeft className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-0.5" />
             Back to Home
-          </button>
+          </a>
         </div>
       </header>
 

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Heart } from "lucide-react";
 import { IMAGES, NAV_LINKS } from "../data/site";
@@ -8,7 +7,6 @@ import { scrollToId } from "../lib/scroll";
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -19,11 +17,6 @@ export default function Navbar() {
   const go = (href) => {
     setOpen(false);
     scrollToId(href);
-  };
-
-  const donate = () => {
-    setOpen(false);
-    navigate("/donate");
   };
 
   return (
@@ -67,14 +60,14 @@ export default function Navbar() {
               {link.label}
             </button>
           ))}
-          <button
+          <a
+            href="/donate"
             data-testid="nav-donate-btn"
-            onClick={donate}
             className="flex items-center gap-2 rounded-full bg-emerald-600 px-6 py-2.5 text-[13px] font-semibold text-white shadow-md shadow-emerald-600/25 transition-all duration-300 hover:bg-emerald-500 hover:shadow-lg hover:shadow-emerald-600/30 hover:-translate-y-0.5"
           >
             <Heart className="w-4 h-4 fill-current" />
             Donate Now
-          </button>
+          </a>
         </nav>
 
         <button
@@ -107,14 +100,14 @@ export default function Navbar() {
                   {link.label}
                 </button>
               ))}
-              <button
+              <a
+                href="/donate"
                 data-testid="nav-mobile-donate-btn"
-                onClick={donate}
                 className="mt-2 w-fit flex items-center gap-2 rounded-full bg-emerald-600 text-white px-6 py-3 text-sm font-semibold"
               >
                 <Heart className="w-4 h-4 fill-current" />
                 Donate Now
-              </button>
+              </a>
             </div>
           </motion.nav>
         )}

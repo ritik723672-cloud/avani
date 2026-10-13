@@ -105,6 +105,11 @@ Single-page website for AVANI Foundation ("Advancing Vision, Ambition and New In
 - hello@avanifoundation.org deliverability VERIFIED (provider accepted test mail) and real /api/enquiries flow returns email_sent:true to hello@
 - .env.example updated (Hostinger SMTP example + mailbox-warning note); DEPLOYMENT.md table updated; zero hardcoded addresses in server.py
 
+## Iteration 21 (2026-07-13) — per-route meta completed + Emergent email proxy removed
+- /donate now has its own title/description/canonical/OG via react-helmet-async Seo component; static home meta removed on donate (id-based swap), restored on home. Verified: exactly 1 description per route, works on direct load and SPA navigation. (Needed a frontend restart — dev server was serving cached index.html)
+- Contact form email switched from Emergent proxy to real SMTP: EMAIL_BACKEND=smtp, SMTP_HOST=smtp.hostinger.com, port 465 SSL, SMTP_USER=data@avanifoundation.org. Verified in logs: backend now authenticates directly with Hostinger (535 auth error because SMTP_PASSWORD is EMPTY — waiting on user's Hostinger mailbox password). Emergent proxy no longer used; EMERGENT_EMAIL_KEY removed from backend/.env
+- Until SMTP_PASSWORD is set, enquiries are still stored in MongoDB but NOT emailed (email_sent:false)
+
 ## Known Issues
 - Email delivery to data@avanifoundation.org FAILS: provider reports the mailbox is undeliverable (domain email not configured). Enquiries ARE stored in MongoDB regardless. Fix: user sets up email hosting for avanifoundation.org (MX records) OR provides an alternative inbox to put in ENQUIRY_RECIPIENT_EMAIL in /app/backend/.env
 - Instagram / LinkedIn shown as "Coming soon" placeholders

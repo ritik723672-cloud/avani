@@ -133,6 +133,23 @@ Single-page website for AVANI Foundation ("Advancing Vision, Ambition and New In
 - Verified end-to-end: seed, wrong-password 401, login, /me, protected PUT, public GET reflects, UI login → edit → QR upload → save → /donate shows changes. Test data reset to placeholders after verification
 - robots.txt now disallows /admin
 
+## Iteration 26 (2026-07-14) — CMS list editors (Focus Areas + Programmes) + image size hints
+- Backend: SiteContent extended with focus_areas (icon/title/tagline/text, max 12) and initiatives (icon/text, max 12); PUT /api/admin/content/site validates (422 over 12), GET /api/content/site public
+- Frontend: NEW /app/frontend/src/lib/icons.js — 25 curated lucide icons stored as string names, iconFor() resolver; site.js FOCUS_AREAS/INITIATIVES converted to icon-name strings
+- content.jsx defaults + array merge (empty array → built-in 7 focus areas / 6 initiatives fallback)
+- FocusAreas.jsx: renders content.focusAreas with repeating 5-pattern bento spans (any item count tiles); Programmes.jsx renders content.initiatives; Partner.jsx Get-Involved photo switched to CMS contentImg (was hardcoded IMAGES.founderEvent)
+- Admin: Focus Areas + Programmes list editors (add/edit/delete/move up-down, icon dropdown with live preview); per-image-slot recommended size hints (hero 1000×1250 4:5, womenCircle 1200×1000, programmes 1200×800 3:2, founderPortrait 900×1100, founderEvent 1200×500, founderG20 1600×550) + QR 500×500 square hint
+- Testing agent iteration_1: backend 8/8 pytest (/app/backend/tests/test_cms_lists.py), all frontend flows pass, test data cleaned
+
+## Iteration 27 (2026-07-14) — Admin dashboard redesign (categorized, English-only, Branding category)
+- User feedback: admin looked messy, remove Hindi, separate category per section, logo change option
+- Admin.jsx rebuilt: 8-tab categorized dashboard (Overview, Branding & Logo, Donation Details, Contact & Social, Website Text, Focus Areas, Programmes, Website Photos) — sidebar on desktop, horizontal scrollable pills on mobile; ALL text now English
+- Overview tab: 6 quick-access stat cards (logo status, donate live/placeholder, focus area count, initiatives count, customized photos x/7, contact email) + quick tips
+- Sticky SaveBar per tab (dark pill, bottom-right) with "Unsaved changes" badge; donate saves via /admin/content/donate, everything else via /admin/content/site
+- NEW Branding & Logo category: logo upload (site.images.logo, 400×400 square hint), preview, reset-to-default; Navbar + Footer now render logo via contentImg
+- design_guidelines.json blueprint from design_agent; all legacy data-testids preserved + new admin-tab-{id}, admin-panel-{id}, admin-logo-*, admin-unsaved-badge, admin-overview-*
+- Testing agent iteration_2: 100% pass (logo upload→homepage→reset verified, no Hindi chars, mobile OK, cleanup done)
+
 ## Known Issues
 - Email delivery to data@avanifoundation.org FAILS: provider reports the mailbox is undeliverable (domain email not configured). Enquiries ARE stored in MongoDB regardless. Fix: user sets up email hosting for avanifoundation.org (MX records) OR provides an alternative inbox to put in ENQUIRY_RECIPIENT_EMAIL in /app/backend/.env
 - Instagram / LinkedIn shown as "Coming soon" placeholders

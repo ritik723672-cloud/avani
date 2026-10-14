@@ -1,0 +1,24 @@
+{
+  "summary": "Full regression + new tabbed admin dashboard testing (frontend + backend). Backend pytest 8/8 passed. Frontend Playwright: admin login OK, all 8 tabs render (overview/branding/donate/contact/text/focus_areas/initiatives/images), 6 overview quick-access cards work and switch tabs on click, Branding & Logo tab shows preview + '400x400' hint, logo upload stores base64, Unsaved badge appears while dirty and disappears after save, uploaded logo propagates to public homepage navbar img (data:image/png base64 confirmed), 'Default' reset restores /assets/logo.jpg on homepage, Donate tab shows all 5 bank inputs with original placeholder values intact (restored not changed) + QR 500x500 hint, Contact tab has all 5 inputs, Website Text tab renders, Focus Areas tab renders 7 defaults, Programmes tab renders 6 defaults, Images tab shows all 6 image hints, mobile 390px tab nav is horizontally scrollable and panels still render. NO Devanagari/Hindi characters anywhere on admin page. Final cleanup: logo reset + saved (homepage back to /assets/logo.jpg); donate placeholder values untouched; focus_areas/initiatives arrays were not modified.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/test_cms_lists.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Admin.jsx is now 1071 lines — single-file dashboard with 8 inline panels. Suggest extracting each tab panel into /components/admin/*.jsx (OverviewPanel, BrandingPanel, DonatePanel, etc.) for maintainability. Not blocking.",
+    "SaveBar renders the same data-testid 'admin-save-site-btn' inside every content tab (one at a time because only one panel is mounted). This is intentional and works, but a strict querySelectorAll would still see a single node — fine.",
+    "Logo stored as base64 in Mongo (SiteImagesContent.logo max_length=3_000_000 ~3MB). Fine for small square PNGs; consider external storage if logo grows.",
+    "contentImg() fallback chain for logo correctly uses IMAGE_DEFAULTS.logo (/assets/logo.jpg) when site.images.logo is empty — verified live on reset."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100% (8/8)", "frontend": "100% (all admin + homepage flows)"},
+  "test_credentials": "hello@avanifoundation.org / A8GBWCC3VVc0oN (unchanged from /app/memory/test_credentials.md)",
+  "seed_data_creation": "Logo was temporarily set to an 8x8 test PNG via admin UI and then reset to default via admin-logo-reset + Save. Public homepage verified to show /assets/logo.jpg again. No persistent test data remains. Donate placeholders unchanged. Focus areas / initiatives arrays unchanged (still empty in DB -> frontend falls back to 7 + 6 defaults).",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Admin UI rebuilt to tabs: data-testid pattern admin-tab-{id}, admin-panel-{id}, admin-overview-{key}, admin-logo-preview/upload/reset, admin-unsaved-badge. admin-save-site-btn is used by every non-donate tab (donate uses admin-save-btn). Only one panel is mounted at a time so testids are unique. Backend SiteImagesContent now includes 'logo' field (base64, max 3MB). Full regression suite at /app/backend/tests/test_cms_lists.py — run via pytest /app/backend/tests/ -v.",
+  "rca of the issue": "No bugs found. All features in the review request work as specified."
+}

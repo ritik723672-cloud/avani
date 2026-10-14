@@ -127,6 +127,12 @@ Single-page website for AVANI Foundation ("Advancing Vision, Ambition and New In
 - Final verification (all in preview): yarn build clean (11 assets), backend health OK, valid enquiry → email_sent:true + confirmation_sent:true via Hostinger SMTP, secret scan clean (password only in backend/.env)
 - Export note: user is on trial plan — GitHub push is paid; VS Code editor reportedly doesn't open for them. They may need Emergent support for code export, or upgrade for Save-to-GitHub
 
+## Iteration 25 (2026-07-14) — Admin CMS at /admin
+- JWT admin auth (bcrypt, httpOnly cookies, 15-min access + 7-day refresh with transparent refresh, 5-attempt/15-min lockout), admin seeded from ADMIN_EMAIL/ADMIN_PASSWORD env
+- Content editor for Donate page: account name/number, IFSC, bank & branch, UPI ID, QR image upload (base64 in MongoDB, max 2MB). Public GET /api/content/donate; Donate.jsx fetches live with placeholder fallbacks
+- Verified end-to-end: seed, wrong-password 401, login, /me, protected PUT, public GET reflects, UI login → edit → QR upload → save → /donate shows changes. Test data reset to placeholders after verification
+- robots.txt now disallows /admin
+
 ## Known Issues
 - Email delivery to data@avanifoundation.org FAILS: provider reports the mailbox is undeliverable (domain email not configured). Enquiries ARE stored in MongoDB regardless. Fix: user sets up email hosting for avanifoundation.org (MX records) OR provides an alternative inbox to put in ENQUIRY_RECIPIENT_EMAIL in /app/backend/.env
 - Instagram / LinkedIn shown as "Coming soon" placeholders

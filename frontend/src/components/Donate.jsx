@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Landmark, Smartphone, QrCode, Copy, ArrowLeft, Mail, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 import { IMAGES, CONTACT } from "../data/site";
@@ -6,18 +6,37 @@ import { Reveal } from "./Reveal";
 import Seo from "./Seo";
 import Footer from "./Footer";
 
-const BANK = {
+const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+
+// Fallbacks if the CMS content has not been saved yet
+const DEFAULTS = {
   accountName: "AVANI Foundation",
   accountNumber: "XXXX XXXX XXXX",
   ifsc: "XXXX0000000",
   bankBranch: "To be updated",
+  upiId: "avanifoundation@upi",
+  qrImage: "",
 };
 
-const UPI_ID = "avanifoundation@upi";
-
 export default function Donate() {
+  const [bank, setBank] = useState(DEFAULTS);
+
   useEffect(() => {
     window.scrollTo(0, 0);
+    fetch(`${API}/content/donate`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (!data) return;
+        setBank({
+          accountName: data.account_name || DEFAULTS.accountName,
+          accountNumber: data.account_number || DEFAULTS.accountNumber,
+          ifsc: data.ifsc || DEFAULTS.ifsc,
+          bankBranch: data.bank_branch || DEFAULTS.bankBranch,
+          upiId: data.upi_id || DEFAULTS.upiId,
+          qrImage: data.qr_image || "",
+        });
+      })
+      .catch(() => {});
   }, []);
 
   const copy = (text, label) => {
@@ -113,14 +132,14 @@ export default function Donate() {
                   <dt className="text-[10px] uppercase tracking-[0.22em] text-avani-muted">
                     Account Name
                   </dt>
-                  <dd className="mt-1 font-medium text-avani-slate">{BANK.accountName}</dd>
+                  <dd className="mt-1 font-medium text-avani-slate">{bank.accountName}</dd>
                 </div>
                 <div>
                   <dt className="text-[10px] uppercase tracking-[0.22em] text-avani-muted">
                     Account Number
                   </dt>
                   <dd className="mt-1 font-medium text-avani-slate" data-testid="donate-account-number">
-                    {BANK.accountNumber}
+                    {bank.accountNumber}
                   </dd>
                 </div>
                 <div>
@@ -128,14 +147,14 @@ export default function Donate() {
                     IFSC Code
                   </dt>
                   <dd className="mt-1 font-medium text-avani-slate" data-testid="donate-ifsc">
-                    {BANK.ifsc}
+                    {bank.ifsc}
                   </dd>
                 </div>
                 <div>
                   <dt className="text-[10px] uppercase tracking-[0.22em] text-avani-muted">
                     Bank & Branch
                   </dt>
-                  <dd className="mt-1 font-medium text-avani-muted">{BANK.bankBranch}</dd>
+                  <dd className="mt-1 font-medium text-avani-muted">{bank.bankBranch}</dd>
                 </div>
               </dl>
             </div>
@@ -161,11 +180,11 @@ export default function Donate() {
                   data-testid="donate-upi-id"
                   className="font-mono text-sm text-avani-goldsoft truncate"
                 >
-                  {UPI_ID}
+                  {bank.upiId}
                 </span>
                 <button
                   data-testid="donate-upi-copy-btn"
-                  onClick={() => copy(UPI_ID, "UPI ID")}
+                  onClick={() => copy(bank.upiId, "UPI ID")}
                   className="shrink-0 flex items-center gap-1.5 rounded-full bg-avani-gold px-4 py-2 text-xs font-semibold text-avani-deep transition-colors duration-300 hover:bg-avani-goldsoft"
                 >
                   <Copy className="w-3.5 h-3.5" />
@@ -187,12 +206,23 @@ export default function Donate() {
               <h2 className="mt-5 font-serif uppercase text-xl tracking-wide text-avani-forest">
                 Scan & Pay
               </h2>
-              <div className="mt-6 aspect-square rounded-2xl border-2 border-dashed border-avani-forest/20 bg-avani-cream/60 flex flex-col items-center justify-center gap-3">
-                <QrCode className="w-10 h-10 text-avani-forest/30" />
-                <p className="text-xs text-avani-muted text-center px-6">
-                  UPI QR code coming soon — please donate via UPI ID until then
-                </p>
-              </div>
+              {bank.qrImage ? (
+                <div className="mt-6 aspect-square rounded-2xl border border-avani-forest/15 bg-white flex items-center justify-center p-4">
+                  <img
+                    src={bank.qrImage}
+                    alt="AVANI Foundation UPI QR code"
+                    data-testid="donate-qr-image"
+                    className="max-w-full max-h-full object-contain"
+                  />
+                </div>
+              ) : (
+                <div className="mt-6 aspect-square rounded-2xl border-2 border-dashed border-avani-forest/20 bg-avani-cream/60 flex flex-col items-center justify-center gap-3">
+                  <QrCode className="w-10 h-10 text-avani-forest/30" />
+                  <p className="text-xs text-avani-muted text-center px-6">
+                    UPI QR code coming soon — please donate via UPI ID until then
+                  </p>
+                </div>
+              )}
             </div>
           </Reveal>
         </div>
@@ -212,8 +242,7 @@ export default function Donate() {
                 >
                   {CONTACT.email}
                 </a>{" "}
-                and we will send your receipt. Bank and UPI details are being
-                updated shortly.
+                and we will send your receipt.
               </p>
               <span className="sm:ml-auto flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-avani-muted shrink-0">
                 <Mail className="w-4 h-4 text-avani-amber" />

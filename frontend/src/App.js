@@ -16,6 +16,7 @@ import Partner from "@/components/Partner";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import Donate from "@/components/Donate";
+import Admin from "@/components/Admin";
 import { Toaster } from "@/components/ui/sonner";
 
 function Home() {
@@ -63,6 +64,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/donate" element={<Donate />} />
+            <Route path="/admin" element={<Admin />} />
           </Routes>
           <Toaster position="bottom-right" richColors />
         </div>

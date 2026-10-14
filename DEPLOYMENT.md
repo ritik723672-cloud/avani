@@ -133,6 +133,12 @@ EMAIL_REPLY_TO="hello@avanifoundation.org"
 ENQUIRY_RECIPIENT_EMAIL="hello@avanifoundation.org"
 AUTOREPLY_FROM="hello@avanifoundation.org"
 AUTOREPLY_REPLY_TO="data@avanifoundation.org"
+
+# Admin panel (/admin) — Website Content Editor for Donate page details
+# Generate your own secret: openssl rand -hex 32
+JWT_SECRET="<random-64-char-hex>"
+ADMIN_EMAIL="hello@avanifoundation.org"
+ADMIN_PASSWORD="<strong-password>"
 ```
 
 **Sender authorization note:** the visitor thank-you email uses `AUTOREPLY_FROM` (`hello@`) as sender. This was tested and Hostinger accepted it (both mailboxes on the same account). If your provider ever rejects it, the backend automatically falls back to sending from `EMAIL_FROM` (`data@`) and logs a warning — no mail is lost. To make `hello@` a permanent authorized sender, ensure the mailbox exists in Hostinger (hPanel → Emails) or is an alias of the `data@` account.

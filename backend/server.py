@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter, HTTPException, Request
+from fastapi import FastAPI, APIRouter, HTTPException, Request, Response
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -10,12 +10,14 @@ import logging
 import uuid
 import httpx
 import aiosmtplib
+import bcrypt
+import jwt
 from collections import defaultdict, deque
 from email.message import EmailMessage
 from pathlib import Path
 from pydantic import BaseModel, Field, EmailStr
 from typing import Optional
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from html import escape
 from html.parser import HTMLParser
 from urllib.parse import urlparse
@@ -54,10 +56,16 @@ RESEND_API_URL = "https://api.resend.com/emails"
 EMERGENT_EMAIL_KEY = os.environ.get("EMERGENT_EMAIL_KEY")
 EMERGENT_EMAIL_BASE_URL = "https://integrations.emergentagent.com"
 
+# ---- Auth ----
+JWT_ALGORITHM = "HS256"
+
 # ---- Spam protection ----
 RATE_LIMIT = int(os.environ.get("ENQUIRY_RATE_LIMIT", "5"))        # max submissions
 RATE_WINDOW = int(os.environ.get("ENQUIRY_RATE_WINDOW", "3600"))   # per seconds, per IP
 _attempts = defaultdict(deque)
+
+LOGIN_MAX_ATTEMPTS = 5
+LOGIN_LOCK_MINUTES = 15
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -222,6 +230,171 @@ async def send_email(*, to: str, subject: str, html: str,
     if EMAIL_BACKEND == "emergent":
         return await _send_emergent(to, subject, html)
     raise HTTPException(status_code=500, detail=f"Unknown EMAIL_BACKEND: {EMAIL_BACKEND}")
+
+
+# ---- Auth helpers ----
+
+def hash_password(password: str) -> str:
+    return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
+
+
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    return bcrypt.checkpw(plain_password.encode("utf-8"), hashed_password.encode("utf-8"))
+
+
+def create_access_token(user_id: str, email: str) -> str:
+    payload = {"sub": user_id, "email": email, "type": "access",
+               "exp": datetime.now(timezone.utc) + timedelta(minutes=15)}
+    return jwt.encode(payload, os.environ["JWT_SECRET"], algorithm=JWT_ALGORITHM)
+
+
+def create_refresh_token(user_id: str) -> str:
+    payload = {"sub": user_id, "type": "refresh",
+               "exp": datetime.now(timezone.utc) + timedelta(days=7)}
+    return jwt.encode(payload, os.environ["JWT_SECRET"], algorithm=JWT_ALGORITHM)
+
+
+def _set_auth_cookies(response: Response, user_id: str, email: str) -> None:
+    response.set_cookie("access_token", create_access_token(user_id, email),
+                        httponly=True, secure=True, samesite="lax", max_age=900, path="/")
+    response.set_cookie("refresh_token", create_refresh_token(user_id),
+                        httponly=True, secure=True, samesite="lax", max_age=604800, path="/")
+
+
+async def get_current_admin(request: Request) -> dict:
+    token = request.cookies.get("access_token")
+    if not token:
+        auth_header = request.headers.get("Authorization", "")
+        if auth_header.startswith("Bearer "):
+            token = auth_header[7:]
+    if not token:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    try:
+        payload = jwt.decode(token, os.environ["JWT_SECRET"], algorithms=[JWT_ALGORITHM])
+    except jwt.ExpiredSignatureError:
+        # transparent refresh via refresh_token cookie
+        refresh = request.cookies.get("refresh_token")
+        if refresh:
+            try:
+                rpayload = jwt.decode(refresh, os.environ["JWT_SECRET"], algorithms=[JWT_ALGORITHM])
+                if rpayload.get("type") == "refresh":
+                    payload = {"sub": rpayload["sub"], "type": "access"}
+            except jwt.InvalidTokenError:
+                pass
+        if payload.get("exp"):  # still expired and refresh failed
+            raise HTTPException(status_code=401, detail="Token expired")
+    except jwt.InvalidTokenError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+    user = await db.users.find_one({"id": payload["sub"]})
+    if not user or user.get("role") != "admin":
+        raise HTTPException(status_code=401, detail="Not authorized")
+    return {"id": user["id"], "email": user["email"], "role": user["role"]}
+
+
+async def seed_admin() -> None:
+    admin_email = os.environ.get("ADMIN_EMAIL", "").lower()
+    admin_password = os.environ.get("ADMIN_PASSWORD", "")
+    if not admin_email or not admin_password:
+        logger.warning("ADMIN_EMAIL/ADMIN_PASSWORD not set — admin panel disabled")
+        return
+    existing = await db.users.find_one({"email": admin_email})
+    if existing is None:
+        await db.users.insert_one({
+            "id": str(uuid.uuid4()),
+            "email": admin_email,
+            "password_hash": hash_password(admin_password),
+            "name": "Admin",
+            "role": "admin",
+            "created_at": datetime.now(timezone.utc).isoformat(),
+        })
+        logger.info(f"Admin user seeded: {admin_email}")
+    elif not verify_password(admin_password, existing["password_hash"]):
+        await db.users.update_one({"email": admin_email},
+                                  {"$set": {"password_hash": hash_password(admin_password)}})
+        logger.info(f"Admin password reconciled from env: {admin_email}")
+
+
+class AdminLogin(BaseModel):
+    email: EmailStr
+    password: str = Field(min_length=1, max_length=200)
+
+
+@api_router.post("/admin/login")
+async def admin_login(payload: AdminLogin, request: Request, response: Response):
+    email = payload.email.lower()
+    ip = request.client.host if request.client else "unknown"
+    identifier = f"{ip}:{email}"
+
+    attempt = await db.login_attempts.find_one({"identifier": identifier})
+    if attempt and attempt.get("locked_until"):
+        locked_until = datetime.fromisoformat(attempt["locked_until"])
+        if datetime.now(timezone.utc) < locked_until:
+            raise HTTPException(status_code=423, detail="Too many failed attempts. Try again in 15 minutes.")
+
+    user = await db.users.find_one({"email": email})
+    if not user or user.get("role") != "admin" or not verify_password(payload.password, user["password_hash"]):
+        await db.login_attempts.update_one(
+            {"identifier": identifier},
+            {"$inc": {"count": 1}, "$set": {"identifier": identifier}},
+            upsert=True,
+        )
+        updated = await db.login_attempts.find_one({"identifier": identifier})
+        if updated and updated.get("count", 0) >= LOGIN_MAX_ATTEMPTS:
+            await db.login_attempts.update_one(
+                {"identifier": identifier},
+                {"$set": {"locked_until": (datetime.now(timezone.utc) + timedelta(minutes=LOGIN_LOCK_MINUTES)).isoformat(),
+                          "count": 0}},
+            )
+        raise HTTPException(status_code=401, detail="Invalid email or password")
+
+    await db.login_attempts.delete_one({"identifier": identifier})
+    _set_auth_cookies(response, user["id"], user["email"])
+    return {"id": user["id"], "email": user["email"], "role": user["role"]}
+
+
+@api_router.post("/admin/logout")
+async def admin_logout(response: Response):
+    response.delete_cookie("access_token", path="/")
+    response.delete_cookie("refresh_token", path="/")
+    return {"status": "logged_out"}
+
+
+@api_router.get("/admin/me")
+async def admin_me(request: Request):
+    return await get_current_admin(request)
+
+
+# ---- Editable site content ----
+
+class DonateContent(BaseModel):
+    account_name: str = Field(default="AVANI Foundation", max_length=120)
+    account_number: str = Field(default="XXXX XXXX XXXX", max_length=40)
+    ifsc: str = Field(default="XXXX0000000", max_length=20)
+    bank_branch: str = Field(default="To be updated", max_length=160)
+    upi_id: str = Field(default="avanifoundation@upi", max_length=80)
+    qr_image: str = Field(default="", max_length=3_000_000)  # base64 data URL
+
+
+@api_router.get("/content/donate")
+async def get_donate_content():
+    doc = await db.site_content.find_one({"key": "donate"}, {"_id": 0})
+    if not doc:
+        return DonateContent().model_dump()
+    doc.pop("key", None)
+    doc.pop("updated_at", None)
+    return doc
+
+
+@api_router.put("/admin/content/donate")
+async def put_donate_content(payload: DonateContent, request: Request):
+    await get_current_admin(request)
+    await db.site_content.update_one(
+        {"key": "donate"},
+        {"$set": {**payload.model_dump(), "key": "donate",
+                  "updated_at": datetime.now(timezone.utc).isoformat()}},
+        upsert=True,
+    )
+    return {"status": "saved"}
 
 
 class EnquiryCreate(BaseModel):
@@ -404,6 +577,13 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.on_event("startup")
+async def startup():
+    await db.users.create_index("email", unique=True)
+    await db.login_attempts.create_index("identifier")
+    await seed_admin()
 
 
 @app.on_event("shutdown")

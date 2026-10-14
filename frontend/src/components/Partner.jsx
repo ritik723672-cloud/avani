@@ -1,9 +1,11 @@
 import { Handshake, HeartHandshake, ArrowRight } from "lucide-react";
-import { IMAGES, PARTNER_GROUPS, INVOLVE_WAYS } from "../data/site";
+import { PARTNER_GROUPS, INVOLVE_WAYS } from "../data/site";
 import { Reveal } from "./Reveal";
 import { scrollToId } from "../lib/scroll";
+import { useContent, contentImg } from "../lib/content";
 
 export default function Partner() {
+  const content = useContent();
   return (
     <section
       id="partner"
@@ -88,7 +90,7 @@ export default function Partner() {
               </ul>
               <div className="mt-8 overflow-hidden rounded-2xl border border-avani-forest/10 shadow-lg shadow-avani-forest/10">
                 <img
-                  src={IMAGES.founderEvent}
+                  src={contentImg(content, "founderEvent")}
                   alt="AVANI founder distributing learning material to children at a community event"
                   data-testid="get-involved-image"
                   className="w-full h-60 sm:h-52 object-cover object-[center_35%] hover:scale-105 transition-transform duration-[1.4s] ease-out"

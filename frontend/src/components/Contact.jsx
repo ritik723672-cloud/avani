@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Mail, MapPin, Instagram, Linkedin, Send, LoaderCircle } from "lucide-react";
 import { toast } from "sonner";
-import { CONTACT, INTERESTS } from "../data/site";
+import { INTERESTS } from "../data/site";
 import { Reveal, SectionHeading } from "./Reveal";
+import { useContent } from "../lib/content";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -16,6 +17,7 @@ const INITIAL = {
 };
 
 export default function Contact() {
+  const content = useContent();
   const [form, setForm] = useState(INITIAL);
   const [sending, setSending] = useState(false);
 
@@ -34,7 +36,7 @@ export default function Contact() {
       toast.success("Thank you — your enquiry has been sent. We will be in touch soon.");
       setForm(INITIAL);
     } catch {
-      toast.error(`Something went wrong. Please email us directly at ${CONTACT.email}.`);
+      toast.error(`Something went wrong. Please email us directly at ${content.contact.email}.`);
     } finally {
       setSending(false);
     }
@@ -68,7 +70,7 @@ export default function Contact() {
             <Reveal delay={0.1}>
               <a
                 data-testid="contact-email-link"
-                href={`mailto:${CONTACT.email}`}
+                href={`mailto:${content.contact.email}`}
                 className="flex items-center gap-4 group"
               >
                 <span className="flex items-center justify-center w-11 h-11 rounded-full bg-avani-forest text-avani-goldsoft group-hover:bg-avani-moss transition-colors duration-300">
@@ -79,7 +81,7 @@ export default function Contact() {
                     Email
                   </span>
                   <span className="block text-sm font-medium text-avani-forest group-hover:text-avani-amber transition-colors">
-                    {CONTACT.email}
+                    {content.contact.email}
                   </span>
                 </span>
               </a>
@@ -94,46 +96,84 @@ export default function Contact() {
                     Location
                   </span>
                   <span className="block text-sm font-medium text-avani-forest">
-                    {CONTACT.location}
+                    {content.contact.location}
                   </span>
                 </span>
               </div>
             </Reveal>
             <Reveal delay={0.26}>
-              <a
-                data-testid="contact-instagram-link"
-                href={CONTACT.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-4 group"
-              >
-                <span className="flex items-center justify-center w-11 h-11 rounded-full bg-avani-forest text-avani-goldsoft group-hover:bg-avani-moss transition-colors duration-300">
-                  <Instagram className="w-5 h-5" />
-                </span>
-                <span>
-                  <span className="block text-[10px] uppercase tracking-[0.25em] text-avani-muted">
-                    Instagram
+              {content.contact.instagram ? (
+                <a
+                  data-testid="contact-instagram-link"
+                  href={content.contact.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-4 group"
+                >
+                  <span className="flex items-center justify-center w-11 h-11 rounded-full bg-avani-forest text-avani-goldsoft group-hover:bg-avani-moss transition-colors duration-300">
+                    <Instagram className="w-5 h-5" />
                   </span>
-                  <span className="block text-sm font-medium text-avani-forest group-hover:text-avani-amber transition-colors" data-testid="contact-instagram">
-                    {CONTACT.instagramHandle}
+                  <span>
+                    <span className="block text-[10px] uppercase tracking-[0.25em] text-avani-muted">
+                      Instagram
+                    </span>
+                    <span className="block text-sm font-medium text-avani-forest group-hover:text-avani-amber transition-colors" data-testid="contact-instagram">
+                      {content.contact.instagram_handle || content.contact.instagram}
+                    </span>
                   </span>
-                </span>
-              </a>
+                </a>
+              ) : (
+                <div className="flex items-center gap-4">
+                  <span className="flex items-center justify-center w-11 h-11 rounded-full bg-avani-forest text-avani-goldsoft">
+                    <Instagram className="w-5 h-5" />
+                  </span>
+                  <span>
+                    <span className="block text-[10px] uppercase tracking-[0.25em] text-avani-muted">
+                      Instagram
+                    </span>
+                    <span className="block text-sm font-medium text-avani-muted" data-testid="contact-instagram">
+                      Coming soon
+                    </span>
+                  </span>
+                </div>
+              )}
             </Reveal>
             <Reveal delay={0.34}>
-              <div className="flex items-center gap-4">
-                <span className="flex items-center justify-center w-11 h-11 rounded-full bg-avani-forest text-avani-goldsoft">
-                  <Linkedin className="w-5 h-5" />
-                </span>
-                <span>
-                  <span className="block text-[10px] uppercase tracking-[0.25em] text-avani-muted">
-                    LinkedIn
+              {content.contact.linkedin ? (
+                <a
+                  data-testid="contact-linkedin-link"
+                  href={content.contact.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-4 group"
+                >
+                  <span className="flex items-center justify-center w-11 h-11 rounded-full bg-avani-forest text-avani-goldsoft group-hover:bg-avani-moss transition-colors duration-300">
+                    <Linkedin className="w-5 h-5" />
                   </span>
-                  <span className="block text-sm font-medium text-avani-muted" data-testid="contact-linkedin">
-                    Coming soon
+                  <span>
+                    <span className="block text-[10px] uppercase tracking-[0.25em] text-avani-muted">
+                      LinkedIn
+                    </span>
+                    <span className="block text-sm font-medium text-avani-forest group-hover:text-avani-amber transition-colors" data-testid="contact-linkedin">
+                      AVANI Foundation
+                    </span>
                   </span>
-                </span>
-              </div>
+                </a>
+              ) : (
+                <div className="flex items-center gap-4">
+                  <span className="flex items-center justify-center w-11 h-11 rounded-full bg-avani-forest text-avani-goldsoft">
+                    <Linkedin className="w-5 h-5" />
+                  </span>
+                  <span>
+                    <span className="block text-[10px] uppercase tracking-[0.25em] text-avani-muted">
+                      LinkedIn
+                    </span>
+                    <span className="block text-sm font-medium text-avani-muted" data-testid="contact-linkedin">
+                      Coming soon
+                    </span>
+                  </span>
+                </div>
+              )}
             </Reveal>
           </div>
         </div>

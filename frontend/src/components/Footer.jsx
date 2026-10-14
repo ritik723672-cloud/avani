@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { Mail, MapPin } from "lucide-react";
-import { IMAGES, CONTACT } from "../data/site";
+import { IMAGES } from "../data/site";
 import { scrollToId } from "../lib/scroll";
+import { useContent } from "../lib/content";
 
 const QUICK_LINKS = [
   { label: "About Us", href: "#about", testId: "footer-link-about" },
@@ -13,6 +14,7 @@ const QUICK_LINKS = [
 
 export default function Footer() {
   const navigate = useNavigate();
+  const content = useContent();
 
   const go = (href) => {
     if (document.querySelector(href)) {
@@ -65,19 +67,19 @@ export default function Footer() {
           <div className="flex flex-col gap-2">
             <a
               data-testid="footer-email-link"
-              href={`mailto:${CONTACT.email}`}
+              href={`mailto:${content.contact.email}`}
               className="flex items-center gap-2.5 text-[13px] text-avani-slate hover:text-avani-amber transition-colors"
             >
               <span className="flex items-center justify-center w-7 h-7 rounded-full bg-avani-forest text-avani-goldsoft">
                 <Mail className="w-3.5 h-3.5" />
               </span>
-              {CONTACT.email}
+              {content.contact.email}
             </a>
             <p className="flex items-center gap-2.5 text-[13px] text-avani-muted">
               <span className="flex items-center justify-center w-7 h-7 rounded-full bg-avani-forest text-avani-goldsoft">
                 <MapPin className="w-3.5 h-3.5" />
               </span>
-              {CONTACT.location}
+              {content.contact.location}
             </p>
           </div>
         </div>

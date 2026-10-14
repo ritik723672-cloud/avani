@@ -1,21 +1,23 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus } from "lucide-react";
-import { FOCUS_AREAS } from "../data/site";
 import { Reveal, SectionHeading } from "./Reveal";
+import { useContent } from "../lib/content";
+import { iconFor } from "../lib/icons";
 
-const SPANS = [
+// Bento spans repeat in a 5-card rhythm so any number of items lays out cleanly
+const SPAN_PATTERN = [
   "lg:col-span-3",
   "lg:col-span-3",
   "lg:col-span-2",
   "lg:col-span-2",
   "lg:col-span-2",
-  "lg:col-span-3",
-  "lg:col-span-3",
 ];
 
 export default function FocusAreas() {
   const [open, setOpen] = useState(0);
+  const content = useContent();
+  const areas = content.focusAreas;
 
   return (
     <section
@@ -42,11 +44,11 @@ export default function FocusAreas() {
         </div>
 
         <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-6 gap-5">
-          {FOCUS_AREAS.map((area, i) => {
-            const Icon = area.icon;
+          {areas.map((area, i) => {
+            const Icon = iconFor(area.icon);
             const isOpen = open === i;
             return (
-              <Reveal key={area.title} delay={i * 0.06} className={SPANS[i]}>
+              <Reveal key={`${i}-${area.title}`} delay={i * 0.06} className={SPAN_PATTERN[i % SPAN_PATTERN.length]}>
                 <button
                   data-testid={`focus-area-toggle-${i + 1}`}
                   onClick={() => setOpen(isOpen ? -1 : i)}

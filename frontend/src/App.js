@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import Lenis from "lenis";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
+import { ContentProvider } from "@/lib/content";
 import "@/App.css";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
@@ -60,14 +61,16 @@ function App() {
   return (
     <BrowserRouter>
       <HelmetProvider>
-        <div className="App bg-avani-ivory text-avani-slate font-sans antialiased">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/donate" element={<Donate />} />
-            <Route path="/admin" element={<Admin />} />
-          </Routes>
-          <Toaster position="bottom-right" richColors />
-        </div>
+        <ContentProvider>
+          <div className="App bg-avani-ivory text-avani-slate font-sans antialiased">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/donate" element={<Donate />} />
+              <Route path="/admin" element={<Admin />} />
+            </Routes>
+            <Toaster position="bottom-right" richColors />
+          </div>
+        </ContentProvider>
       </HelmetProvider>
     </BrowserRouter>
   );

@@ -1,8 +1,11 @@
 import { ArrowRight } from "lucide-react";
-import { INITIATIVES, APPROACH, IMAGES } from "../data/site";
+import { APPROACH } from "../data/site";
 import { Reveal, SectionHeading } from "./Reveal";
+import { useContent, contentImg } from "../lib/content";
+import { iconFor } from "../lib/icons";
 
 export default function Programmes() {
+  const content = useContent();
   return (
     <section
       id="programmes"
@@ -64,7 +67,7 @@ export default function Programmes() {
               <div className="relative mb-6">
                 <div className="overflow-hidden rounded-[2rem] rounded-tl-[6rem] border border-avani-deep/20 shadow-2xl shadow-avani-deep/25">
                   <img
-                    src={IMAGES.programmes}
+                    src={contentImg(content, "programmes")}
                     alt="Indian women learning together at a community programme"
                     data-testid="programmes-image"
                     className="w-full h-64 sm:h-80 object-cover hover:scale-105 transition-transform duration-[1.4s] ease-out"
@@ -90,10 +93,10 @@ export default function Programmes() {
         </Reveal>
 
         <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {INITIATIVES.map((item, i) => {
-            const Icon = item.icon;
+          {content.initiatives.map((item, i) => {
+            const Icon = iconFor(item.icon);
             return (
-              <Reveal key={item.text} delay={i * 0.07} className="h-full">
+              <Reveal key={`${i}-${item.text}`} delay={i * 0.07} className="h-full">
                 <div
                   data-testid={`programme-initiative-${i + 1}`}
                   className="group relative h-full rounded-2xl border border-avani-deep/10 bg-white p-7 overflow-hidden hover:border-avani-deep/40 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-avani-deep/20 transition-all duration-500"

@@ -1,6 +1,6 @@
 import { GraduationCap, Globe2, Users } from "lucide-react";
-import { IMAGES } from "../data/site";
 import { Reveal } from "./Reveal";
+import { useContent, contentImg } from "../lib/content";
 
 const CREDENTIALS = [
   {
@@ -18,6 +18,7 @@ const CREDENTIALS = [
 ];
 
 export default function Founder() {
+  const content = useContent();
   return (
     <section
       id="founder"
@@ -29,7 +30,7 @@ export default function Founder() {
           <Reveal>
             <div className="overflow-hidden rounded-t-[999px] rounded-b-[2rem] border border-avani-gold/35 shadow-2xl shadow-avani-forest/15 max-w-md">
               <img
-                src={IMAGES.founderPortrait}
+                src={contentImg(content, "founderPortrait")}
                 alt="Mani Pandey, Founder of AVANI Foundation, at the University of Oxford"
                 data-testid="founder-portrait"
                 className="w-full h-[26rem] sm:h-[30rem] object-cover hover:scale-105 transition-transform duration-[1.4s] ease-out"
@@ -110,7 +111,7 @@ export default function Founder() {
           <Reveal delay={0.15}>
             <div className="mt-4 relative overflow-hidden rounded-[2rem] border border-avani-gold/30 shadow-xl shadow-avani-forest/10">
               <img
-                src={IMAGES.founderG20}
+                src={contentImg(content, "founderG20")}
                 alt="Mani Pandey with international delegates at a G20 women's empowerment engagement"
                 data-testid="founder-g20-image"
                 className="w-full h-72 sm:h-96 object-cover object-center hover:scale-105 transition-transform duration-[1.4s] ease-out"

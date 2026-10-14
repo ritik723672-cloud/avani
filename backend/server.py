@@ -397,6 +397,82 @@ async def put_donate_content(payload: DonateContent, request: Request):
     return {"status": "saved"}
 
 
+class ContactInfoContent(BaseModel):
+    email: str = Field(default="", max_length=120)
+    location: str = Field(default="", max_length=120)
+    instagram: str = Field(default="", max_length=200)
+    instagram_handle: str = Field(default="", max_length=80)
+    linkedin: str = Field(default="", max_length=200)
+
+
+class HeroContent(BaseModel):
+    line1: str = Field(default="", max_length=80)
+    line2: str = Field(default="", max_length=80)
+    line3: str = Field(default="", max_length=80)
+    line4: str = Field(default="", max_length=80)
+    subtext: str = Field(default="", max_length=600)
+
+
+class AboutContent(BaseModel):
+    para1: str = Field(default="", max_length=1000)
+    para2: str = Field(default="", max_length=1000)
+    para3: str = Field(default="", max_length=1000)
+    vision: str = Field(default="", max_length=300)
+    mission: str = Field(default="", max_length=1000)
+
+
+class SiteImagesContent(BaseModel):
+    hero: str = Field(default="", max_length=3_000_000)
+    womenCircle: str = Field(default="", max_length=3_000_000)
+    programmes: str = Field(default="", max_length=3_000_000)
+    founderPortrait: str = Field(default="", max_length=3_000_000)
+    founderEvent: str = Field(default="", max_length=3_000_000)
+    founderG20: str = Field(default="", max_length=3_000_000)
+
+
+class FocusAreaItem(BaseModel):
+    icon: str = Field(default="sparkles", max_length=40)
+    title: str = Field(default="", max_length=120)
+    tagline: str = Field(default="", max_length=200)
+    text: str = Field(default="", max_length=1500)
+
+
+class InitiativeItem(BaseModel):
+    icon: str = Field(default="sparkles", max_length=40)
+    text: str = Field(default="", max_length=300)
+
+
+class SiteContent(BaseModel):
+    contact: ContactInfoContent = ContactInfoContent()
+    hero: HeroContent = HeroContent()
+    about: AboutContent = AboutContent()
+    images: SiteImagesContent = SiteImagesContent()
+    focus_areas: list[FocusAreaItem] = Field(default_factory=list, max_length=12)
+    initiatives: list[InitiativeItem] = Field(default_factory=list, max_length=12)
+
+
+@api_router.get("/content/site")
+async def get_site_content():
+    doc = await db.site_content.find_one({"key": "site"}, {"_id": 0})
+    if not doc:
+        return SiteContent().model_dump()
+    doc.pop("key", None)
+    doc.pop("updated_at", None)
+    return doc
+
+
+@api_router.put("/admin/content/site")
+async def put_site_content(payload: SiteContent, request: Request):
+    await get_current_admin(request)
+    await db.site_content.update_one(
+        {"key": "site"},
+        {"$set": {**payload.model_dump(), "key": "site",
+                  "updated_at": datetime.now(timezone.utc).isoformat()}},
+        upsert=True,
+    )
+    return {"status": "saved"}
+
+
 class EnquiryCreate(BaseModel):
     name: str = Field(min_length=2, max_length=120)
     email: EmailStr

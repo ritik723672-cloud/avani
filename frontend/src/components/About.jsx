@@ -1,8 +1,9 @@
 import { Eye, Compass } from "lucide-react";
-import { IMAGES } from "../data/site";
 import { Reveal, SectionHeading } from "./Reveal";
+import { useContent, contentImg } from "../lib/content";
 
 export default function About() {
+  const content = useContent();
   return (
     <section
       id="about"
@@ -15,7 +16,7 @@ export default function About() {
             <Reveal>
               <div className="overflow-hidden rounded-[2rem] rounded-tr-[7rem] border border-avani-gold/30 shadow-xl shadow-avani-forest/10">
                 <img
-                  src={IMAGES.womenCircle}
+                  src={contentImg(content, "womenCircle")}
                   alt="Women in vibrant saris gathered in a community circle"
                   data-testid="about-image"
                   className="w-full h-80 sm:h-[28rem] object-cover hover:scale-105 transition-transform duration-[1.4s] ease-out"
@@ -38,26 +39,17 @@ export default function About() {
             />
             <Reveal delay={0.15}>
               <p className="mt-7 text-avani-slate leading-relaxed">
-                AVANI Foundation is an emerging initiative dedicated to
-                advancing women's empowerment, digital inclusion and economic
-                independence.
+                {content.about.para1}
               </p>
             </Reveal>
             <Reveal delay={0.22}>
               <p className="mt-4 text-avani-muted leading-relaxed">
-                We aim to bridge the gap between a woman's potential and the
-                opportunities available to her. Through skills, guidance,
-                mentorship and access to resources, AVANI seeks to help women
-                and girls navigate a changing world with confidence and
-                purpose.
+                {content.about.para2}
               </p>
             </Reveal>
             <Reveal delay={0.29}>
               <p className="mt-4 text-avani-muted leading-relaxed">
-                Our approach recognises that every woman has her own
-                aspirations. Our role is to help her discover those
-                aspirations, build the capabilities to pursue them and access
-                opportunities to realise them.
+                {content.about.para3}
               </p>
             </Reveal>
 
@@ -72,26 +64,21 @@ export default function About() {
                     Our Vision
                   </h3>
                   <p className="mt-3 font-serif italic text-lg leading-relaxed text-avani-goldsoft/90">
-                    A world where every woman has the confidence to define her
-                    own future.
+                    {content.about.vision}
                   </p>
                 </div>
               </Reveal>
               <Reveal delay={0.2} className="h-full">
                 <div
                   data-testid="about-mission-card"
-                  className="h-full bg-avani-ivory rounded-2xl p-7 border border-avani-forest/12"
+                  className="h-full bg-white rounded-2xl p-7 border border-avani-forest/12"
                 >
                   <Compass className="w-6 h-6 text-avani-amber" />
                   <h3 className="mt-4 font-serif uppercase text-xl tracking-wide text-avani-forest">
                     Our Mission
                   </h3>
                   <p className="mt-3 text-sm leading-relaxed text-avani-muted">
-                    To bridge the gap between potential and opportunity by
-                    building confidence and equipping women with future-ready
-                    skills in AI, digital technologies, entrepreneurship and
-                    leadership — enabling meaningful careers, sustainable
-                    livelihoods and lifelong economic independence.
+                    {content.about.mission}
                   </p>
                 </div>
               </Reveal>

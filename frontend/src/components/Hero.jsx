@@ -1,17 +1,17 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, MoveDown } from "lucide-react";
-import { IMAGES } from "../data/site";
 import { scrollToId } from "../lib/scroll";
-
-const LINES = [
-  { text: "Every Woman", accent: false },
-  { text: "Deserves the", accent: false },
-  { text: "Opportunity to", accent: false },
-  { text: "Shape Her Future.", accent: true },
-];
+import { useContent, contentImg } from "../lib/content";
 
 export default function Hero() {
+  const content = useContent();
+  const lines = [
+    { text: content.hero.line1, accent: false },
+    { text: content.hero.line2, accent: false },
+    { text: content.hero.line3, accent: false },
+    { text: content.hero.line4, accent: true },
+  ];
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -46,8 +46,8 @@ export default function Hero() {
             data-testid="hero-headline"
             className="mt-6 font-serif uppercase text-avani-forest text-3xl sm:text-4xl lg:text-5xl leading-[1.08] tracking-tight"
           >
-            {LINES.map((line, i) => (
-              <span key={line.text} className="block overflow-hidden pb-1">
+            {lines.map((line, i) => (
+              <span key={i} className="block overflow-hidden pb-1">
                 <motion.span
                   className={`block ${
                     line.accent ? "italic normal-case text-avani-leaf" : ""
@@ -73,9 +73,7 @@ export default function Hero() {
             className="mt-7 max-w-xl text-base sm:text-lg leading-relaxed text-avani-muted"
             data-testid="hero-subtext"
           >
-            AVANI Foundation is being built to help women and girls turn their
-            potential into opportunity through digital skills, AI, content
-            creation, entrepreneurship, mentorship and access to opportunities.
+            {content.hero.subtext}
           </motion.p>
 
           <motion.div
@@ -111,7 +109,7 @@ export default function Hero() {
           >
             <div className="overflow-hidden rounded-[2rem] sm:rounded-t-[999px] border border-avani-gold/35 shadow-2xl shadow-avani-forest/20">
               <motion.img
-                src={IMAGES.girlTablet}
+                src={contentImg(content, "hero")}
                 alt="Young schoolgirl smiling with a tablet, learning digital skills"
                 data-testid="hero-image"
                 style={{ y: imgY }}
@@ -125,7 +123,7 @@ export default function Hero() {
               className="relative mt-5 sm:mt-0 sm:absolute sm:-bottom-6 sm:-left-4 lg:-left-8 bg-avani-forest text-avani-ivory rounded-2xl px-6 py-5 shadow-xl shadow-avani-forest/30 border border-avani-gold/25"
               data-testid="hero-approach-badge"
             >
-              <p className="text-[10px] uppercase tracking-[0.28em] text-avani-gold">
+              <p className="text-[10px] uppercase tracking-[0.28em] font-bold text-avani-gold">
                 Our Approach
               </p>
               <p className="mt-1.5 font-serif text-lg sm:text-xl tracking-wide">

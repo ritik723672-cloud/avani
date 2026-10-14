@@ -1,0 +1,25 @@
+{
+  "summary": "Backend + frontend testing of new CMS list editors (Focus Areas, Initiatives) and admin image-size hints. All 8 pytest cases pass. Playwright confirms admin login, 7 default focus areas + 6 default initiatives rendered after fallback, image hints present for all 6 image slots + QR 500x500 hint, add/reorder of a new focus area persists and renders on homepage (8 cards), and new initiative renders in Programmes section (7 cards). Test data was cleaned up via PUT with empty arrays — site now correctly falls back to built-in 7 focus areas / 6 initiatives on public GET.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/test_cms_lists.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Admin.jsx is 771 lines — consider splitting into DonateEditor, ContactEditor, TextEditor, ListEditor, ImageEditor sub-components for maintainability (not blocking).",
+    "Pydantic max_length validation returns 422 for list length > 12 as expected; frontend also enforces via toast — good double-guard.",
+    "Backend _assert_safe_email runs for every send_email path; good.",
+    "No ObjectId leak — all find_one queries use projection {_id:0}.",
+    "React keys use index (`${i}-${title}`) — fine since lists are rebuilt on content refresh."
+  ],
+  "updated_files": ["/app/backend/tests/test_cms_lists.py", "/app/test_reports/iteration_1.json"],
+  "success_rate": {"backend": "100% (8/8)", "frontend": "100% (all flows)"},
+  "test_credentials": "hello@avanifoundation.org / A8GBWCC3VVc0oN (from /app/memory/test_credentials.md)",
+  "seed_data_creation": "Transient test items (TEST_New Area focus area + TEST_New initiative) were created during Playwright flow and REMOVED afterwards. Final PUT with focus_areas:[] and initiatives:[] confirmed; public GET returns both arrays empty so frontend falls back to the 7 default focus areas and 6 default initiatives.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend regression suite at /app/backend/tests/test_cms_lists.py covers focus_areas/initiatives CRUD + max_length(12) + auth guard + donate regression. Run via: pytest /app/backend/tests/ -v. Admin dashboard at /admin uses httpOnly cookies (credentials: 'include'). FocusAreas uses a 5-length SPAN_PATTERN modulo so any item count tiles correctly; verified 8-card layout did not break visually.",
+  "rca of the issue": "No bugs found."
+}

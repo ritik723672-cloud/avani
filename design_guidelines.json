@@ -1,123 +1,133 @@
 {
-  "project_name": "AVANI Foundation Website",
-  "app_type": "landing_page",
-  "archetype": "ORGANIC & EARTHY meets SWISS EDITORIAL LUXURY",
-  "theme": "Light & Deep Forest Dual-Tone (Warm Ivory Canvas with Deep Forest Green & Gold Accent Sections)",
+  "design_system": {
+    "name": "AVANI Editorial-Luxury Admin CMS",
+    "theme": "light",
+    "archetype": "Organic & Earthy / Editorial Luxury",
+    "primary_color": "#152420",
+    "accent_color": "#D4AF37",
+    "background": "#F0F6F0",
+    "card_background": "#E4EEE5",
+    "text_color": "#1C2826",
+    "muted_text": "#55645C"
+  },
   "typography": {
-    "font_family_heading": "'Cormorant Garamond', Georgia, serif",
-    "font_family_body": "'Inter', system-ui, -apple-system, sans-serif",
-    "font_family_italic_accent": "'Cormorant Garamond', Georgia, serif",
-    "google_fonts_import": "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap",
-    "h1": "text-4xl sm:text-5xl lg:text-6xl font-light tracking-tight uppercase font-serif leading-[1.05]",
-    "h2": "text-2xl sm:text-3xl lg:text-4xl font-normal tracking-normal uppercase font-serif leading-snug",
-    "h3": "text-xl sm:text-2xl font-medium uppercase font-serif tracking-wide",
-    "body": "text-base font-normal leading-relaxed text-slate-700 dark:text-slate-300 font-sans",
-    "overline_label": "text-xs uppercase tracking-[0.25em] font-semibold text-emerald-800 font-sans",
-    "italic_highlight": "font-serif italic text-emerald-950 font-normal"
+    "heading_font": "Playfair Display, Georgia, serif",
+    "body_font": "Inter, system-ui, sans-serif",
+    "hierarchy": {
+      "h1": "text-2xl sm:text-3xl font-serif tracking-tight uppercase text-avani-forest",
+      "h2": "text-xl sm:text-2xl font-serif tracking-tight uppercase text-avani-forest",
+      "h3": "text-lg font-serif tracking-wide text-avani-forest",
+      "label": "text-[10px] sm:text-[11px] uppercase tracking-[0.25em] font-semibold text-avani-forest",
+      "body": "text-sm text-avani-slate leading-relaxed",
+      "caption": "text-xs text-avani-muted"
+    }
   },
   "colors": {
-    "primary_forest_green": "#0F2E23",
-    "forest_green_deep": "#0B241B",
-    "forest_green_light": "#1B4738",
-    "warm_ivory_bg": "#FDFBF7",
-    "cream_card_bg": "#F7F4EB",
-    "gold_accent": "#D4AF37",
-    "gold_amber": "#C59B27",
-    "gold_soft": "#EAD491",
-    "text_dark_slate": "#1C2826",
-    "text_muted": "#52635E",
-    "border_subtle": "rgba(15, 46, 35, 0.12)",
-    "border_gold": "rgba(212, 175, 55, 0.3)"
+    "avani-deep": "#0F1B16",
+    "avani-forest": "#152420",
+    "avani-moss": "#3E8B4F",
+    "avani-leaf": "#C59B27",
+    "avani-sand": "#F4EBD8",
+    "avani-ivory": "#F0F6F0",
+    "avani-cream": "#E4EEE5",
+    "avani-gold": "#D4AF37",
+    "avani-amber": "#C59B27",
+    "avani-goldsoft": "#EAD491",
+    "avani-slate": "#1C2826",
+    "avani-muted": "#55645C"
   },
-  "layout_and_spacing": {
-    "container_max_width": "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8",
-    "section_padding": "py-20 lg:py-28",
-    "hero_overlay": "bg-gradient-to-r from-[#0F2E23]/90 via-[#0F2E23]/60 to-transparent",
-    "bento_grid_mode": "MODE A: THE TETRIS GRID (Asymmetrical layout for focus areas and partner pathways)",
-    "card_padding": "p-6 sm:p-8 lg:p-10"
-  },
-  "image_urls": {
-    "hero_banner": "https://images.unsplash.com/photo-1692269725911-87697c558be1?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzV8MHwxfHNlYXJjaHwxfHxydXJhbCUyMGluZGlhbiUyMGdpcmxzJTIwbGFwdG9wJTIwc2Nob29sJTIwbGVhcm5pbmd8ZW58MHx8fHwxNzkxNzIxMDA2fDA&ixlib=rb-4.1.0&q=85",
-    "women_community_gathering": "https://images.unsplash.com/photo-1680759291020-79a92d38cdfd?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNTl8MHwxfHNlYXJjaHw0fHxpbmRpYW4lMjB3b21lbiUyMGVtcG93ZXJtZW50JTIwZWR1Y2F0aW9uJTIwY29tbXVuaXR5fGVufDB8fHx8MTc5MTcyMTAwNnww&ixlib=rb-4.1.0&q=85",
-    "founder_oxford_portrait": "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNDR8MHwxfHNlYXJjaHwxfHx3b21hbiUyMGZvdW5kZXIlMjBwb3J0cmFpdCUyMGxlYWRlciUyMGV4ZWN1dGl2ZXxlbnwwfHx8fDE3OTE3MjEwMDZ8MA&ixlib=rb-4.1.0&q=85",
-    "founder_community_outreach": "https://images.unsplash.com/photo-1587538018365-2a1f8b544c08?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNTl8MHwxfHNlYXJjaHwxfHxpbmRpYW4lMjB3b21lbiUyMGVtcG93ZXJtZW50JTIwZWR1Y2F0aW9uJTIwY29tbXVuaXR5fGVufDB8fHx8MTc5MTcyMTAwNnww&ixlib=rb-4.1.0&q=85",
-    "women_group_vibrant": "https://images.unsplash.com/flagged/photo-1577604981316-298e453a19dd?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNTl8MHwxfHNlYXJjaHwzfHxpbmRpYW4lMjB3b21lbiUyMGVtcG93ZXJtZW50JTIwZWR1Y2F0aW9uJTIwY29tbXVuaXR5fGVufDB8fHx8MTc5MTcyMTAwNnww&ixlib=rb-4.1.0&q=85",
-    "rural_girls_learning": "https://images.unsplash.com/flagged/photo-1568210386949-63a970860700?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzV8MHwxfHNlYXJjaHwzfHxydXJhbCUyMGluZGlhbiUyMGdpcmxzJTIwbGFwdG9wJTIwc2Nob29sJTIwbGVhcm5pbmd8ZW58MHx8fHwxNzkxNzIxMDA2fDA&ixlib=rb-4.1.0&q=85"
-  },
-  "key_components": [
-    {
-      "name": "NavigationHeader",
-      "description": "Sticky glassmorphism header with AVANI Foundation gold-leaf emblem logo, anchor navigation links (About, Approach, Focus Areas, Programmes, Founder, Contact), and action buttons.",
-      "test_id": "nav-header"
-    },
-    {
-      "name": "KineticHero",
-      "description": "High-impact hero with masked reveal headline 'Every Woman Deserves the Opportunity to Shape Her Future.', dual action CTAs, stat badges, and background imagery overlay.",
-      "test_id": "hero-section"
-    },
-    {
-      "name": "EditorialMarquee",
-      "description": "Slow, elegant scrolling editorial ribbon featuring core ethos statements like 'VISION • AMBITION • INDEPENDENCE • DIGITAL INCLUSION • CONFIDENCE'.",
-      "test_id": "editorial-marquee"
-    },
-    {
-      "name": "ThreeStageApproach",
-      "description": "Interactive visual showcase of Confidence → Capability → Career framework with tab switching, metrics, and transformation journey details.",
-      "test_id": "approach-section"
-    },
-    {
-      "name": "AboutSection",
-      "description": "Who We Are, Vision & Mission, emphasizing economic independence, digital inclusion, and women turning potential into opportunity.",
-      "test_id": "about-section"
-    },
-    {
-      "name": "FocusAreasGrid",
-      "description": "7 interactive focus area cards with custom icons, hover elevation, and expandable detail drawer/modals.",
-      "test_id": "focus-areas-section"
-    },
-    {
-      "name": "TargetAudienceSection",
-      "description": "Visual pill list & card grid highlighting who AVANI aims to support: rural women, young girls, creators/freelancers, entrepreneurs, mentees, underserved communities.",
-      "test_id": "target-audience-section"
-    },
-    {
-      "name": "ProgrammesRoadmap",
-      "description": "Detailed breakdown of AVANI's pilot-first programmes (Digital & AI Skills, Content Creation, Career Discovery, Entrepreneurship, Government Scheme Guidance, Leadership).",
-      "test_id": "programmes-section"
-    },
-    {
-      "name": "MeetFounderSection",
-      "description": "In-depth editorial profile of Mani Pandey (Founder), highlighting Oxford Global Politics, Symbiosis MBA, UN Women India, G20 EMPOWER, with dual portrait showcase.",
-      "test_id": "founder-section"
-    },
-    {
-      "name": "PartnerAndInvolvedSection",
-      "description": "Dual tabs or side-by-side section for CSR Teams, Govt, Universities, NGOs, Mentors, and Volunteers with clear action paths.",
-      "test_id": "partner-involved-section"
-    },
-    {
-      "name": "ContactSection",
-      "description": "Working interactive contact form integrated with FastAPI backend, displaying email (hello@avanifoundation.org), location (Uttar Pradesh, India), and social placeholders.",
-      "test_id": "contact-section"
-    },
-    {
-      "name": "Footer",
-      "description": "Luxury deep forest green footer with brand logo, quick anchor links, legal note, and tagline 'Empowering women to shape their own futures'.",
-      "test_id": "footer-section"
+  "visual_enhancers": {
+    "header": "Dark avani-deep background with golden border-b border-avani-gold/20 and glassmorphism backdrop blur",
+    "sidebar": "Clean segmented vertical navigation on desktop with rounded-2xl active tab highlighting (bg-avani-forest text-avani-goldsoft with gold indicator pill)",
+    "cards": "bg-avani-cream border border-avani-forest/10 rounded-[2rem] shadow-sm hover:shadow-md transition-all duration-300 p-6 sm:p-8",
+    "inputs": "w-full rounded-xl border border-avani-forest/15 bg-avani-ivory px-4 py-3 text-sm text-avani-slate placeholder:text-avani-muted/60 focus:outline-none focus:border-avani-gold focus:ring-2 focus:ring-avani-gold/20 transition-all",
+    "buttons": {
+      "primary": "rounded-full bg-avani-leaf px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-[#B08A20] active:scale-[0.98] transition-all flex items-center justify-center gap-2",
+      "secondary": "rounded-full border border-avani-forest/30 px-5 py-2.5 text-xs sm:text-sm font-semibold text-avani-forest hover:bg-avani-forest hover:text-avani-goldsoft transition-all",
+      "danger": "rounded-full border border-red-200 text-red-600 hover:bg-red-500 hover:text-white transition-all p-2"
     }
-  ],
+  },
+  "layout_and_architecture": {
+    "structure": "Sidebar + Main Content Panel (Desktop) / Sticky Horizontal Category Switcher (Mobile)",
+    "nav_categories": [
+      {
+        "id": "overview",
+        "label": "Overview",
+        "icon": "LayoutDashboard",
+        "description": "CMS status overview, quick stats, and fast access"
+      },
+      {
+        "id": "branding",
+        "label": "Branding & Logo",
+        "icon": "Sparkles",
+        "description": "Website logo, brand mark, and site header branding"
+      },
+      {
+        "id": "donate",
+        "label": "Donation Details",
+        "icon": "Landmark",
+        "description": "Bank account info, IFSC, bank branch, and UPI QR code"
+      },
+      {
+        "id": "contact",
+        "label": "Contact & Social",
+        "icon": "Mail",
+        "description": "Official email, location, Instagram, and LinkedIn links"
+      },
+      {
+        "id": "text",
+        "label": "Website Text",
+        "icon": "Type",
+        "description": "Hero section headlines & About Us story paragraphs"
+      },
+      {
+        "id": "focus_areas",
+        "label": "Focus Areas",
+        "icon": "Layers",
+        "description": "Core foundation focus pillars, icons, taglines & details"
+      },
+      {
+        "id": "initiatives",
+        "label": "Programmes",
+        "icon": "ListChecks",
+        "description": "Future community initiatives & programme details"
+      },
+      {
+        "id": "images",
+        "label": "Website Photos",
+        "icon": "Image",
+        "description": "Hero, About, Founder, Event, and Section photo assets"
+      }
+    ]
+  },
+  "component_path": "/app/frontend/src/components/Admin.jsx",
   "instructions_to_main_agent": [
-    "Load Google Fonts 'Cormorant Garamond' and 'Inter' in index.html or index.css.",
-    "Ensure headings use Cormorant Garamond in UPPERCASE with letter-spacing tracking-tight to deliver an Awwwards-grade editorial aesthetic.",
-    "Ensure all interactive elements (buttons, nav links, form fields, tab buttons) contain explicit data-testid attributes.",
-    "Implement smooth scrolling using Lenis or Framer Motion scroll anchors.",
-    "Ensure the contact form submits POST requests to backend endpoint /api/contact and shows success/error toast notifications using Sonner.",
-    "Maintain high contrast ratios: text on dark green surfaces must be crisp warm ivory (#FDFBF7) or metallic gold (#D4AF37), and text on light surfaces must be deep slate (#1C2826)."
+    "Rebuild src/components/Admin.jsx into a categorized, high-end editorial admin dashboard UI.",
+    "Completely REMOVE ALL Hindi text. Translate all UI labels, helper texts, button captions, placeholders, and descriptions to crisp, professional English.",
+    "Implement categorized navigation using a side-nav layout on desktop (lg:grid lg:grid-cols-12 gap-8) and horizontal scrollable pill tabs on mobile.",
+    "Create a dedicated 'Branding & Logo' category tab allowing upload of custom website logo (stored in site.images.logo or site.branding.logo), with live preview, recommended 400x400 size hint, and option to reset to default logo.",
+    "Provide a dedicated top Action Bar / Sticky Save Toolbar that allows quick saving of Donate details or Site Content without searching for save buttons.",
+    "Maintain ALL existing test IDs (data-testid) for backwards compatibility and test suites:",
+    "  - admin-page, admin-editor, admin-editor-heading, admin-login-form, admin-login-heading, admin-email-input, admin-password-input, admin-login-btn, admin-login-error, admin-logout-btn, admin-back-home-btn",
+    "  - admin-account-name-input, admin-account-number-input, admin-ifsc-input, admin-bank-branch-input, admin-upi-id-input",
+    "  - admin-qr-upload-label, admin-qr-input, admin-qr-preview, admin-save-btn, admin-save-site-btn",
+    "  - admin-contact-[key]-input, admin-focus-area-[N], admin-focus-area-[N]-icon-select, admin-focus-area-[N]-title-input, admin-focus-area-[N]-tagline-input, admin-focus-area-[N]-text-input, admin-add-focus-area-btn",
+    "  - admin-initiative-[N], admin-initiative-[N]-icon-select, admin-initiative-[N]-text-input, admin-add-initiative-btn",
+    "  - admin-image-preview-[key], admin-image-hint-[key], admin-image-upload-[key], admin-image-reset-[key]",
+    "Add new data-testid attributes for category tab navigation (e.g. admin-tab-[category_id]).",
+    "Ensure responsiveness on mobile, tablet, and desktop viewports with fluid scroll and clean touch targets."
   ],
-  "UNIVERSAL GUIDELINES FOR MAIN AGENT": [
-    "Never use generic centered layouts or plain Bootstrap-style grids; use rich asymmetrical editorial layouts with generous padding (py-20 to py-32).",
-    "Avoid generic emojis as icons; use Lucide-react or Phosphor icons exclusively.",
-    "Ensure all images carry subtle subtle dark green / gold borders or organic radius clips to feel intentional and editorial.",
-    "Include data-testid on every interactive component for automated E2E test suite validation."
-  ]
+  "UNIVERSAL GUIDELINES FOR MAIN AGENT": {
+    "design_rules": [
+      "Do NOT use dark colors as gradients.",
+      "Do NOT center align the app container globally.",
+      "Never use AI assistant Emoji characters (🤖🧠💭💡) for UI icons — use lucide-react icons instead.",
+      "Every interaction must feature micro-animations (hover transitions, active press state, focus rings).",
+      "Use 2-3x generous spacing in cards and containers.",
+      "All interactive elements must include data-testid attributes."
+    ]
+  }
+,
+  "overwrite": true,
+  "path": "/app/design_guidelines.json"
 }

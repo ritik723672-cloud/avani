@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Heart } from "lucide-react";
-import { IMAGES, NAV_LINKS } from "../data/site";
+import { NAV_LINKS } from "../data/site";
 import { scrollToId } from "../lib/scroll";
+import { useContent, contentImg } from "../lib/content";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const content = useContent();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -35,7 +37,7 @@ export default function Navbar() {
           className="flex items-center gap-3"
         >
           <img
-            src={IMAGES.logo}
+            src={contentImg(content, "logo")}
             alt="AVANI Foundation logo"
             className="h-11 w-11 object-cover object-top rounded-full border border-avani-gold/40 bg-white"
           />

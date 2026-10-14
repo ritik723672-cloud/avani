@@ -1,8 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Mail, MapPin } from "lucide-react";
-import { IMAGES } from "../data/site";
 import { scrollToId } from "../lib/scroll";
-import { useContent } from "../lib/content";
+import { useContent, contentImg } from "../lib/content";
 
 const QUICK_LINKS = [
   { label: "About Us", href: "#about", testId: "footer-link-about" },
@@ -33,7 +32,7 @@ export default function Footer() {
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
           <div className="flex items-center gap-3">
             <img
-              src={IMAGES.logo}
+              src={contentImg(content, "logo")}
               alt="AVANI Foundation logo"
               className="h-11 w-11 object-cover object-top rounded-full border border-avani-gold/40 bg-white"
             />

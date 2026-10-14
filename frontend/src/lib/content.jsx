@@ -29,6 +29,7 @@ export const CONTENT_DEFAULTS = {
       "To bridge the gap between potential and opportunity by building confidence and equipping women with future-ready skills in AI, digital technologies, entrepreneurship and leadership — enabling meaningful careers, sustainable livelihoods and lifelong economic independence.",
   },
   images: {
+    logo: "",
     hero: "",
     womenCircle: "",
     programmes: "",
@@ -46,6 +47,7 @@ export const CONTENT_DEFAULTS = {
 };
 
 const IMAGE_DEFAULTS = {
+  logo: IMAGES.logo,
   hero: IMAGES.girlTablet,
   womenCircle: IMAGES.womenCircle,
   programmes: IMAGES.programmes,

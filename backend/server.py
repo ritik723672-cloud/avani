@@ -422,6 +422,7 @@ class AboutContent(BaseModel):
 
 
 class SiteImagesContent(BaseModel):
+    logo: str = Field(default="", max_length=3_000_000)
     hero: str = Field(default="", max_length=3_000_000)
     womenCircle: str = Field(default="", max_length=3_000_000)
     programmes: str = Field(default="", max_length=3_000_000)

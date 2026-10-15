@@ -1,10 +1,10 @@
 # Final Testing Checklist — AVANI Foundation
 
-Legend: ✅ verified in the Emergent preview environment · 🖥️ must be run on your VPS after deployment
+Legend: ✅ verified in the preview environment · 🖥️ must be run on your VPS after deployment
 
 ## Build & startup
 
-- ✅ `yarn build` completes successfully (production build, no Emergent packages needed)
+- ✅ `yarn build` completes successfully (plain static production build)
 - ✅ Backend starts and `GET /api/` returns `{"message":"AVANI Foundation API"}`
 - 🖥️ `sudo systemctl status avani-backend` shows active (running) as user `avani`
 - 🖥️ `sudo nginx -t` passes; site loads over HTTPS
@@ -13,7 +13,7 @@ Legend: ✅ verified in the Emergent preview environment · 🖥️ must be run 
 
 - ✅ Valid enquiry → saved in MongoDB, owner email to `hello@avanifoundation.org` sent (`email_sent:true`)
 - ✅ Visitor auto-reply sent from `hello@avanifoundation.org` (`confirmation_sent:true`, `confirmation_from:hello@avanifoundation.org`)
-- ✅ Emails sent via Hostinger SMTP (`smtp.hostinger.com:465`, SSL) — zero Emergent-proxy calls
+- ✅ Emails sent directly via Hostinger SMTP (`smtp.hostinger.com:465`, SSL) — no third-party email proxy
 - ✅ Enquiry stays saved even if email delivery fails (DB insert happens before sending)
 - 🖥️ Submit the real form on your domain and confirm both inboxes receive mail
 

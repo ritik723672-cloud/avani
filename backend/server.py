@@ -32,7 +32,7 @@ db = client[os.environ['DB_NAME']]
 app = FastAPI()
 api_router = APIRouter(prefix="/api")
 
-# ---- Email configuration (pluggable: smtp | resend | emergent) ----
+# ---- Email configuration (pluggable: smtp | resend) ----
 EMAIL_BACKEND = os.environ.get("EMAIL_BACKEND", "smtp").strip().lower()
 ENQUIRY_RECIPIENT = os.environ["ENQUIRY_RECIPIENT_EMAIL"]
 EMAIL_FROM = os.environ.get("EMAIL_FROM", "")
@@ -51,10 +51,6 @@ SMTP_PASSWORD = os.environ.get("SMTP_PASSWORD")
 
 RESEND_API_KEY = os.environ.get("RESEND_API_KEY")
 RESEND_API_URL = "https://api.resend.com/emails"
-
-# Legacy: only works when hosted on Emergent. Not needed for self-hosting.
-EMERGENT_EMAIL_KEY = os.environ.get("EMERGENT_EMAIL_KEY")
-EMERGENT_EMAIL_BASE_URL = "https://integrations.emergentagent.com"
 
 # ---- Auth ----
 JWT_ALGORITHM = "HS256"
@@ -199,26 +195,6 @@ async def _send_resend(to: str, subject: str, html: str,
         raise HTTPException(status_code=502, detail="Failed to send email")
 
 
-async def _send_emergent(to: str, subject: str, html: str) -> str | None:
-    if not EMERGENT_EMAIL_KEY:
-        raise HTTPException(status_code=500, detail="Emergent email is not configured (EMERGENT_EMAIL_KEY missing)")
-    payload = {"to": [to], "subject": subject, "html": html, "from_name": EMAIL_FROM_NAME}
-    if EMAIL_REPLY_TO:
-        payload["contact_email"] = EMAIL_REPLY_TO
-    try:
-        async with httpx.AsyncClient(timeout=30) as client_http:
-            resp = await client_http.post(
-                f"{EMERGENT_EMAIL_BASE_URL}/api/v1/email/send",
-                headers={"X-Email-Key": EMERGENT_EMAIL_KEY},
-                json=payload,
-            )
-        resp.raise_for_status()
-        return resp.json().get("id")
-    except Exception as e:
-        logger.error(f"Emergent email send failed: {str(e)}")
-        raise HTTPException(status_code=502, detail="Failed to send email")
-
-
 async def send_email(*, to: str, subject: str, html: str,
                      from_email: str | None = None, reply_to: str | None = None) -> str | None:
     _assert_safe_email(subject, html)
@@ -227,8 +203,6 @@ async def send_email(*, to: str, subject: str, html: str,
         return None
     if EMAIL_BACKEND == "resend":
         return await _send_resend(to, subject, html, from_addr=from_email, reply_to=reply_to)
-    if EMAIL_BACKEND == "emergent":
-        return await _send_emergent(to, subject, html)
     raise HTTPException(status_code=500, detail=f"Unknown EMAIL_BACKEND: {EMAIL_BACKEND}")
 
 

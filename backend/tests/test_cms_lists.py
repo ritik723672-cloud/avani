@@ -15,7 +15,7 @@ import os
 import pytest
 import requests
 
-BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://avani-women.preview.emergentagent.com").rstrip("/")
+BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "http://localhost:8001").rstrip("/")
 ADMIN_EMAIL = "hello@avanifoundation.org"
 ADMIN_PASSWORD = "A8GBWCC3VVc0oN"
 

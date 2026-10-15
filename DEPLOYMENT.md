@@ -1,6 +1,6 @@
 # AVANI Foundation — VPS Deployment Guide
 
-Complete, tested guide to self-host the AVANI Foundation website (React frontend + FastAPI backend + MongoDB) on your own VPS, fully independent of Emergent.
+Complete, tested guide to self-host the AVANI Foundation website (React frontend + FastAPI backend + MongoDB) on your own VPS. The project is fully self-contained — no external platform dependencies.
 
 Companion docs: **CONFIGURATION.md** (which file holds which setting) · **CHECKLIST.md** (final testing checklist) · **README.md** (quick start)
 
@@ -17,17 +17,17 @@ Companion docs: **CONFIGURATION.md** (which file holds which setting) · **CHECK
 
 All backend routes are prefixed with `/api`. Nginx serves the frontend and proxies `/api` to the backend — one domain, no CORS issues.
 
-## 2. Emergent dependencies — status
+## 2. Project independence — status
 
-| Emergent service | Status |
+| Concern | Status |
 |---|---|
-| Emergent managed email proxy | **Removed from the live path.** Email sends via your Hostinger SMTP (`EMAIL_BACKEND=smtp`). A legacy `emergent` mode still exists in `server.py` but is never used on your VPS — to delete it entirely, remove the `_send_emergent` function and the `EMERGENT_EMAIL_*` constants |
-| Emergent-hosted images | **Removed.** All images are local in `frontend/public/assets/` (verified: zero external image URLs) |
-| `@emergentbase/*` dev packages | **Removed** from `package.json`; `yarn build` verified without them |
-| `EMERGENT_LLM_KEY` | Only used by `scripts/gen_donate_image.py` (a one-off art generator). Not needed at runtime — delete the script and the key if you want zero references |
-| MongoDB | Plain self-hosted MongoDB — no Emergent dependency |
+| Email delivery | Sends directly via your Hostinger SMTP (`EMAIL_BACKEND=smtp`) or Resend — no third-party proxy |
+| Images | **All local** in `frontend/public/assets/` (verified: zero external image URLs) |
+| Dev-only packages | None required — `yarn build` produces a plain static React build |
+| Database | Plain self-hosted MongoDB |
+| Runtime services | Only FastAPI + MongoDB + Nginx on your server |
 
-Secrets: nothing is hardcoded. Real values live only in `.env` files (git-ignored). If your exported copy contains an existing `backend/.env`, review it on the VPS and keep it private — or recreate it from `backend/.env.example`.
+Secrets: nothing is hardcoded. Real values live only in `.env` files (git-ignored). On the VPS, create `backend/.env` from `backend/.env.example` and keep it private.
 
 ## 3. Prerequisites
 
@@ -36,11 +36,12 @@ Secrets: nothing is hardcoded. Real values live only in `.env` files (git-ignore
   - `avanifoundation.org → <VPS-IP>`
   - `www.avanifoundation.org → <VPS-IP>`
 
-## 4. Getting the code out of Emergent
+## 4. Getting the code onto your VPS
 
-- **Paid plan (recommended):** Chat input bar → **Save** → **Save to GitHub** → pick your repo/branch → then on the VPS: `git clone <repo-url> /opt/avani`
-- **Any plan:** Top toolbar **Code** button → open the browser VS Code → copy the project files manually
-- The code contains no Emergent lock-in: it is a standard React + FastAPI + MongoDB project
+- Push this project to your own GitHub repository, then on the VPS: `git clone <repo-url> /opt/avani`
+- Or copy the project folder to the VPS directly with `scp` / `rsync`
+- The code is a standard React + FastAPI + MongoDB project — no platform lock-in
+- After cloning, you may delete the hidden `.emergent/` config folder — it is not needed on your server
 
 ## 5. Server setup (one time)
 

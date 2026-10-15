@@ -154,8 +154,18 @@ Single-page website for AVANI Foundation ("Advancing Vision, Ambition and New In
 - Email delivery to data@avanifoundation.org FAILS: provider reports the mailbox is undeliverable (domain email not configured). Enquiries ARE stored in MongoDB regardless. Fix: user sets up email hosting for avanifoundation.org (MX records) OR provides an alternative inbox to put in ENQUIRY_RECIPIENT_EMAIL in /app/backend/.env
 - Instagram / LinkedIn shown as "Coming soon" placeholders
 
-## Backlog
-- P0: Real bank account details + UPI ID + QR for the Donate page (currently placeholders)
+## Iteration 28 (2026-07-15) — Zero "emergent" references in shippable code (user request)
+- server.py: legacy `_send_emergent` email proxy + EMERGENT_EMAIL_KEY/EMERGENT_EMAIL_BASE_URL constants + "emergent" EMAIL_BACKEND branch fully removed (smtp | resend only)
+- Deleted scripts/gen_donate_image.py (one-off generator, image already in assets); pip uninstall emergentintegrations + litellm; requirements.txt re-frozen — 0 references
+- craco.config.js: @emergentbase overlay + visual-edits blocks removed (packages were already uninstalled; paths were dormant)
+- Deleted unused scaffold frontend/src/constants/testIds/ (contained emergentLink + lint-rule comment; app uses inline data-testids)
+- backend/tests/test_cms_lists.py: BASE_URL default now http://localhost:8001 (run with REACT_APP_BACKEND_URL env for HTTPS — Secure cookies need https)
+- .env.example, DEPLOYMENT.md, CHECKLIST.md rewritten Emergent-free; DEPLOYMENT.md section 4 now says clone from own GitHub + delete hidden .emergent/ folder on VPS
+- .gitconfig: neutral identity (AVANI Admin <admin@avanifoundation.org>)
+- Kept intentionally: /app/.emergent/ (platform-critical, hidden, deletable on VPS), .gitignore pattern for it, .env values (git-ignored, never export), memory/PRD.md history
+- Verified: pytest 8/8 (with REACT_APP_BACKEND_URL set), GET /api/ OK, content API OK, homepage + /admin render fine after frontend restart
+
+## Backlog- P0: Real bank account details + UPI ID + QR for the Donate page (currently placeholders)
 - P1: LinkedIn URL when available
 - P1: Admin view for stored enquiries (user declined for now)
 - P2: SEO/Open Graph/sitemap (farm-seo-setup skill), donate button, volunteer stories/impact counters, Hindi language toggle
